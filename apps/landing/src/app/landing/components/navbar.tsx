@@ -31,31 +31,31 @@ import { useTheme } from '@/hooks/use-theme'
 
 const navigationItems = [
   { name: 'Home', href: '#hero' },
-  { name: 'Features', href: '#features' },
-  { name: 'Solutions', href: '#features', hasMegaMenu: true },
+  { name: 'Architecture', href: '#features' },
+  { name: 'Platform', href: '#features', hasMegaMenu: true },
   { name: 'Team', href: '#team' },
-  { name: 'Pricing', href: '#pricing' },
+  // { name: 'Plans', href: '#pricing' },
   { name: 'FAQ', href: '#faq' },
   { name: 'Contact', href: '#contact' },
 ]
 
-// Solutions menu items for mobile
+// Platform menu items for mobile
 const solutionsItems = [
-  { title: 'Browse Products' },
-  { name: 'Free Blocks', href: '#free-blocks' },
-  { name: 'Premium Templates', href: '#premium-templates' },
-  { name: 'Admin Dashboards', href: '#admin-dashboards' },
-  { name: 'Landing Pages', href: '#landing-pages' },
-  { title: 'Categories' },
-  { name: 'E-commerce', href: '#ecommerce' },
-  { name: 'SaaS Dashboards', href: '#saas-dashboards' },
-  { name: 'Analytics', href: '#analytics' },
-  { name: 'Authentication', href: '#authentication' },
+  { title: 'Core Layers' },
+  { name: 'Application Layer', href: '#features' },
+  { name: 'Sui Contracts', href: '#features' },
+  { name: 'zk Circuits', href: '#features' },
+  { name: 'Shared SDK', href: '#features' },
+  { title: 'Capabilities' },
+  { name: 'Encrypted Storage', href: '#features' },
+  { name: 'On-Chain Policies', href: '#features' },
+  { name: 'Audit Events', href: '#features' },
+  { name: 'Proof Verification', href: '#features' },
   { title: 'Resources' },
-  { name: 'Documentation', href: '#docs' },
-  { name: 'Component Showcase', href: '#showcase' },
-  { name: 'GitHub Repository', href: '#github' },
-  { name: 'Design System', href: '#design-system' }
+  { name: 'Documentation', href: '#contact' },
+  { name: 'Roadmap', href: '#pricing' },
+  { name: 'FAQ', href: '#faq' },
+  { name: 'Repository', href: '#contact' }
 ]
 
 // Smooth scroll function
@@ -81,10 +81,10 @@ export function LandingNavbar() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-2">
-          <Link href="https://shadcnstore.com" className="flex items-center space-x-2 cursor-pointer" target='_blank' rel="noopener noreferrer">
+          <Link href="/landing" className="flex items-center space-x-2 cursor-pointer">
             <Logo size={32} />
             <span className="font-bold">
-              ShadcnStore
+              D4Gen
             </span>
           </Link>
         </div>
@@ -127,7 +127,7 @@ export function LandingNavbar() {
         <div className="hidden xl:flex items-center space-x-2">
           <ModeToggle variant="ghost" />
           <Button variant="ghost" size="icon" asChild className="cursor-pointer">
-            <a href="https://github.com/silicondeck/shadcn-dashboard-landing-template" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
               <Github className="h-5 w-5" />
             </a>
           </Button>
@@ -138,10 +138,10 @@ export function LandingNavbar() {
             </Link>
           </Button>
           <Button variant="ghost" asChild className="cursor-pointer">
-            <Link href="/auth/sign-in">Sign In</Link>
+            <Link href="/sign-in">Sign In</Link>
           </Button>
           <Button asChild className="cursor-pointer">
-            <Link href="/auth/sign-up">Get Started</Link>
+            <Link href="/sign-up">Request Access</Link>
           </Button>
         </div>
 
@@ -161,7 +161,7 @@ export function LandingNavbar() {
                   <div className="p-2 bg-primary/10 rounded-lg">
                     <Logo size={16} />
                   </div>
-                  <SheetTitle className="text-lg font-semibold">ShadcnStore</SheetTitle>
+                  <SheetTitle className="text-lg font-semibold">D4Gen</SheetTitle>
                   <div className="ml-auto flex items-center gap-2">
                     <Button
                       variant="ghost"
@@ -173,7 +173,7 @@ export function LandingNavbar() {
                       <Sun className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                     </Button>
                     <Button variant="ghost" size="icon" asChild className="cursor-pointer h-8 w-8">
-                      <a href="https://github.com/silicondeck/shadcn-dashboard-landing-template" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+                      <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
                         <Github className="h-4 w-4" />
                       </a>
                     </Button>
@@ -257,10 +257,10 @@ export function LandingNavbar() {
 
                   <div className="grid grid-cols-2 gap-3">
                     <Button variant="outline" size="lg" asChild className="cursor-pointer">
-                      <Link href="/auth/sign-in">Sign In</Link>
+                      <Link href="/sign-in">Sign In</Link>
                     </Button>
                     <Button asChild size="lg" className="cursor-pointer" >
-                      <Link href="/auth/sign-up">Get Started</Link>
+                      <Link href="/sign-up">Request Access</Link>
                     </Button>
                   </div>
                 </div>

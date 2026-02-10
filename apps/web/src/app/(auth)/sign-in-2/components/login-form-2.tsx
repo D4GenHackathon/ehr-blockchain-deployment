@@ -12,9 +12,9 @@ export function LoginForm2({
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props} action="/dashboard">
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">Login to your account</h1>
+        <h1 className="text-2xl font-bold">Sign in to D4Gen</h1>
         <p className="text-muted-foreground text-sm text-balance">
-          Enter your email below to login to your account
+          Enter your organizational email to access the D4Gen console
         </p>
       </div>
       <div className="grid gap-6">
@@ -26,7 +26,7 @@ export function LoginForm2({
           <div className="flex items-center">
             <Label htmlFor="password">Password</Label>
             <a
-              href="/auth/forgot-password-2"
+              href="/forgot-password-2"
               className="ml-auto text-sm underline-offset-4 hover:underline"
             >
               Forgot your password?
@@ -54,7 +54,7 @@ export function LoginForm2({
       </div>
       <div className="text-center text-sm">
         Don&apos;t have an account?{" "}
-        <a href="/auth/sign-up-2" className="underline underline-offset-4">
+        <a href="/sign-up-2" className="underline underline-offset-4">
           Sign up
         </a>
       </div>

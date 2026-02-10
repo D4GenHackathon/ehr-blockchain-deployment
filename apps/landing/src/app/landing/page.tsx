@@ -1,20 +1,30 @@
 import type { Metadata } from 'next'
 import { LandingPageContent } from './landing-page-content'
 
-// Metadata for the landing page
 export const metadata: Metadata = {
-  title: 'ShadcnStore - Modern Admin Dashboard Template',
-  description: 'A beautiful and comprehensive admin dashboard template built with React, Next.js, TypeScript, and shadcn/ui. Perfect for building modern web applications.',
-  keywords: ['admin dashboard', 'react', 'nextjs', 'typescript', 'shadcn/ui', 'tailwind css'],
+  title: 'D4Gen - Decentralized Privacy-Preserving EHR Platform',
+  description:
+    'D4Gen combines Sui, Walrus, Seal, and zkSNARKs to enable secure, privacy-preserving electronic health record sharing across organizations.',
+  keywords: [
+    'D4Gen',
+    'EHR',
+    'Sui',
+    'Walrus',
+    'Seal',
+    'zkSNARK',
+    'privacy-preserving healthcare',
+  ],
   openGraph: {
-    title: 'ShadcnStore - Modern Admin Dashboard Template',
-    description: 'A beautiful and comprehensive admin dashboard template built with React, Next.js, TypeScript, and shadcn/ui.',
+    title: 'D4Gen - Decentralized Privacy-Preserving EHR Platform',
+    description:
+      'Securely store, share, and verify healthcare data with decentralized storage, on-chain access control, and zero-knowledge proofs.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ShadcnStore - Modern Admin Dashboard Template',
-    description: 'A beautiful and comprehensive admin dashboard template built with React, Next.js, TypeScript, and shadcn/ui.',
+    title: 'D4Gen - Decentralized Privacy-Preserving EHR Platform',
+    description:
+      'Privacy-first healthcare data sharing with Sui smart contracts and zkSNARK verification.',
   },
 }
 

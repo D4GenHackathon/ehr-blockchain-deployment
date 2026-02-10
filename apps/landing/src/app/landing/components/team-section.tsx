@@ -11,9 +11,9 @@ import { Github, Linkedin, Globe } from 'lucide-react'
 const team = [
   {
     id: 1,
-    name: 'Alexandra Chen',
-    role: 'Founder & CEO',
-    description: 'Former co-founder of TechFlow. Early staff at Microsoft and Google.',
+    name: 'Hans',
+    role: 'Developer',
+    description: 'Blockchain, cryptography, and product delivery',
     image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?q=60&w=150&auto=format&fit=crop',
     fallback: 'AC',
     social: {
@@ -22,97 +22,97 @@ const team = [
       website: '#'
     }
   },
-  {
-    id: 2,
-    name: 'Marcus Rodriguez',
-    role: 'Engineering Manager',
-    description: 'Lead engineering teams at Stripe, Discord, and Meta Labs.',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=150&auto=format&fit=crop',
-    fallback: 'MR',
-    social: {
-      linkedin: '#',
-      github: '#',
-      website: '#'
-    }
-  },
-  {
-    id: 3,
-    name: 'Sophie Laurent',
-    role: 'Product Manager',
-    description: 'Former PM for Linear, Lambda School, and On Deck.',
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=150&auto=format&fit=crop',
-    fallback: 'SL',
-    social: {
-      linkedin: '#',
-      github: '#',
-      website: '#'
-    }
-  },
-  {
-    id: 4,
-    name: 'David Kim',
-    role: 'Frontend Developer',
-    description: 'Former frontend dev for Linear, Coinbase, and PostScript.',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=150&auto=format&fit=crop',
-    fallback: 'DK',
-    social: {
-      linkedin: '#',
-      github: '#',
-      website: '#'
-    }
-  },
-  {
-    id: 5,
-    name: 'Emma Thompson',
-    role: 'Backend Developer',
-    description: 'Lead backend dev at Clearbit. Former Clearbit and Loom.',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=150&auto=format&fit=crop',
-    fallback: 'ET',
-    social: {
-      linkedin: '#',
-      github: '#',
-      website: '#'
-    }
-  },
-  {
-    id: 6,
-    name: 'Ryan Mitchell',
-    role: 'Product Designer',
-    description: 'Founding design team at Figma. Former Pleo, Stripe, and Tile.',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=150&auto=format&fit=crop',
-    fallback: 'RM',
-    social: {
-      linkedin: '#',
-      github: '#',
-      website: '#'
-    }
-  },
-  {
-    id: 7,
-    name: 'James Anderson',
-    role: 'UX Researcher',
-    description: 'Lead user research for Slack. Contractor for Netflix and Udacity.',
-    image: 'https://images.unsplash.com/photo-1566492031773-4f4e44671d66?q=60&w=150&auto=format&fit=crop',
-    fallback: 'JA',
-    social: {
-      linkedin: '#',
-      github: '#',
-      website: '#'
-    }
-  },
-  {
-    id: 8,
-    name: 'Isabella Garcia',
-    role: 'Customer Success',
-    description: 'Lead CX at Wealthsimple. Former PagerDuty and Squreen.',
-    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=60&w=150&auto=format&fit=crop',
-    fallback: 'IG',
-    social: {
-      linkedin: '#',
-      github: '#',
-      website: '#'
-    }
-  }
+  // {
+  //   id: 2,
+  //   name: 'Marcus Rodriguez',
+  //   role: 'Move Engineer',
+  //   description: 'Builds auditable contract flows for record metadata, sharing, and revocation.',
+  //   image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=60&w=150&auto=format&fit=crop',
+  //   fallback: 'MR',
+  //   social: {
+  //     linkedin: '#',
+  //     github: '#',
+  //     website: '#'
+  //   }
+  // },
+  // {
+  //   id: 3,
+  //   name: 'Sophie Laurent',
+  //   role: 'Product Manager',
+  //   description: 'Defines cross-organization data workflows and compliance-driven product requirements.',
+  //   image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=60&w=150&auto=format&fit=crop',
+  //   fallback: 'SL',
+  //   social: {
+  //     linkedin: '#',
+  //     github: '#',
+  //     website: '#'
+  //   }
+  // },
+  // {
+  //   id: 4,
+  //   name: 'David Kim',
+  //   role: 'Frontend Engineer',
+  //   description: 'Implements operator and patient dashboards with consistent design system patterns.',
+  //   image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=60&w=150&auto=format&fit=crop',
+  //   fallback: 'DK',
+  //   social: {
+  //     linkedin: '#',
+  //     github: '#',
+  //     website: '#'
+  //   }
+  // },
+  // {
+  //   id: 5,
+  //   name: 'Emma Thompson',
+  //   role: 'Backend Engineer',
+  //   description: 'Owns API routes, indexing jobs, and secure orchestration between chain and storage.',
+  //   image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=60&w=150&auto=format&fit=crop',
+  //   fallback: 'ET',
+  //   social: {
+  //     linkedin: '#',
+  //     github: '#',
+  //     website: '#'
+  //   }
+  // },
+  // {
+  //   id: 6,
+  //   name: 'Ryan Mitchell',
+  //   role: 'Applied Cryptography',
+  //   description: 'Designs Groth16 circuit constraints and proof pipelines for selective disclosure.',
+  //   image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=60&w=150&auto=format&fit=crop',
+  //   fallback: 'RM',
+  //   social: {
+  //     linkedin: '#',
+  //     github: '#',
+  //     website: '#'
+  //   }
+  // },
+  // {
+  //   id: 7,
+  //   name: 'James Anderson',
+  //   role: 'Security Researcher',
+  //   description: 'Reviews threat models, key management assumptions, and policy abuse scenarios.',
+  //   image: 'https://images.unsplash.com/photo-1566492031773-4f4e44671d66?q=60&w=150&auto=format&fit=crop',
+  //   fallback: 'JA',
+  //   social: {
+  //     linkedin: '#',
+  //     github: '#',
+  //     website: '#'
+  //   }
+  // },
+  // {
+  //   id: 8,
+  //   name: 'Isabella Garcia',
+  //   role: 'Ecosystem Partnerships',
+  //   description: 'Supports consortium onboarding across hospitals, clinics, and research teams.',
+  //   image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=60&w=150&auto=format&fit=crop',
+  //   fallback: 'IG',
+  //   social: {
+  //     linkedin: '#',
+  //     github: '#',
+  //     website: '#'
+  //   }
+  // }
 ]
 
 export function TeamSection() {
@@ -122,13 +122,13 @@ export function TeamSection() {
         {/* Section Header */}
         <div className="mx-auto max-w-4xl text-center mb-16">
           <Badge variant="outline" className="mb-4">
-            Our Team
+            Team
           </Badge>
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-6">
-            Meet our team
+            Builders behind D4Gen
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            We are a passionate team of innovators, builders, and problem-solvers dedicated to creating exceptional digital experiences that make a difference.
+            A cross-functional team across protocol engineering, cryptography, and product delivery focused on privacy-preserving healthcare interoperability.
           </p>
         </div>
 

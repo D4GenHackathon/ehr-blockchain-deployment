@@ -24,13 +24,13 @@ export function LoginForm3({
                   <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-md">
                     <Logo size={24} />
                   </div>
-                  <span className="text-xl">ShadcnStore</span>
+                  <span className="text-xl">D4Gen</span>
                 </Link>
               </div>
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
                 <p className="text-muted-foreground text-balance">
-                  Login to your ShadcnStore account
+                  Login to your D4Gen account
                 </p>
               </div>
               <div className="grid gap-3">
@@ -47,7 +47,7 @@ export function LoginForm3({
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                   <a
-                    href="/auth/forgot-password-3"
+                    href="/forgot-password-3"
                     className="ml-auto text-sm underline-offset-2 hover:underline"
                   >
                     Forgot your password?
@@ -94,7 +94,7 @@ export function LoginForm3({
               </div>
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <a href="/auth/sign-up-3" className="underline underline-offset-4">
+                <a href="/sign-up-3" className="underline underline-offset-4">
                   Sign up
                 </a>
               </div>

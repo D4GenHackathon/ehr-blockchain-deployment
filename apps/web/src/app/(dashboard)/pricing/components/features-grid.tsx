@@ -26,9 +26,9 @@ export function FeaturesGrid({ features }: FeaturesGridProps) {
   return (
     <Card>
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl">All Plans Include</CardTitle>
+        <CardTitle className="text-2xl">All Adoption Tracks Include</CardTitle>
         <CardDescription>
-          Every plan comes with these essential features to help your team succeed
+          Every track includes core capabilities for secure healthcare data collaboration
         </CardDescription>
       </CardHeader>
       <CardContent>

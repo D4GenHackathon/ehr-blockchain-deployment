@@ -9,7 +9,7 @@ export function QuickActions() {
     <div className="flex items-center space-x-2">
       <Button className="cursor-pointer">
         <Plus className="h-4 w-4 mr-2" />
-        New Sale
+        New Policy
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -21,11 +21,11 @@ export function QuickActions() {
         <DropdownMenuContent align="end">
           <DropdownMenuItem className="cursor-pointer">
             <FileText className="h-4 w-4 mr-2" />
-            Generate Report
+            Generate Audit Report
           </DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer">
             <Download className="h-4 w-4 mr-2" />
-            Export Data
+            Export Event Data
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="cursor-pointer">

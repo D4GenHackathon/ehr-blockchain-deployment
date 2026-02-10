@@ -11,94 +11,94 @@ import {
   Package,
   Layout,
   Crown,
-  Palette
+  Lock,
 } from 'lucide-react'
 
 const menuSections = [
   {
-    title: 'Browse Products',
+    title: 'Core Layers',
     items: [
       {
-        title: 'Free Blocks',
-        description: 'Essential UI components and sections',
-        icon: Package,
-        href: '#free-blocks'
-      },
-      {
-        title: 'Premium Templates',
-        description: 'Complete page templates and layouts',
-        icon: Crown,
-        href: '#premium-templates'
-      },
-      {
-        title: 'Admin Dashboards',
-        description: 'Full-featured dashboard solutions',
-        icon: BarChart3,
-        href: '#admin-dashboards'
-      },
-      {
-        title: 'Landing Pages',
-        description: 'Marketing and product landing templates',
+        title: 'Web Application',
+        description: 'Unified Next.js app for dashboard, backend routes, and indexer flows',
         icon: Layout,
-        href: '#landing-pages'
-      }
-    ]
-  },
-  {
-    title: 'Categories',
-    items: [
-      {
-        title: 'E-commerce',
-        description: 'Online store admin panels and components',
-        icon: Building2,
-        href: '#ecommerce'
+        href: '#features'
       },
       {
-        title: 'SaaS Dashboards',
-        description: 'Application admin interfaces',
-        icon: Rocket,
-        href: '#saas-dashboards'
+        title: 'Sui Contracts',
+        description: 'Move modules for policies, shares, revocations, and audit events',
+        icon: Crown,
+        href: '#features'
       },
       {
-        title: 'Analytics',
-        description: 'Data visualization and reporting templates',
+        title: 'zk Circuits',
+        description: 'Groth16 circuits for selective disclosure and compliance proofs',
         icon: BarChart3,
-        href: '#analytics'
+        href: '#features'
       },
       {
-        title: 'Authentication',
-        description: 'Login, signup, and user management pages',
-        icon: Shield,
-        href: '#authentication'
+        title: 'D4Gen SDK',
+        description: 'Shared TypeScript clients for chain, storage, and proof orchestration',
+        icon: Package,
+        href: '#features'
       }
     ]
   },
   {
-    title: 'Resources',
+    title: 'Privacy Controls',
     items: [
       {
-        title: 'Documentation',
-        description: 'Integration guides and setup instructions',
+        title: 'Encrypted Storage',
+        description: 'Store encrypted medical blobs on decentralized infrastructure',
         icon: Database,
-        href: '#docs'
+        href: '#features'
       },
       {
-        title: 'Component Showcase',
-        description: 'Interactive preview of all components',
-        icon: Palette,
-        href: '#showcase'
+        title: 'Access Policies',
+        description: 'Gate decryption and sharing through explicit on-chain rules',
+        icon: Shield,
+        href: '#features'
       },
       {
-        title: 'GitHub Repository',
-        description: 'Open source foundation and community',
-        icon: Settings,
-        href: '#github'
+        title: 'Seal Requests',
+        description: 'Request scoped decryption capability only when policy permits',
+        icon: Lock,
+        href: '#features'
       },
       {
-        title: 'Design System',
-        description: 'shadcn/ui standards and customization',
+        title: 'Zero-Knowledge Checks',
+        description: 'Prove attributes like consent or age without revealing identity',
+        icon: Rocket,
+        href: '#features'
+      }
+    ]
+  },
+  {
+    title: 'Operations',
+    items: [
+      {
+        title: 'Organization Flows',
+        description: 'Coordinate hospitals, clinics, and research partners securely',
+        icon: Building2,
+        href: '#team'
+      },
+      {
+        title: 'Audit Timeline',
+        description: 'Track immutable events for record creation and access changes',
         icon: Zap,
-        href: '#design-system'
+        href: '#pricing'
+      },
+      {
+        title: 'Deployment Notes',
+        description: 'Prototype-first architecture with testnet-ready defaults',
+        icon: Settings,
+        href: '#faq'
+      },
+      {
+        title: 'Support',
+        description: 'Roadmap and integration support for consortium onboarding',
+        icon: Database,
+        href: '#contact'
       }
     ]
   }

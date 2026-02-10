@@ -62,9 +62,9 @@ export function SignupForm1({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Create Account</CardTitle>
+          <CardTitle className="text-xl">Request Access</CardTitle>
           <CardDescription>
-            Enter your information to create a new account
+            Enter your information to request a D4Gen workspace account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -162,7 +162,7 @@ export function SignupForm1({
                     )}
                   />
                   <Button type="submit" className="w-full cursor-pointer">
-                    Create Account
+                    Request Access
                   </Button>
 
                   <Button variant="outline" className="w-full cursor-pointer" type="button">
@@ -177,7 +177,7 @@ export function SignupForm1({
                 </div>
                 <div className="text-center text-sm">
                   Already have an account?{" "}
-                  <a href="/auth/sign-in" className="underline underline-offset-4">
+                  <a href="/sign-in" className="underline underline-offset-4">
                     Sign in
                   </a>
                 </div>

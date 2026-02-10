@@ -8,56 +8,56 @@ import { ChartContainer, ChartStyle, ChartTooltip, ChartTooltipContent } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 
-const revenueData = [
-  { category: "subscriptions", value: 45, amount: 24500, fill: "var(--color-subscriptions)" },
-  { category: "sales", value: 30, amount: 16300, fill: "var(--color-sales)" },
-  { category: "services", value: 15, amount: 8150, fill: "var(--color-services)" },
-  { category: "partnerships", value: 10, amount: 5430, fill: "var(--color-partnerships)" },
+const activityData = [
+  { category: "uploads", value: 45, amount: 24500, fill: "var(--color-uploads)" },
+  { category: "proofs", value: 30, amount: 16300, fill: "var(--color-proofs)" },
+  { category: "shares", value: 15, amount: 8150, fill: "var(--color-shares)" },
+  { category: "revocations", value: 10, amount: 5430, fill: "var(--color-revocations)" },
 ]
 
 const chartConfig = {
-  revenue: {
-    label: "Revenue",
+  activity: {
+    label: "Activity",
   },
   amount: {
-    label: "Amount",
+    label: "Count",
   },
-  subscriptions: {
-    label: "Subscriptions",
+  uploads: {
+    label: "Record Uploads",
     color: "var(--chart-1)",
   },
-  sales: {
-    label: "One-time Sales",
+  proofs: {
+    label: "Proof Verifications",
     color: "var(--chart-2)",
   },
-  services: {
-    label: "Services",
+  shares: {
+    label: "Share Grants",
     color: "var(--chart-3)",
   },
-  partnerships: {
-    label: "Partnerships",
+  revocations: {
+    label: "Access Revocations",
     color: "var(--chart-4)",
   },
 }
 
 export function RevenueBreakdown() {
-  const id = "revenue-breakdown"
-  const [activeCategory, setActiveCategory] = React.useState("sales")
+  const id = "activity-breakdown"
+  const [activeCategory, setActiveCategory] = React.useState("proofs")
 
   const activeIndex = React.useMemo(() => {
-    const index = revenueData.findIndex((item) => item.category === activeCategory)
+    const index = activityData.findIndex((item) => item.category === activeCategory)
     return index === -1 ? 0 : index
   }, [activeCategory])
 
-  const categories = React.useMemo(() => revenueData.map((item) => item.category), [])
+  const categories = React.useMemo(() => activityData.map((item) => item.category), [])
 
   return (
     <Card data-chart={id} className="flex flex-col cursor-pointer">
       <ChartStyle id={id} config={chartConfig} />
       <CardHeader className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 pb-2">
         <div>
-          <CardTitle>Revenue Breakdown</CardTitle>
-          <CardDescription>Revenue distribution by source</CardDescription>
+          <CardTitle>Activity Breakdown</CardTitle>
+          <CardDescription>Distribution by workflow type</CardDescription>
         </div>
         <div className="flex items-center space-x-2">
           <Select value={activeCategory} onValueChange={setActiveCategory}>
@@ -114,7 +114,7 @@ export function RevenueBreakdown() {
                   content={<ChartTooltipContent hideLabel />}
                 />
                 <Pie
-                  data={revenueData}
+                  data={activityData}
                   dataKey="amount"
                   nameKey="category"
                   innerRadius={60}
@@ -148,14 +148,14 @@ export function RevenueBreakdown() {
                               y={viewBox.cy}
                               className="fill-foreground text-3xl font-bold"
                             >
-                              ${(revenueData[activeIndex].amount / 1000).toFixed(0)}K
+                              {Math.round(activityData[activeIndex].amount / 1000)}K
                             </tspan>
                             <tspan
                               x={viewBox.cx}
                               y={(viewBox.cy || 0) + 24}
                               className="fill-muted-foreground"
                             >
-                              Revenue
+                              Events
                             </tspan>
                           </text>
                         )
@@ -168,7 +168,7 @@ export function RevenueBreakdown() {
           </div>
 
           <div className="flex flex-col justify-center space-y-4">
-            {revenueData.map((item, index) => {
+            {activityData.map((item, index) => {
               const config = chartConfig[item.category as keyof typeof chartConfig]
               const isActive = index === activeIndex
 
@@ -190,7 +190,7 @@ export function RevenueBreakdown() {
                     <span className="font-medium">{config?.label}</span>
                   </div>
                   <div className="text-right">
-                    <div className="font-bold">${(item.amount / 1000).toFixed(1)}K</div>
+                    <div className="font-bold">{(item.amount / 1000).toFixed(1)}K</div>
                     <div className="text-sm text-muted-foreground">{item.value}%</div>
                   </div>
                 </div>

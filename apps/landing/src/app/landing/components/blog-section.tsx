@@ -9,26 +9,26 @@ const blogs = [
     {
       id: 1,
       image: 'https://ui.shadcn.com/placeholder.svg',
-      category: 'Technology',
-      title: 'AI Development Catalysts',
+      category: 'Architecture',
+      title: 'Designing privacy-preserving EHR workflows',
       description:
-        'Exploring how AI-driven tools are transforming software development workflows and accelerating innovation.',
+        'How D4Gen separates encrypted data storage, on-chain policy state, and verification logic for practical delivery.',
     },
     {
       id: 2,
       image: 'https://ui.shadcn.com/placeholder.svg',
-      category: 'Lifestyle',
-      title: 'Minimalist Living Guide',
+      category: 'Zero Knowledge',
+      title: 'Groth16 proofs for selective disclosure',
       description:
-        'Minimalist living approaches that can help reduce stress and create more meaningful daily experiences.',
+        'Patterns for proving eligibility and consent on-chain without exposing patient identifiers or raw attributes.',
     },
     {
       id: 3,
       image: 'https://ui.shadcn.com/placeholder.svg',
-      category: 'Design',
-      title: 'Accessible UI Trends',
+      category: 'Operations',
+      title: 'Running consortium pilots on Sui testnet',
       description:
-        'How modern UI trends are embracing accessibility while maintaining sleek, intuitive user experiences.',
+        'A practical checklist for organizations coordinating access policies, audits, and proof workflows.',
     },
   ]
 
@@ -38,12 +38,12 @@ export function BlogSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="mx-auto max-w-2xl text-center mb-16">
-          <Badge variant="outline" className="mb-4">Latest Insights</Badge>
+          <Badge variant="outline" className="mb-4">Insights</Badge>
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
-            From our blog
+            From the D4Gen playbook
           </h2>
           <p className="text-lg text-muted-foreground">
-            Stay updated with the latest trends, best practices, and insights from our team of experts.
+            Notes, implementation patterns, and lessons learned while building decentralized healthcare infrastructure.
           </p>
         </div>
 

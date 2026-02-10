@@ -9,57 +9,57 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 const transactions = [
   {
-    id: "TXN-001",
+    id: "REQ-001",
     customer: {
       name: "Olivia Martin",
-      email: "olivia.martin@email.com",
+      email: "olivia.martin@hospital.org",
       avatar: "https://notion-avatars.netlify.app/api/avatar/?preset=female-7",
     },
-    amount: "$1,999.00",
+    amount: "Record Share",
     status: "completed",
     date: "2 hours ago",
   },
   {
-    id: "TXN-002",
+    id: "REQ-002",
     customer: {
       name: "Jackson Lee",
-      email: "jackson.lee@email.com",
+      email: "jackson.lee@clinic.org",
       avatar: "https://notion-avatars.netlify.app/api/avatar/?preset=male-1",
     },
-    amount: "$2,999.00",
+    amount: "Decryption Request",
     status: "pending",
     date: "5 hours ago",
   },
   {
-    id: "TXN-003",
+    id: "REQ-003",
     customer: {
       name: "Isabella Nguyen",
-      email: "isabella.nguyen@email.com",
+      email: "isabella.nguyen@lab.org",
       avatar: "https://notion-avatars.netlify.app/api/avatar/?preset=female-2",
     },
-    amount: "$39.00",
+    amount: "Eligibility Proof",
     status: "completed",
     date: "1 day ago",
   },
   {
-    id: "TXN-004",
+    id: "REQ-004",
     customer: {
       name: "William Kim",
-      email: "will@email.com",
+      email: "william.kim@research.org",
       avatar: "https://notion-avatars.netlify.app/api/avatar/?preset=male-5",
     },
-    amount: "$299.00",
+    amount: "Consent Verification",
     status: "failed",
     date: "2 days ago",
   },
   {
-    id: "TXN-005",
+    id: "REQ-005",
     customer: {
       name: "Sofia Davis",
-      email: "sofia.davis@email.com",
+      email: "sofia.davis@hospital.org",
       avatar: "https://notion-avatars.netlify.app/api/avatar/?preset=female-4",
     },
-    amount: "$99.00",
+    amount: "Access Revocation",
     status: "completed",
     date: "3 days ago",
   },
@@ -70,8 +70,8 @@ export function RecentTransactions() {
     <Card className="cursor-pointer">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <div>
-          <CardTitle>Recent Transactions</CardTitle>
-          <CardDescription>Latest customer transactions</CardDescription>
+          <CardTitle>Recent Workflow Events</CardTitle>
+          <CardDescription>Latest access and policy operations</CardDescription>
         </div>
         <Button variant="outline" size="sm" className="cursor-pointer">
           <Eye className="h-4 w-4 mr-2" />
@@ -115,8 +115,8 @@ export function RecentTransactions() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem className="cursor-pointer">View Details</DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer">Download Receipt</DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer">Contact Customer</DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer">Open Audit Trail</DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer">Notify Requester</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>

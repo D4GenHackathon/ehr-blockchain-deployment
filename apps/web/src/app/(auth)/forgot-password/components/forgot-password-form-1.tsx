@@ -39,12 +39,12 @@ export function ForgotPasswordForm1({
                   />
                 </div>
                 <Button type="submit" className="w-full cursor-pointer">
-                  Send Reset Link
+                  Send reset link
                 </Button>
               </div>
               <div className="text-center text-sm">
                 Remember your password?{" "}
-                <a href="/auth/sign-in" className="underline underline-offset-4">
+                <a href="/sign-in" className="underline underline-offset-4">
                   Back to sign in
                 </a>
               </div>

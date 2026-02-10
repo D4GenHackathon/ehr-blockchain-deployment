@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Authentication - ShadcnStore",
-  description: "Sign in to your account or create a new one",
+  title: "Authentication - D4Gen",
+  description: "Sign in to D4Gen console or request a workspace account",
 };
 
 export default function AuthLayout({

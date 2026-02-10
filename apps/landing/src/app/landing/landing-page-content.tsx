@@ -33,7 +33,7 @@ export function LandingPageContent() {
         <AboutSection />
         <FeaturesSection />
         <TeamSection />
-        <PricingSection />
+        {/* <PricingSection /> */}
         <TestimonialsSection />
         <BlogSection />
         <FaqSection />

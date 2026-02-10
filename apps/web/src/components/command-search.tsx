@@ -20,6 +20,7 @@ import {
   Bell,
   Link2,
   Palette,
+  Users,
   type LucideIcon,
 } from "lucide-react"
 
@@ -127,30 +128,31 @@ export function CommandSearch({ open, onOpenChange }: CommandSearchProps) {
   const commandRef = React.useRef<HTMLDivElement>(null)
 
   const searchItems: SearchItem[] = [
-    // Dashboards
-    { title: "Dashboard 1", url: "/dashboard", group: "Dashboards", icon: LayoutDashboard },
-    { title: "Dashboard 2", url: "/dashboard-2", group: "Dashboards", icon: LayoutPanelLeft },
+    // Operations
+    { title: "Ops Dashboard", url: "/dashboard", group: "Operations", icon: LayoutDashboard },
+    { title: "Analytics Dashboard", url: "/dashboard-2", group: "Operations", icon: LayoutPanelLeft },
 
-    // Apps
-    { title: "Mail", url: "/mail", group: "Apps", icon: Mail },
-    { title: "Tasks", url: "/tasks", group: "Apps", icon: CheckSquare },
-    { title: "Chat", url: "/chat", group: "Apps", icon: MessageCircle },
-    { title: "Calendar", url: "/calendar", group: "Apps", icon: Calendar },
+    // Workspaces
+    { title: "Mail", url: "/mail", group: "Workspaces", icon: Mail },
+    { title: "Tasks", url: "/tasks", group: "Workspaces", icon: CheckSquare },
+    { title: "Collaboration", url: "/chat", group: "Workspaces", icon: MessageCircle },
+    { title: "Calendar", url: "/calendar", group: "Workspaces", icon: Calendar },
+    { title: "Organizations", url: "/users", group: "Workspaces", icon: Users },
 
-    // Auth Pages
-    { title: "Sign In 1", url: "/auth/sign-in", group: "Auth Pages", icon: Shield },
-    { title: "Sign In 2", url: "/auth/sign-in-2", group: "Auth Pages", icon: Shield },
-    { title: "Sign Up 1", url: "/auth/sign-up", group: "Auth Pages", icon: Shield },
-    { title: "Sign Up 2", url: "/auth/sign-up-2", group: "Auth Pages", icon: Shield },
-    { title: "Forgot Password 1", url: "/auth/forgot-password", group: "Auth Pages", icon: Shield },
-    { title: "Forgot Password 2", url: "/auth/forgot-password-2", group: "Auth Pages", icon: Shield },
+    // Identity Pages
+    { title: "Sign In 1", url: "/sign-in", group: "Identity", icon: Shield },
+    { title: "Sign In 2", url: "/sign-in-2", group: "Identity", icon: Shield },
+    { title: "Sign Up 1", url: "/sign-up", group: "Identity", icon: Shield },
+    { title: "Sign Up 2", url: "/sign-up-2", group: "Identity", icon: Shield },
+    { title: "Forgot Password 1", url: "/forgot-password", group: "Identity", icon: Shield },
+    { title: "Forgot Password 2", url: "/forgot-password-2", group: "Identity", icon: Shield },
 
-    // Errors
-    { title: "Unauthorized", url: "/errors/unauthorized", group: "Errors", icon: AlertTriangle },
-    { title: "Forbidden", url: "/errors/forbidden", group: "Errors", icon: AlertTriangle },
-    { title: "Not Found", url: "/errors/not-found", group: "Errors", icon: AlertTriangle },
-    { title: "Internal Server Error", url: "/errors/internal-server-error", group: "Errors", icon: AlertTriangle },
-    { title: "Under Maintenance", url: "/errors/under-maintenance", group: "Errors", icon: AlertTriangle },
+    // Error States
+    { title: "Unauthorized", url: "/errors/unauthorized", group: "Error States", icon: AlertTriangle },
+    { title: "Forbidden", url: "/errors/forbidden", group: "Error States", icon: AlertTriangle },
+    { title: "Not Found", url: "/errors/not-found", group: "Error States", icon: AlertTriangle },
+    { title: "Internal Server Error", url: "/errors/internal-server-error", group: "Error States", icon: AlertTriangle },
+    { title: "Under Maintenance", url: "/errors/under-maintenance", group: "Error States", icon: AlertTriangle },
 
     // Settings
     { title: "User Settings", url: "/settings/user", group: "Settings", icon: User },
@@ -195,7 +197,7 @@ export function CommandSearch({ open, onOpenChange }: CommandSearchProps) {
           ref={commandRef}
           className="transition-transform duration-100 ease-out"
         >
-          <CommandInput placeholder="What do you need?" autoFocus />
+          <CommandInput placeholder="Search routes and actions..." autoFocus />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             {Object.entries(groupedItems).map(([group, items]) => (

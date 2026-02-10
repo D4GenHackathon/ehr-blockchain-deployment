@@ -59,12 +59,12 @@ export function ContactSection() {
     <section id="contact" className="py-24 sm:py-32">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center mb-16">
-          <Badge variant="outline" className="mb-4">Get In Touch</Badge>
+          <Badge variant="outline" className="mb-4">Contact D4Gen</Badge>
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
-            Need help or have questions?
+            Planning a healthcare data-sharing pilot?
           </h2>
           <p className="text-lg text-muted-foreground">
-            Our team is here to help you get the most out of ShadcnStore. Choose the best way to reach out to us.
+            Tell us your target workflow and constraints. We can help map your setup across contracts, storage, proofs, and app integration.
           </p>
         </div>
 
@@ -75,16 +75,16 @@ export function ContactSection() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <MessageCircle className="h-5 w-5 text-primary" />
-                  Discord Community
+                  Implementation Support
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-3">
-                  Join our active community for quick help and discussions with other developers.
+                  Discuss architecture decisions for contracts, zk circuits, and integration flows.
                 </p>
                 <Button variant="outline" size="sm" className="cursor-pointer" asChild>
-                  <a href="https://discord.com/invite/XEQhPc9a6p" target="_blank" rel="noopener noreferrer">
-                    Join Discord
+                  <a href="#contact">
+                    Start Conversation
                   </a>
                 </Button>
               </CardContent>
@@ -94,15 +94,15 @@ export function ContactSection() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Github className="h-5 w-5 text-primary" />
-                  GitHub Issues
+                  GitHub Repository
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-3">
-                  Report bugs, request features, or contribute to our open source repository.
+                  Track scaffolding progress, open issues, and follow package-level implementation updates.
                 </p>
                 <Button variant="outline" size="sm" className="cursor-pointer" asChild>
-                  <a href="https://github.com/silicondeck/shadcn-dashboard-landing-template/issues" target="_blank" rel="noopener noreferrer">
+                  <a href="https://github.com" target="_blank" rel="noopener noreferrer">
                     View on GitHub
                   </a>
                 </Button>
@@ -113,16 +113,16 @@ export function ContactSection() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <BookOpen className="h-5 w-5 text-primary" />
-                  Documentation
+                  Technical Notes
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-3">
-                  Browse our comprehensive guides, tutorials, and component documentation.
+                  Review setup guides for Sui testnet, Groth16 proving flows, and SDK usage.
                 </p>
                 <Button variant="outline" size="sm" className="cursor-pointer" asChild>
-                  <a href="#">
-                    View Docs
+                  <a href="#faq">
+                    View Notes
                   </a>
                 </Button>
               </CardContent>
@@ -189,7 +189,7 @@ export function ContactSection() {
                         <FormItem>
                           <FormLabel>Subject</FormLabel>
                           <FormControl>
-                            <Input placeholder="Component request, bug report, general inquiry..." {...field} />
+                            <Input placeholder="Pilot scope, integration question, architecture review..." {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -203,7 +203,7 @@ export function ContactSection() {
                           <FormLabel>Message</FormLabel>
                           <FormControl>
                             <Textarea
-                              placeholder="Tell us how we can help you with ShadcnStore components..."
+                              placeholder="Describe your organizations, data flow, and what you need to validate first..."
                               rows={10}
                               className="min-h-50"
                               {...field}

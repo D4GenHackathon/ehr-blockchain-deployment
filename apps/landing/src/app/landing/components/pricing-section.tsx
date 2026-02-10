@@ -8,56 +8,56 @@ import { useState } from 'react'
 
 const plans = [
   {
-    name: 'Free',
-    description: 'Perfect for getting started with essential components',
+    name: 'Prototype',
+    description: 'For internal teams validating core EHR workflows on testnet',
     monthlyPrice: 0,
     yearlyPrice: 0,
     features: [
-      'Access to 50+ free components',
-      'Basic dashboard templates',
-      'Community support',
-      'GitHub repository access',
-      'Documentation and guides'
+      'Single organization sandbox setup',
+      'Basic encrypted record upload flow',
+      'On-chain policy and event visibility',
+      'Starter Groth16 example circuits',
+      'Community implementation guidance'
     ],
-    cta: 'Get Started',
+    cta: 'Start Build',
     popular: false
   },
   {
-    name: 'Pro',
-    description: 'For developers who need premium templates and components',
-    monthlyPrice: 19,
-    yearlyPrice: 15,
+    name: 'Consortium',
+    description: 'For multi-organization pilots with policy governance and audits',
+    monthlyPrice: 49,
+    yearlyPrice: 39,
     features: [
-      'Premium template collection',
-      'Advanced dashboard layouts',
-      'Priority support',
-      'Commercial use license',
-      'Early access to new releases',
-      'Figma design files',
-      'Custom component requests',
-      'Direct developer access',
-      'Exclusive design resources'
+      'Multi-organization sharing workflows',
+      'Seal capability request patterns',
+      'Expanded circuit templates and proving helpers',
+      'Cross-org audit dashboard modules',
+      'Priority implementation support',
+      'Integration playbooks for providers',
+      'Testnet load and reliability guidance',
+      'Security review checklist',
+      'Pilot governance templates'
     ],
-    cta: 'Get Started',
+    cta: 'Request Pilot',
     popular: true,
-    includesPrevious: 'All Free features, plus'
+    includesPrevious: 'All Prototype features, plus'
   },
   {
-    name: 'Lifetime',
-    description: 'One-time payment for lifetime access to everything',
+    name: 'Foundation',
+    description: 'For long-term deployment planning and infrastructure hardening',
     monthlyPrice: 299,
     yearlyPrice: 299,
     features: [
-      'Lifetime updates and support',
-      'Private Discord channel',
-      'No recurring fees ever',
-      'Future template access',
-      'VIP support priority',
-      'Exclusive beta features'
+      'Architecture review for production rollout',
+      'Custom policy and compliance mappings',
+      'Dedicated support channel',
+      'Roadmap alignment workshops',
+      'Advanced observability recommendations',
+      'Migration strategy support'
     ],
-    cta: 'Get Started',
+    cta: 'Talk to Team',
     popular: false,
-    includesPrevious: 'All Pro features, plus'
+    includesPrevious: 'All Consortium features, plus'
   }
 ]
 
@@ -69,12 +69,12 @@ export function PricingSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="mx-auto max-w-2xl text-center mb-12">
-          <Badge variant="outline" className="mb-4">Pricing Plans</Badge>
+          <Badge variant="outline" className="mb-4">Adoption Tracks</Badge>
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
-            Choose your plan
+            Choose your rollout phase
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Start building with our free components or upgrade to Pro for access to premium templates and advanced features.
+            Start from a focused prototype, then scale to consortium pilots and long-term infrastructure planning.
           </p>
 
           {/* Billing Toggle */}
@@ -101,7 +101,7 @@ export function PricingSection() {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            <span className="text-primary font-semibold">Save 20%</span> On Annual Billing
+            <span className="text-primary font-semibold">Save 20%</span> on annual planning packages
           </p>
         </div>
 
@@ -127,16 +127,16 @@ export function PricingSection() {
                   {/* Pricing */}
                   <div>
                     <div className="text-4xl font-bold mb-1">
-                      {plan.name === 'Lifetime' ? (
+                      {plan.name === 'Foundation' ? (
                         `$${plan.monthlyPrice}`
-                      ) : plan.name === 'Free' ? (
+                      ) : plan.name === 'Prototype' ? (
                         '$0'
                       ) : (
                         `$${isYearly ? plan.yearlyPrice : plan.monthlyPrice}`
                       )}
                     </div>
                     <div className="text-muted-foreground text-sm">
-                      {plan.name === 'Lifetime' ? 'One-time payment' : 'Per month'}
+                      {plan.name === 'Foundation' ? 'Planning package' : 'Per month'}
                     </div>
                   </div>
 
@@ -179,7 +179,7 @@ export function PricingSection() {
         {/* Enterprise Note */}
         <div className="mt-16 text-center">
           <p className="text-muted-foreground">
-            Need custom components or have questions? {' '}
+            Need a custom rollout plan for your organization?{' '}
             <Button variant="link" className="p-0 h-auto cursor-pointer" asChild>
               <a href="#contact">
                 Contact our team

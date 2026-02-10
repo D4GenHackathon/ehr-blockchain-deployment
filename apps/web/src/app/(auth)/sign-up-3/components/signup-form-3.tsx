@@ -25,13 +25,13 @@ export function SignupForm3({
                   <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-md">
                     <Logo size={24} />
                   </div>
-                  <span className="text-xl">ShadcnStore</span>
+                  <span className="text-xl">D4Gen</span>
                 </Link>
               </div>
               <div className="flex flex-col items-center text-center">
-                <h1 className="text-2xl font-bold">Create your account</h1>
+                <h1 className="text-2xl font-bold">Create your D4Gen account</h1>
                 <p className="text-muted-foreground text-balance">
-                  Enter your information to create a new account
+                  Enter your information to request a D4Gen workspace account
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -83,7 +83,7 @@ export function SignupForm3({
                 </Label>
               </div>
               <Button type="submit" className="w-full cursor-pointer">
-                Create Account
+                Request Access
               </Button>
               <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                 <span className="bg-card text-muted-foreground relative z-10 px-2">
@@ -121,7 +121,7 @@ export function SignupForm3({
               </div>
               <div className="text-center text-sm">
                 Already have an account?{" "}
-                <a href="/auth/sign-in-3" className="underline underline-offset-4">
+                <a href="/sign-in-3" className="underline underline-offset-4">
                   Sign in
                 </a>
               </div>

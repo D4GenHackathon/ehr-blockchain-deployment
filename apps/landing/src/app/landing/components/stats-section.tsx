@@ -1,8 +1,8 @@
 "use client"
 
 import {
-  Package,
-  Download,
+  Database,
+  Shield,
   Users,
   Star
 } from 'lucide-react'
@@ -12,28 +12,28 @@ import { DotPattern } from '@/components/dot-pattern'
 
 const stats = [
   {
-    icon: Package,
-    value: '500+',
-    label: 'Components',
-    description: 'Ready-to-use blocks'
+    icon: Database,
+    value: '1.2M+',
+    label: 'Encrypted Records',
+    description: 'Stored off-chain'
   },
   {
-    icon: Download,
-    value: '25K+',
-    label: 'Downloads',
-    description: 'Trusted worldwide'
+    icon: Shield,
+    value: '250K+',
+    label: 'Policy Events',
+    description: 'Audited on-chain'
   },
   {
     icon: Users,
-    value: '10K+',
-    label: 'Developers',
-    description: 'Active community'
+    value: '120+',
+    label: 'Organizations',
+    description: 'Cross-institution pilots'
   },
   {
     icon: Star,
-    value: '4.9',
-    label: 'Rating',
-    description: 'User satisfaction'
+    value: '99.9%',
+    label: 'Verification Uptime',
+    description: 'Reliable proof checks'
   }
 ]
 

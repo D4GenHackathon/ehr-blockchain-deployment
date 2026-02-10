@@ -181,10 +181,10 @@ export function LandingThemeCustomizer({ open, onOpenChange }: LandingThemeCusto
 
             <Separator />
 
-            {/* Shadcn UI Theme Presets */}
+            {/* Core Theme Presets */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <Label className="text-sm font-medium">Shadcn UI Theme Presets</Label>
+                <Label className="text-sm font-medium">Core Theme Presets</Label>
                 <Button variant="outline" size="sm" onClick={handleRandomShadcn} className="cursor-pointer">
                   <Dices className="h-3.5 w-3.5 mr-1.5" />
                   Random
@@ -199,7 +199,7 @@ export function LandingThemeCustomizer({ open, onOpenChange }: LandingThemeCusto
                 applyTheme(value, isDarkMode)
               }}>
                 <SelectTrigger className="w-full cursor-pointer">
-                  <SelectValue placeholder="Choose Shadcn Theme" />
+                  <SelectValue placeholder="Choose Base Theme" />
                 </SelectTrigger>
                 <SelectContent className="max-h-60">
                   <div className="p-2">

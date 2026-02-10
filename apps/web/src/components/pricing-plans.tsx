@@ -26,51 +26,56 @@ interface PricingPlansProps {
 
 const defaultPlans: PricingPlan[] = [
   {
-    id: 'basic',
-    name: 'Basic',
-    description: 'Perfect for small online stores',
-    price: '$19',
+    id: 'prototype',
+    name: 'Prototype',
+    description: 'Best for internal validation on testnet',
+    price: '$0',
     frequency: '/month',
-    features: ['Up to 10 products', 'Basic inventory tracking', 'Email support', 'Mobile-responsive themes'],
+    features: [
+      'Single-organization sandbox setup',
+      'Starter record upload and policy flows',
+      'Basic audit event visibility',
+      'Community guidance for setup',
+    ],
   },
   {
-    id: 'professional',
-    name: 'Professional',
-    description: 'Ideal for growing businesses',
+    id: 'consortium',
+    name: 'Consortium',
+    description: 'For multi-organization pilot operations',
     price: '$79',
     frequency: '/month',
     features: [
-      'Up to 100 products',
-      'Advanced analytics',
-      'Priority email & chat support',
-      'API access',
-      'Custom domain',
-      'Abandoned cart recovery',
+      'Cross-organization sharing workflows',
+      'Expanded policy templates and controls',
+      'Proof pipeline support and optimization',
+      'Priority technical support',
+      'Operational review cadence',
+      'Pilot governance guidance',
     ],
     popular: true,
   },
   {
-    id: 'enterprise',
-    name: 'Enterprise',
-    description: 'For high-volume stores',
+    id: 'foundation',
+    name: 'Foundation',
+    description: 'For long-term rollout and hardening',
     price: '$199',
     frequency: '/month',
     features: [
-      'Unlimited products',
-      'Advanced reporting',
-      '24/7 priority support',
-      'Custom integrations',
-      'Dedicated account manager',
-      'Advanced security features',
+      'Reliability and scaling architecture review',
+      'Custom consortium integration planning',
+      'Advanced security and compliance support',
+      'Dedicated implementation channel',
+      'Migration and handover planning',
+      'Roadmap alignment sessions',
     ],
   },
 ]
 
-export function PricingPlans({ 
-  plans = defaultPlans, 
-  mode = 'pricing', 
+export function PricingPlans({
+  plans = defaultPlans,
+  mode = 'pricing',
   currentPlanId,
-  onPlanSelect 
+  onPlanSelect
 }: PricingPlansProps) {
   const getButtonText = (plan: PricingPlan) => {
     if (mode === 'billing') {
@@ -79,7 +84,7 @@ export function PricingPlans({
       }
       const currentIndex = plans.findIndex(p => p.id === currentPlanId)
       const planIndex = plans.findIndex(p => p.id === plan.id)
-      
+
       if (planIndex > currentIndex) {
         return 'Upgrade Plan'
       } else if (planIndex < currentIndex) {
@@ -105,7 +110,7 @@ export function PricingPlans({
       {plans.map(tier => (
         <Card
           key={tier.id}
-          className={cn('flex flex-col pt-0', { 
+          className={cn('flex flex-col pt-0', {
             'border-primary relative shadow-lg': tier.popular,
             'border-primary': currentPlanId === tier.id && mode === 'billing'
           })}

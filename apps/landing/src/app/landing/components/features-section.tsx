@@ -6,10 +6,10 @@ import {
   Users,
   ArrowRight,
   Database,
-  Package,
+  Shield,
   Crown,
   Layout,
-  Palette
+  Lock,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -17,47 +17,47 @@ import { Image3D } from '@/components/image-3d'
 
 const mainFeatures = [
   {
-    icon: Package,
-    title: 'Curated Component Library',
-    description: 'Hand-picked blocks and templates for quality and reliability.'
+    icon: Database,
+    title: 'Encrypted Storage on Walrus',
+    description: 'Medical payloads stay encrypted in decentralized storage, never in plaintext on-chain.'
   },
   {
-    icon: Crown,
-    title: 'Free & Premium Options',
-    description: 'Start free, upgrade to premium collections when you need more.'
+    icon: Shield,
+    title: 'On-Chain Access Control',
+    description: 'Policies, shares, and revocations are enforced by auditable Move smart contracts.'
   },
   {
-    icon: Layout,
-    title: 'Ready-to-Use Templates',
-    description: 'Copy-paste components that just work out of the box.'
+    icon: Lock,
+    title: 'Seal Capability Requests',
+    description: 'Decryption access is requested and mediated through explicit policy checks.'
   },
   {
     icon: Zap,
-    title: 'Regular Updates',
-    description: 'New blocks and templates added weekly to keep you current.'
+    title: 'zkSNARK Verification',
+    description: 'Prove attributes like eligibility or consent without revealing personal data.'
   }
 ]
 
 const secondaryFeatures = [
   {
-    icon: BarChart3,
-    title: 'Multiple Frameworks',
-    description: 'React, Next.js, and Vite compatibility for flexible development.'
+    icon: Layout,
+    title: 'Unified Next.js App',
+    description: 'One app hosts landing, dashboard, backend routes, and indexing workflows.'
   },
   {
-    icon: Palette,
-    title: 'Modern Tech Stack',
-    description: 'Built with shadcn/ui, Tailwind CSS, and TypeScript.'
+    icon: Crown,
+    title: 'Monorepo by Domain',
+    description: 'Contracts, zk circuits, SDK, and apps are separated for independent delivery.'
   },
   {
     icon: Users,
-    title: 'Responsive Design',
-    description: 'Mobile-first components for all screen sizes and devices.'
+    title: 'Consortium-Ready Model',
+    description: 'Hospitals, labs, insurers, and patients coordinate with shared trust assumptions.'
   },
   {
-    icon: Database,
-    title: 'Developer-Friendly',
-    description: 'Clean code, well-documented, easy integration and customization.'
+    icon: BarChart3,
+    title: 'Auditable Operations',
+    description: 'Record creation, sharing, and revocation emit immutable on-chain events.'
   }
 ]
 
@@ -67,12 +67,12 @@ export function FeaturesSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="mx-auto max-w-2xl text-center mb-16">
-          <Badge variant="outline" className="mb-4">Marketplace Features</Badge>
+          <Badge variant="outline" className="mb-4">Platform Capabilities</Badge>
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
-            Everything you need to build amazing web applications
+            Architecture designed for private healthcare collaboration
           </h2>
           <p className="text-lg text-muted-foreground">
-            Our marketplace provides curated blocks, templates, landing pages, and admin dashboards to help you build professional applications faster than ever.
+            D4Gen combines blockchain policy enforcement, decentralized encrypted storage, and zero-knowledge proofs to support secure EHR sharing across organizations.
           </p>
         </div>
 
@@ -82,17 +82,17 @@ export function FeaturesSection() {
           <Image3D
             lightSrc="/feature-1-light.png"
             darkSrc="/feature-1-dark.png"
-            alt="Analytics dashboard"
+            alt="D4Gen policy and storage workflow"
             direction="left"
           />
           {/* Right Content */}
           <div className="space-y-6">
             <div className="space-y-4">
               <h3 className="text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
-                Components that accelerate development
+                End-to-end privacy guarantees for EHR records
               </h3>
               <p className="text-muted-foreground text-base text-pretty">
-                Our curated marketplace offers premium blocks and templates designed to save time and ensure consistency across your admin projects.
+                Sensitive health data is encrypted off-chain while protocol-critical metadata and policies are anchored on Sui for traceability and deterministic access control.
               </p>
             </div>
 
@@ -111,15 +111,15 @@ export function FeaturesSection() {
             </ul>
 
             <div className="flex flex-col sm:flex-row gap-4 pe-4 pt-2">
-              <Button size="lg" className="cursor-pointer">
-                <a href="https://shadcnstore.com/templates" className='flex items-center'>
-                  Browse Templates
+              <Button size="lg" className="cursor-pointer" asChild>
+                <a href="/dashboard" className='flex items-center'>
+                  Open Dashboard
                   <ArrowRight className="ms-2 size-4" aria-hidden="true" />
                 </a>
               </Button>
-              <Button size="lg" variant="outline" className="cursor-pointer">
-                <a href="https://shadcnstore.com/blocks">
-                  View Components
+              <Button size="lg" variant="outline" className="cursor-pointer" asChild>
+                <a href="#faq">
+                  Read FAQs
                 </a>
               </Button>
             </div>
@@ -132,10 +132,10 @@ export function FeaturesSection() {
           <div className="space-y-6 order-2 lg:order-1">
             <div className="space-y-4">
               <h3 className="text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
-                Built for modern development workflows
+                Built for iterative protocol development
               </h3>
               <p className="text-muted-foreground text-base text-pretty">
-                Every component follows best practices with TypeScript, responsive design, and clean code architecture that integrates seamlessly into your projects.
+                Each package in the monorepo can evolve independently so product teams can ship user workflows while contract and circuit teams harden verification logic.
               </p>
             </div>
 
@@ -154,15 +154,15 @@ export function FeaturesSection() {
             </ul>
 
             <div className="flex flex-col sm:flex-row gap-4 pe-4 pt-2">
-              <Button size="lg" className="cursor-pointer">
-                <a href="#" className='flex items-center'>
-                  View Documentation
+              <Button size="lg" className="cursor-pointer" asChild>
+                <a href="#contact" className='flex items-center'>
+                  Contact Team
                   <ArrowRight className="ms-2 size-4" aria-hidden="true" />
                 </a>
               </Button>
-              <Button size="lg" variant="outline" className="cursor-pointer">
-                <a href="https://github.com/silicondeck/shadcn-dashboard-landing-template" target="_blank" rel="noopener noreferrer">
-                  GitHub Repository
+              <Button size="lg" variant="outline" className="cursor-pointer" asChild>
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                  View Repository
                 </a>
               </Button>
             </div>
@@ -172,7 +172,7 @@ export function FeaturesSection() {
           <Image3D
             lightSrc="/feature-2-light.png"
             darkSrc="/feature-2-dark.png"
-            alt="Performance dashboard"
+            alt="D4Gen zero-knowledge and audit workflow"
             direction="right"
             className="order-1 lg:order-2"
           />

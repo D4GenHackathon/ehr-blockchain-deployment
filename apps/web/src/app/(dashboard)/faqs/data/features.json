@@ -1,26 +1,26 @@
 [
   {
     "id": 1,
-    "title": "Premium Quality",
-    "description": "Handcrafted with premium materials and meticulous attention to detail.",
+    "title": "Protocol-First Foundation",
+    "description": "Contracts, circuits, and SDK are split by package to keep implementation boundaries clear.",
     "icon": "Sparkles"
   },
   {
     "id": 2,
-    "title": "Secure Shopping",
-    "description": "100% secure payment processing with end-to-end encryption.",
+    "title": "Privacy by Design",
+    "description": "Encrypted medical payloads stay off-chain while on-chain state tracks policies and commitments.",
     "icon": "Shield"
   },
   {
     "id": 3,
-    "title": "Fast Delivery",
-    "description": "Free worldwide shipping and hassle-free returns within 30 days.",
+    "title": "Fast Pilot Delivery",
+    "description": "Testnet-first setup enables teams to validate full workflows quickly across organizations.",
     "icon": "Truck"
   },
   {
     "id": 4,
-    "title": "24/7 Support",
-    "description": "Round-the-clock customer support to assist you anytime.",
+    "title": "Operational Guidance",
+    "description": "Clear support for policy management, proof flows, and audit-friendly integration practices.",
     "icon": "Clock"
   }
 ]

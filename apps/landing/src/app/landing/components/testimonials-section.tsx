@@ -14,82 +14,82 @@ type Testimonial = {
 const testimonials: Testimonial[] = [
   {
     name: 'Alexandra Mitchell',
-    role: 'Senior Frontend Developer',
+    role: 'Hospital CTO',
     image: 'https://notion-avatars.netlify.app/api/avatar?preset=female-1',
     quote:
-      'This platform has completely transformed our development workflow. The component system is so well-architected that even complex applications feel simple to build.',
+      'D4Gen helped us test cross-hospital data sharing with clear policy control and full auditability.',
   },
   {
     name: 'James Thompson',
-    role: 'Technical Lead',
+    role: 'Clinical Data Platform Lead',
     image: 'https://notion-avatars.netlify.app/api/avatar?preset=male-1',
-    quote: 'After trying countless frameworks, this is the one that finally clicked. The documentation is exceptional.',
+    quote: 'The monorepo separation between contracts, circuits, and app logic made collaboration much easier.',
   },
   {
     name: 'Priya Sharma',
-    role: 'Product Designer',
+    role: 'Research Program Manager',
     image: 'https://notion-avatars.netlify.app/api/avatar?preset=female-2',
     quote:
-      'The design system is beautiful and consistent. I can prototype ideas quickly and hand them off to developers with confidence that the implementation will match perfectly.',
+      'We can validate eligibility requirements with zero-knowledge proofs without requesting raw patient identifiers.',
   },
   {
     name: 'Robert Kim',
-    role: 'Engineering Manager',
+    role: 'Security Architect',
     image: 'https://notion-avatars.netlify.app/api/avatar?preset=male-2',
     quote:
-      'We migrated our entire application to this platform in just two weeks. The performance improvements were immediate.',
+      'Policy events and revocations being on-chain gave our compliance team a dependable audit trail.',
   },
   {
     name: 'Maria Santos',
-    role: 'Full Stack Engineer',
+    role: 'Healthcare Integration Engineer',
     image: 'https://notion-avatars.netlify.app/api/avatar?preset=female-3',
     quote:
-      'The accessibility features are top-notch. Building inclusive applications has never been easier. Every component follows best practices out of the box, and the automated testing suite ensures we maintain high accessibility standards throughout our development process.',
+      'The SDK reduced duplicate integration code and standardized how we interact with storage, contracts, and proofs.',
   },
   {
     name: 'Thomas Anderson',
-    role: 'Solutions Architect',
+    role: 'Consortium Coordinator',
     image: 'https://notion-avatars.netlify.app/api/avatar?preset=male-3',
-    quote: 'Scalability was our biggest concern, but this platform handles enterprise-level complexity with ease.',
+    quote: 'D4Gen gives us a practical base to run multi-organization pilots on Sui testnet.',
   },
   {
     name: 'Lisa Chang',
-    role: 'UX Researcher',
+    role: 'Clinical Operations Lead',
     image: 'https://notion-avatars.netlify.app/api/avatar?preset=female-4',
     quote:
-      'User testing results have been consistently positive since we adopted this platform. The user experience is intuitive and the performance is stellar. Our user satisfaction scores have increased by 40% since the migration.',
+      'The dashboard is clean enough for non-protocol users while still exposing critical policy and audit details.',
   },
   {
     name: 'Michael Foster',
-    role: 'DevOps Engineer',
+    role: 'Platform Reliability Engineer',
     image: 'https://notion-avatars.netlify.app/api/avatar?preset=male-4',
-    quote: 'Deployment and maintenance are a breeze. The platform integrates seamlessly with our CI/CD pipeline.',
+    quote: 'Our team quickly added proof generation fallbacks because the architecture already anticipated it.',
   },
   {
     name: 'Sophie Laurent',
-    role: 'Creative Director',
+    role: 'Product Strategy Lead',
     image: 'https://notion-avatars.netlify.app/api/avatar?preset=female-5',
     quote:
-      'The creative possibilities are endless. We can bring any design concept to life without compromising on technical quality or user experience.',
+      'The system is opinionated where it matters and flexible where organizations need custom workflows.',
   },
   {
     name: 'Daniel Wilson',
-    role: 'Backend Developer',
+    role: 'Backend Engineer',
     image: 'https://notion-avatars.netlify.app/api/avatar?preset=male-5',
-    quote: 'The API design is exceptional. Clean, intuitive, and well-documented.',
+    quote: 'Next.js server routes and shared SDK abstractions made secure backend orchestration straightforward.',
   },
   {
     name: 'Natasha Petrov',
-    role: 'Mobile App Developer',
+    role: 'Applied Cryptography Engineer',
     image: 'https://notion-avatars.netlify.app/api/avatar?preset=female-6',
     quote:
-      'Cross-platform development has never been this efficient. One codebase, multiple platforms, consistent user experience. This is the future. The responsive design system ensures our apps look perfect on every device.',
+      'Groth16 integration with on-chain verification is usable in practice and easy to reason about in this setup.',
   },
   {
     name: 'Carlos Rivera',
     role: 'Startup Founder',
     image: 'https://notion-avatars.netlify.app/api/avatar?preset=male-6',
-    quote: 'As a non-technical founder, this platform gave me the confidence to build our MVP quickly.',
+    quote: 'D4Gen gave us a clear reference architecture for privacy-preserving healthcare data exchange.',
   },
 ]
 
@@ -99,12 +99,12 @@ export function TestimonialsSection() {
       <div className="container mx-auto px-8 sm:px-6">
         {/* Section Header */}
         <div className="mx-auto max-w-2xl text-center mb-16">
-          <Badge variant="outline" className="mb-4">Testimonials</Badge>
+          <Badge variant="outline" className="mb-4">Voices from Pilot Teams</Badge>
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
-            Empowering Innovation Worldwide
+            Practical feedback from real deployments
           </h2>
           <p className="text-lg text-muted-foreground">
-            Join thousands of developers and teams who trust our platform to build exceptional digital experiences.
+            Teams across healthcare and research use D4Gen patterns to prototype trusted data-sharing workflows.
           </p>
         </div>
 

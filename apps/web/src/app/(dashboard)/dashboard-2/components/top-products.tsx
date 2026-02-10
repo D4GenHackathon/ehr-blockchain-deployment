@@ -9,53 +9,53 @@ import { Progress } from "@/components/ui/progress"
 const products = [
   {
     id: 1,
-    name: "Premium Dashboard",
+    name: "Access Policy Engine",
     sales: 2847,
-    revenue: "$142,350",
+    revenue: "142,350 events",
     growth: "+23%",
     rating: 4.8,
     stock: 145,
-    category: "Software",
+    category: "Contracts",
   },
   {
     id: 2,
-    name: "Analytics Pro",
+    name: "Proof Verification Service",
     sales: 1923,
-    revenue: "$96,150",
+    revenue: "96,150 events",
     growth: "+18%",
     rating: 4.6,
     stock: 67,
-    category: "Tools",
+    category: "ZK",
   },
   {
     id: 3,
-    name: "Mobile App Suite",
+    name: "Storage Gateway",
     sales: 1456,
-    revenue: "$72,800",
+    revenue: "72,800 events",
     growth: "+12%",
     rating: 4.9,
     stock: 234,
-    category: "Mobile",
+    category: "Walrus",
   },
   {
     id: 4,
-    name: "Enterprise License",
+    name: "Organization Registry",
     sales: 892,
-    revenue: "$178,400",
+    revenue: "178,400 events",
     growth: "+8%",
     rating: 4.7,
     stock: 12,
-    category: "Enterprise",
+    category: "Identity",
   },
   {
     id: 5,
-    name: "Basic Subscription",
+    name: "Audit Event Indexer",
     sales: 3421,
-    revenue: "$68,420",
+    revenue: "68,420 events",
     growth: "+31%",
     rating: 4.4,
     stock: 999,
-    category: "Subscription",
+    category: "Observability",
   },
 ]
 
@@ -64,8 +64,8 @@ export function TopProducts() {
     <Card className="cursor-pointer">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <div>
-          <CardTitle>Top Products</CardTitle>
-          <CardDescription>Best performing products this month</CardDescription>
+          <CardTitle>Top Modules</CardTitle>
+          <CardDescription>Most active platform modules this month</CardDescription>
         </div>
         <Button variant="outline" size="sm" className="cursor-pointer">
           <Eye className="h-4 w-4 mr-2" />
@@ -92,7 +92,7 @@ export function TopProducts() {
                     <span className="text-xs text-muted-foreground">{product.rating}</span>
                   </div>
                   <span className="text-xs text-muted-foreground">•</span>
-                  <span className="text-xs text-muted-foreground">{product.sales} sales</span>
+                  <span className="text-xs text-muted-foreground">{product.sales} operations</span>
                 </div>
               </div>
               <div className="text-right space-y-1">
@@ -107,7 +107,7 @@ export function TopProducts() {
                   </Badge>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className="text-xs text-muted-foreground">Stock: {product.stock}</span>
+                  <span className="text-xs text-muted-foreground">Capacity: {product.stock}</span>
                   <Progress
                     value={product.stock > 100 ? 100 : (product.stock / 100) * 100}
                     className="w-12 h-1"

@@ -47,7 +47,7 @@ export function LoginForm1({
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Enter your organizational email to access the D4Gen console
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -80,7 +80,7 @@ export function LoginForm1({
                         <div className="flex items-center">
                           <FormLabel>Password</FormLabel>
                           <a
-                            href="/auth/forgot-password"
+                            href="/forgot-password"
                             className="ml-auto text-sm underline-offset-4 hover:underline"
                           >
                             Forgot your password?
@@ -109,7 +109,7 @@ export function LoginForm1({
                 </div>
                 <div className="text-center text-sm">
                   Don&apos;t have an account?{" "}
-                  <a href="/auth/sign-up" className="underline underline-offset-4">
+                  <a href="/sign-up" className="underline underline-offset-4">
                     Sign up
                   </a>
                 </div>

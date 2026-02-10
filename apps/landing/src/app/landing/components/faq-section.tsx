@@ -14,39 +14,39 @@ type FaqItem = {
 const faqItems: FaqItem[] = [
   {
     value: 'item-1',
-    question: 'How do I integrate ShadcnStore components into my project?',
+    question: 'What does D4Gen store on-chain versus off-chain?',
     answer:
-      'Integration is simple! All our components are built with shadcn/ui and work with React, Next.js, and Vite. Just copy the component code, install any required dependencies, and paste it into your project. Each component comes with detailed installation instructions and examples.',
+      'D4Gen keeps policy state, commitments, and audit events on Sui. Encrypted medical payloads are stored off-chain on decentralized storage. This separates verification from sensitive data custody.',
   },
   {
     value: 'item-2',
-    question: 'What\'s the difference between free and premium components?',
+    question: 'How is access to medical data controlled?',
     answer:
-      'Free components include essential UI elements like buttons, forms, and basic layouts. Premium components offer advanced features like complex data tables, analytics dashboards, authentication flows, and complete admin templates. Premium also includes Figma files, priority support, and commercial licenses.',
+      'Access is managed through explicit on-chain policies and share/revoke flows in Move contracts. Decryption capability requests are checked against those policies before data can be unlocked.',
   },
   {
     value: 'item-3',
-    question: 'Can I use these components in commercial projects?',
+    question: 'Why use zkSNARKs in this platform?',
     answer:
-      'Yes! Free components come with an MIT license for unlimited use. Premium components include a commercial license that allows usage in client projects, SaaS applications, and commercial products without attribution requirements.',
+      'zkSNARKs let participants prove facts like eligibility or consent without revealing raw personal information. D4Gen uses Groth16 proofs and verifies them on-chain in Sui contracts.',
   },
   {
     value: 'item-4',
-    question: 'Do you provide support and updates?',
+    question: 'Can I run proof generation inside the web backend?',
     answer:
-      'Absolutely! We provide community support for free components through our Discord server and GitHub issues. Premium subscribers get priority email support, regular component updates, and early access to new releases. We also maintain compatibility with the latest shadcn/ui versions.',
+      'Yes. The baseline setup supports server-side proof generation with snarkjs. For heavier workloads, a dedicated prover service using rapidsnark can be added as a fallback execution path.',
   },
   {
     value: 'item-5',
-    question: 'What frameworks and tools do you support?',
+    question: 'Which environment is recommended for development?',
     answer:
-      'Our components work with React 18+, Next.js 13+, and Vite. We use TypeScript, Tailwind CSS, and follow shadcn/ui conventions. Components are tested with popular tools like React Hook Form, TanStack Query, and Zustand for state management.',
+      'The current scaffold is optimized for Sui testnet. This allows teams to iterate on contracts, indexing, and proof verification quickly before discussing production hardening.',
   },
   {
     value: 'item-6',
-    question: 'How often do you release new components?',
+    question: 'How is the monorepo organized?',
     answer:
-      'We release new components and templates weekly. Premium subscribers get early access to new releases, while free components are updated regularly based on community feedback. You can track our roadmap and request specific components through our GitHub repository.',
+      'Apps and packages are separated by domain: web application, contracts, zk circuits, and shared SDK. The structure is intentionally modular so each layer can evolve independently.',
   },
 ]
 
@@ -61,7 +61,7 @@ const FaqSection = () => {
             Frequently Asked Questions
           </h2>
           <p className="text-lg text-muted-foreground">
-            Everything you need to know about ShadcnStore components, licensing, and integration. Still have questions? We&apos;re here to help!
+            Key information about D4Gen architecture, privacy model, proof workflows, and development setup.
           </p>
         </div>
 
@@ -90,11 +90,11 @@ const FaqSection = () => {
           {/* Contact Support CTA */}
           <div className="text-center mt-12">
             <p className="text-muted-foreground mb-4">
-              Still have questions? We&apos;re here to help.
+              Need architecture support for your use case?
             </p>
             <Button className='cursor-pointer' asChild>
               <a href="#contact">
-                Contact Support
+                Contact Team
               </a>
             </Button>
           </div>

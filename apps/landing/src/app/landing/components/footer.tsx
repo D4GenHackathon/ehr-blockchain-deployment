@@ -23,35 +23,35 @@ const newsletterSchema = z.object({
 })
 
 const footerLinks = {
-  product: [
-    { name: 'Features', href: '#features' },
-    { name: 'Pricing', href: '#pricing' },
-    { name: 'API', href: '#api' },
-    { name: 'Documentation', href: '#docs' },
+  platform: [
+    { name: 'Architecture', href: '#features' },
+    { name: 'Capabilities', href: '#features' },
+    { name: 'Dashboard', href: '/dashboard' },
+    { name: 'FAQ', href: '#faq' },
   ],
-  company: [
-    { name: 'About', href: '#about' },
-    { name: 'Blog', href: '#blog' },
-    { name: 'Careers', href: '#careers' },
-    { name: 'Press', href: '#press' },
+  packages: [
+    { name: 'apps/web', href: '#features' },
+    { name: 'contracts', href: '#features' },
+    { name: 'zk-circuits', href: '#features' },
+    { name: 'd4gen-sdk', href: '#features' },
   ],
   resources: [
-    { name: 'Help Center', href: '#help' },
-    { name: 'Community', href: '#community' },
-    { name: 'Guides', href: '#guides' },
-    { name: 'Webinars', href: '#webinars' },
+    { name: 'Implementation Notes', href: '#blog' },
+    { name: 'Pilot Planning', href: '#pricing' },
+    { name: 'Support', href: '#contact' },
+    { name: 'Roadmap', href: '#team' },
   ],
   legal: [
-    { name: 'Privacy', href: '#privacy' },
-    { name: 'Terms', href: '#terms' },
-    { name: 'Security', href: '#security' },
-    { name: 'Status', href: '#status' },
+    { name: 'Privacy Model', href: '#faq' },
+    { name: 'Terms', href: '#contact' },
+    { name: 'Security', href: '#faq' },
+    { name: 'Status', href: '#contact' },
   ],
 }
 
 const socialLinks = [
   { name: 'Twitter', href: '#', icon: Twitter },
-  { name: 'GitHub', href: 'https://github.com/silicondeck/shadcn-dashboard-landing-template', icon: Github },
+  { name: 'GitHub', href: 'https://github.com', icon: Github },
   { name: 'LinkedIn', href: '#', icon: Linkedin },
   { name: 'YouTube', href: '#', icon: Youtube },
 ]
@@ -77,9 +77,9 @@ export function LandingFooter() {
         {/* Newsletter Section */}
         <div className="mb-16">
           <div className="mx-auto max-w-2xl text-center">
-            <h3 className="text-2xl font-bold mb-4">Stay updated</h3>
+            <h3 className="text-2xl font-bold mb-4">Stay informed</h3>
             <p className="text-muted-foreground mb-6">
-              Get the latest updates, articles, and resources sent to your inbox weekly.
+              Receive architecture notes, implementation updates, and pilot learnings from D4Gen.
             </p>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-2 max-w-md mx-auto sm:flex-row">
@@ -110,13 +110,13 @@ export function LandingFooter() {
           {/* Brand Column */}
           <div className="col-span-4 lg:col-span-2 max-w-2xl">
             <div className="flex items-center space-x-2 mb-4 max-lg:justify-center">
-              <a href="https://shadcnstore.com" target='_blank' className="flex items-center space-x-2 cursor-pointer">
+              <a href="/landing" className="flex items-center space-x-2 cursor-pointer">
                 <Logo size={32} />
-                <span className="font-bold text-xl">ShadcnStore</span>
+                <span className="font-bold text-xl">D4Gen</span>
               </a>
             </div>
             <p className="text-muted-foreground mb-6 max-lg:text-center max-lg:flex max-lg:justify-center">
-              Accelerating web development with curated blocks, templates, landing pages, and admin dashboards designed for modern developers.
+              Decentralized, privacy-preserving infrastructure for managing and sharing electronic health records across organizations.
             </p>
             <div className="flex space-x-4 max-lg:justify-center">
               {socialLinks.map((social) => (
@@ -136,9 +136,9 @@ export function LandingFooter() {
 
           {/* Links Columns */}
           <div className='max-md:col-span-2 lg:col-span-1'>
-            <h4 className="font-semibold mb-4">Product</h4>
+            <h4 className="font-semibold mb-4">Platform</h4>
             <ul className="space-y-3">
-              {footerLinks.product.map((link) => (
+              {footerLinks.platform.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}
@@ -152,9 +152,9 @@ export function LandingFooter() {
           </div>
 
           <div className='max-md:col-span-2 lg:col-span-1'>
-            <h4 className="font-semibold mb-4">Company</h4>
+            <h4 className="font-semibold mb-4">Packages</h4>
             <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
+              {footerLinks.packages.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}
@@ -206,25 +206,22 @@ export function LandingFooter() {
         <div className="flex flex-col lg:flex-row justify-between items-center gap-2">
           <div className="flex flex-col sm:flex-row items-center gap-2 text-muted-foreground text-sm">
             <div className="flex items-center gap-1">
-              <span>Made with</span>
+              <span>Built with</span>
               <Heart className="h-4 w-4 text-red-500 fill-current" />
-              <span>by</span>
-              <a href="https://shadcnstore.com" target='_blank' className="font-semibold text-foreground hover:text-primary transition-colors cursor-pointer">
-                ShadcnStore
-              </a>
+              <span>for privacy-preserving healthcare infrastructure</span>
             </div>
             <span className="hidden sm:inline">•</span>
-            <span>© {new Date().getFullYear()} for the developer community</span>
+            <span>© {new Date().getFullYear()} D4Gen</span>
           </div>
           <div className="flex items-center space-x-4 text-sm text-muted-foreground mt-4 md:mt-0">
-            <a href="#privacy" className="hover:text-foreground transition-colors">
-              Privacy Policy
+            <a href="#faq" className="hover:text-foreground transition-colors">
+              Privacy Model
             </a>
-            <a href="#terms" className="hover:text-foreground transition-colors">
+            <a href="#contact" className="hover:text-foreground transition-colors">
               Terms of Service
             </a>
-            <a href="#cookies" className="hover:text-foreground transition-colors">
-              Cookie Policy
+            <a href="#contact" className="hover:text-foreground transition-colors">
+              Contact
             </a>
           </div>
         </div>

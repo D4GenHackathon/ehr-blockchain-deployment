@@ -37,27 +37,26 @@ export function SiteHeader() {
           <div className="ml-auto flex items-center gap-2">
             <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
               <a
-                href="https://shadcnstore.com/blocks"
+                href="/dashboard"
                 rel="noopener noreferrer"
-                target="_blank"
                 className="dark:text-foreground"
               >
-                Blocks
+                Console
               </a>
             </Button>
-            <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
+            {/* <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
               <a
                 href="/landing"
                 rel="noopener noreferrer"
                 target="_blank"
                 className="dark:text-foreground"
               >
-                Landing Page
+                Landing
               </a>
-            </Button>
+            </Button> */}
             <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
               <a
-                href="https://github.com/silicondeck/shadcn-dashboard-landing-template"
+                href="https://github.com"
                 rel="noopener noreferrer"
                 target="_blank"
                 className="dark:text-foreground"
