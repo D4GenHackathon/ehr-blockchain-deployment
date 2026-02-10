@@ -1,135 +1,268 @@
-# Turborepo starter
+# D4Gen - Decentralized Privacy-Preserving EHR Platform
 
-This Turborepo starter is maintained by the Turborepo core team.
+## Overview
 
-## Using this example
+This repository contains the monorepo for D4Gen, a decentralized application designed to enable secure, privacy-preserving management and sharing of Electronic Health Records (EHRs) across medical organizations.
 
-Run the following command:
+The system allows hospitals, clinics, research institutions, and patients to:
 
-```sh
-npx create-turbo@latest
+- Store encrypted medical data on decentralized storage
+- Control and audit access permissions on-chain
+- Share sensitive medical information across organizations
+- Prove eligibility or attributes (for example, age or consent) using zero-knowledge proofs without revealing personal data
+
+The architecture combines Sui blockchain, Walrus decentralized storage, Seal access control, and zkSNARKs, with a unified Next.js application serving both frontend and backend logic.
+
+## High-Level Architecture
+
+The repository is structured as a monorepo, separating concerns between:
+
+- Application layer (UI + backend)
+- On-chain logic (Move smart contracts)
+- Zero-knowledge circuits
+- Shared SDK and infrastructure logic
+
+```text
+.
+├─ apps/
+│  ├─ web/              # Main web application (dashboard + backend)
+│  ├─ landing/          # Standalone landing page application
+│  └─ prover/           # Fallback prover service (rapidsnark target)
+└─ packages/
+   ├─ contracts/        # Sui Move smart contracts
+   ├─ zk-circuits/      # zkSNARK circuits and proving artifacts
+   └─ d4gen-sdk/        # Shared TypeScript SDK (Sui, Walrus, Seal, zk)
 ```
 
-## What's inside?
+## Development Requirements
 
-This Turborepo includes the following packages/apps:
+### Global Requirements (all workspaces)
 
-### Apps and Packages
+- Node.js `>=24`
+- pnpm `10.x`
+- Bash-compatible shell (for script execution)
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+Install dependencies once at repo root:
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+```bash
+pnpm install
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+### Package-Specific Requirements
 
+- `packages/contracts`
+  - Sui CLI installed (verified with `sui --version`)
+- `packages/zk-circuits`
+  - `cargo` installed (used by `bootstrap` to install `circom` locally when needed)
+  - `snarkjs` is installed from workspace dependencies via `pnpm install`
+  - `circom` can be either:
+    - globally installed in your PATH, or
+    - locally installed by `pnpm --filter ./packages/zk-circuits bootstrap`
+- `packages/d4gen-sdk`
+  - Node.js + pnpm only (current scaffold stage)
+
+## Applications
+
+### apps/web - Web Application (Dashboard + Backend)
+
+This is the main application entry point.
+
+#### Responsibilities
+
+- User-facing UI:
+  - Dashboard for patients, hospitals, and organizations
+  - Landing pages and product overview
+- Backend logic (implemented via Next.js server-side routes):
+  - Uploading and retrieving encrypted medical data from decentralized storage
+  - Interacting with Sui smart contracts
+  - Requesting decryption capabilities via Seal
+  - Generating and submitting zero-knowledge proofs
+- Lightweight indexing:
+  - Reading on-chain events and objects
+  - Building queryable views for records, shares, and audit logs
+  - Improving UX without exposing sensitive data
+
+#### Key Principles
+
+- No plaintext medical data is persisted on-chain
+- Backend logic relies exclusively on shared SDKs
+- All cryptographic operations are delegated to dedicated packages
+
+## Packages
+
+### packages/contracts - Sui Move Smart Contracts
+
+This package contains all on-chain logic deployed to the Sui network.
+
+#### Responsibilities
+
+- Definition of EHR record objects (metadata only)
+- Access control and sharing logic
+- Policy enforcement hooks for Seal
+- Verification of zkSNARK proofs on-chain
+- Emission of audit events for:
+  - Record creation
+  - Record sharing
+  - Access revocation
+
+#### Design Goals
+
+- Minimal, auditable, and deterministic logic
+- No storage of PII or PHI on-chain
+- On-chain data acts only as:
+  - Pointers
+  - Commitments
+  - Policies
+  - Immutable audit trails
+
+### packages/zk-circuits - Zero-Knowledge Circuits
+
+This package defines all zkSNARK circuits and related artifacts used by the system.
+
+#### Responsibilities
+
+- Definition of zero-knowledge constraints (for example, age eligibility and consent validity)
+- Compilation and setup of zkSNARK circuits
+- Generation of proofs and public signals
+- Export of verification keys compatible with Sui Move verification
+
+#### Design Goals
+
+- Enable selective disclosure of sensitive attributes
+- Bind proofs to specific records or policies to prevent reuse
+- Keep circuit scope minimal and verifiable within on-chain constraints
+
+### packages/d4gen-sdk - Shared SDK and Infrastructure Layer
+
+This package provides a unified TypeScript SDK used by both frontend and backend code.
+
+#### Responsibilities
+
+- Sui blockchain interaction:
+  - Transaction builders
+  - Event and object readers
+- Walrus storage integration:
+  - Encrypted blob upload/download
+  - Hashing and commitment helpers
+- Seal integration:
+  - Client-side encryption helpers
+  - Access policy handling
+- Zero-knowledge helpers:
+  - Proof generation orchestration
+  - Formatting proofs and public inputs for on-chain verification
+- Shared domain types:
+  - Records
+  - Policies
+  - Audit events
+  - Organization and subject identifiers
+
+#### Design Goals
+
+- Single source of truth for protocol-level logic
+- Prevent duplication of cryptographic or blockchain code
+- Allow future replacement of infrastructure components with minimal refactoring
+
+## How To Run Workspaces
+
+### Root Commands
+
+```bash
+pnpm run dev          # run all workspace dev scripts in parallel
+pnpm run dev:web      # run only apps/web
+pnpm run dev:landing  # run only apps/landing
+pnpm run build        # run build for all workspaces via turbo
+pnpm run test         # run test for all workspaces via turbo
 ```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+### `packages/contracts` (Sui Move)
+
+```bash
+pnpm --filter ./packages/contracts build          # sui move build
+pnpm --filter ./packages/contracts test           # sui move test
+pnpm --filter ./packages/contracts test:coverage  # sui move test --coverage
+pnpm --filter ./packages/contracts check          # build + test
 ```
 
-### Develop
+Current example module:
+- `d4gen::ehr` with record creation, consent update, share, and delete flows
+- Includes Move unit tests that pass with `pnpm --filter ./packages/contracts check`
 
-To develop all apps and packages, run the following command:
+### `packages/zk-circuits` (Groth16 / circom / snarkjs)
 
-```
-cd my-turborepo
+First-time setup:
 
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```bash
+pnpm --filter ./packages/zk-circuits bootstrap
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+Run pipeline:
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+```bash
+pnpm --filter ./packages/zk-circuits build       # compile + setup
+pnpm --filter ./packages/zk-circuits test        # prove + verify
+pnpm --filter ./packages/zk-circuits export:vkey # export move-friendly vkey json
+pnpm --filter ./packages/zk-circuits full        # build + test + export:vkey
 ```
 
-### Remote Caching
+Current example circuit:
+- `private_multiplier.circom` proves knowledge of private `a`, `b` such that `a * b = product` (public)
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+Main generated outputs:
+- `packages/zk-circuits/artifacts/private_multiplier/proof.json`
+- `packages/zk-circuits/artifacts/private_multiplier/public.json`
+- `packages/zk-circuits/artifacts/private_multiplier/verification_key.json`
+- `packages/zk-circuits/artifacts/private_multiplier/verification_key.move.json`
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+### `packages/d4gen-sdk` (TypeScript SDK)
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+Current SDK workspace is scaffolded and ready for next implementation phase.
 
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+```bash
+pnpm --filter ./packages/d4gen-sdk build
+pnpm --filter ./packages/d4gen-sdk test
+pnpm --filter ./packages/d4gen-sdk typecheck
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+### `apps/prover` (Fallback Prover Service)
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+Current service scaffold:
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+```bash
+pnpm --filter ./apps/prover dev
+pnpm --filter ./apps/prover start
 ```
 
-## Useful Links
+Health endpoint:
+- `GET /health`
 
-Learn more about the power of Turborepo:
+## Core Design Principles
 
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+### Privacy by design
+
+No personally identifiable or medical data is stored on-chain.
+
+### Decentralized storage, centralized UX
+
+Data is decentralized and encrypted, while the application provides a coherent user experience.
+
+### Explicit access control
+
+All data access is gated by on-chain policies and auditable events.
+
+### Verifiable compliance
+
+Zero-knowledge proofs allow compliance checks without disclosure.
+
+### Pragmatic architecture
+
+Designed to be implemented end-to-end within a short development cycle while remaining extensible.
+
+## Intended Scope
+
+This repository is designed as:
+
+- A functional end-to-end prototype
+- A foundation for a consortium-based medical data sharing system
+- A reference architecture for privacy-preserving data sharing on Sui
+
+It intentionally avoids over-engineering while preserving correctness and extensibility.
