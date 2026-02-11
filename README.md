@@ -11,7 +11,9 @@ The system allows hospitals, clinics, research institutions, and patients to:
 - Share sensitive medical information across organizations
 - Prove eligibility or attributes (for example, age or consent) using zero-knowledge proofs without revealing personal data
 
-The architecture combines Sui blockchain, Walrus decentralized storage, Seal access control, and zkSNARKs, with a unified Next.js application serving both frontend and backend logic.
+The architecture combines Sui blockchain, Walrus decentralized storage, Seal access control, and zkSNARKs, with a unified Next.js application serving both frontend and backend logic. More details in [D4Gen Hackathon Presentation](https://docs.google.com/presentation/d/1GiAFoziQa2gabl1P-FO_-KVlu5M8lQ-l/edit?slide=id.g3c215db895e_0_522#slide=id.g3c215db895e_0_522)
+
+![Data Secure Tranmission in Blockchain-based Healthcare Systems](docs/general-architecture/architecture.png)
 
 ## High-Level Architecture
 
@@ -28,10 +30,11 @@ The repository is structured as a monorepo, separating concerns between:
 │  ├─ web/              # Main web application (dashboard + backend)
 │  ├─ landing/          # Standalone landing page application
 │  └─ prover/           # Fallback prover service (rapidsnark target)
-└─ packages/
+├─ packages/
    ├─ contracts/        # Sui Move smart contracts
    ├─ zk-circuits/      # zkSNARK circuits and proving artifacts
    └─ d4gen-sdk/        # Shared TypeScript SDK (Sui, Walrus, Seal, zk)
+└─ docs                 # Documentations (ZK Snark circuits, general architecture, etc)
 ```
 
 ## Development Requirements
