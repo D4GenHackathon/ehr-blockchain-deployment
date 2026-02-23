@@ -7,6 +7,7 @@ import {
   Search,
   LayoutPanelLeft,
   LayoutDashboard,
+  ShieldCheck,
   Mail,
   CheckSquare,
   MessageCircle,
@@ -133,6 +134,7 @@ export function CommandSearch({ open, onOpenChange }: CommandSearchProps) {
     { title: "Analytics Dashboard", url: "/dashboard-2", group: "Operations", icon: LayoutPanelLeft },
 
     // Workspaces
+    { title: "Proof Jobs", url: "/proofs", group: "Workspaces", icon: ShieldCheck },
     { title: "Mail", url: "/mail", group: "Workspaces", icon: Mail },
     { title: "Tasks", url: "/tasks", group: "Workspaces", icon: CheckSquare },
     { title: "Collaboration", url: "/chat", group: "Workspaces", icon: MessageCircle },

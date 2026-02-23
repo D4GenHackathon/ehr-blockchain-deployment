@@ -4,6 +4,7 @@ import * as React from "react"
 import {
   LayoutPanelLeft,
   LayoutDashboard,
+  ShieldCheck,
   Mail,
   CheckSquare,
   MessageCircle,
@@ -57,6 +58,11 @@ const data = {
     {
       label: "Workspaces",
       items: [
+        {
+          title: "Proof Jobs",
+          url: "/proofs",
+          icon: ShieldCheck,
+        },
         // {
         //   title: "Mail",
         //   url: "/mail",

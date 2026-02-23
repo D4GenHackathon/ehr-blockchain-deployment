@@ -226,17 +226,74 @@ pnpm --filter ./packages/d4gen-sdk test
 pnpm --filter ./packages/d4gen-sdk typecheck
 ```
 
-### `apps/prover` (Fallback Prover Service)
+### `apps/prover` (Rust Prover Service)
 
-Current service scaffold:
+`apps/prover` is a standalone Rust service that manages proof jobs and executes:
+
+1. witness generation (`generate_witness.js`)
+2. Groth16 proof generation using `rapidsnark prover`
+
+Run:
 
 ```bash
 pnpm --filter ./apps/prover dev
 pnpm --filter ./apps/prover start
 ```
 
-Health endpoint:
-- `GET /health`
+Key endpoints:
+
+- `GET /health`, `GET /healthz`
+- `GET /readyz`
+- `POST /v1/proofs`
+- `GET /v1/proofs/:job_id`
+- `POST /v1/proofs/:job_id/cancel`
+
+Required environment variables:
+
+- `PROVER_SERVICE_URL` for `apps/web` to call the prover service
+- `RAPIDSNARK_PROVER_BIN` for `apps/prover` to locate the `prover` binary
+
+Optional security:
+
+- set `PROVER_INTERNAL_AUTH_TOKEN` in both `apps/prover` and `apps/web`
+  (`apps/web` sends it via `x-prover-token`)
+
+Install and build `rapidsnark` standalone prover (example for macOS arm64):
+
+```bash
+cd /Users/vuonghuuhung/Code
+git clone https://github.com/iden3/rapidsnark.git
+cd rapidsnark
+git submodule update --init --recursive
+./build_gmp.sh macos_arm64
+make macos_arm64
+```
+
+Then run local prover flow:
+
+```bash
+pnpm --filter ./packages/zk-circuits bootstrap
+pnpm --filter ./packages/zk-circuits build
+
+export RAPIDSNARK_PROVER_BIN="/Users/vuonghuuhung/Code/rapidsnark/package_macos_arm64/bin/prover"
+export PROVER_INTERNAL_AUTH_TOKEN="dev-secret"
+pnpm --filter ./apps/prover dev
+```
+
+In another terminal, submit an example proof:
+
+```bash
+curl -X POST "http://localhost:7301/v1/proofs" \
+  -H "content-type: application/json" \
+  -H "x-prover-token: dev-secret" \
+  -d '{
+    "request_id": "req-1",
+    "circuit_id": "private_multiplier",
+    "input": { "a": "3", "b": "11", "product": "33" }
+  }'
+```
+
+See `apps/prover/README.md` for complete end-to-end steps (health checks and status polling).
 
 ## Core Design Principles
 
