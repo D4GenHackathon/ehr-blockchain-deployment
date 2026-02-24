@@ -1,13 +1,14 @@
 "use client"
 
 import {
-  CreditCard,
   EllipsisVertical,
   LogOut,
-  BellDot,
+  Building2,
   CircleUser,
 } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 import { Logo } from "@/components/logo"
 import {
@@ -19,6 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { cn } from "@/lib/utils"
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -32,10 +34,29 @@ export function NavUser({
   user: {
     name: string
     email: string
+    hospitalName?: string
+    hospitalCode?: string
+    role?: string
     avatar: string
   }
 }) {
   const { isMobile } = useSidebar()
+  const router = useRouter()
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+
+  async function handleLogout(redirectToSignIn = true) {
+    if (isLoggingOut) return
+    setIsLoggingOut(true)
+    try {
+      await fetch("/api/auth/logout", { method: "POST" })
+      if (redirectToSignIn) {
+        router.push("/sign-in")
+      }
+      router.refresh()
+    } finally {
+      setIsLoggingOut(false)
+    }
+  }
 
   return (
     <SidebarMenu>
@@ -52,7 +73,9 @@ export function NavUser({
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
                 <span className="text-muted-foreground truncate text-xs">
-                  {user.email}
+                  {user.hospitalName
+                    ? `${user.hospitalName}${user.hospitalCode ? ` (${user.hospitalCode})` : ""}`
+                    : user.email}
                 </span>
               </div>
               <EllipsisVertical className="ml-auto size-4" />
@@ -72,7 +95,7 @@ export function NavUser({
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.name}</span>
                   <span className="text-muted-foreground truncate text-xs">
-                    {user.email}
+                    {user.role ? `${user.email} · ${user.role}` : user.email}
                   </span>
                 </div>
               </div>
@@ -80,30 +103,32 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild className="cursor-pointer">
-                <Link href="/settings/account">
+                <Link href="/dashboard">
                   <CircleUser />
-                  Account
+                  Profile
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="cursor-pointer">
-                <Link href="/settings/billing">
-                  <CreditCard />
-                  Billing
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild className="cursor-pointer">
-                <Link href="/settings/notifications">
-                  <BellDot />
-                  Notifications
-                </Link>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onSelect={(event) => {
+                  event.preventDefault()
+                  void handleLogout(true)
+                }}
+              >
+                <Building2 />
+                Switch hospital
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem asChild className="cursor-pointer">
-              <Link href="/sign-in">
-                <LogOut />
-                Log out
-              </Link>
+            <DropdownMenuItem
+              className={cn("cursor-pointer", isLoggingOut && "opacity-60")}
+              onSelect={(event) => {
+                event.preventDefault()
+                void handleLogout(true)
+              }}
+            >
+              <LogOut />
+              {isLoggingOut ? "Logging out..." : "Log out"}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -1,6 +1,9 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { LoaderCircle } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { cn } from "@/lib/utils"
@@ -14,6 +17,13 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
   Form,
   FormControl,
   FormField,
@@ -23,23 +33,54 @@ import {
 } from "@/components/ui/form"
 
 const loginFormSchema = z.object({
+  hospitalCode: z.string().min(1, "Please select your hospital"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 })
 
 type LoginFormValues = z.infer<typeof loginFormSchema>
+type HospitalOption = { code: string; name: string }
 
 export function LoginForm1({
+  hospitals,
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div"> & { hospitals: HospitalOption[] }) {
+  const router = useRouter()
+  const [formError, setFormError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
-      email: "test@example.com",
-      password: "password",
+      hospitalCode: hospitals[0]?.code ?? "",
+      email: "",
+      password: "",
     },
   })
+
+  async function onSubmit(values: LoginFormValues) {
+    setIsSubmitting(true)
+    setFormError(null)
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      })
+      const data = await response.json()
+      if (!response.ok || !data.ok) {
+        setFormError(data?.error?.message ?? "Login failed.")
+        return
+      }
+      router.push("/dashboard")
+      router.refresh()
+    } catch {
+      setFormError("Login failed. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -52,9 +93,33 @@ export function LoginForm1({
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form action="/">
+            <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="grid gap-6">
                 <div className="grid gap-4">
+                  <FormField
+                    control={form.control}
+                    name="hospitalCode"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Hospital</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="w-full cursor-pointer">
+                              <SelectValue placeholder="Select your hospital" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {hospitals.map((hospital) => (
+                              <SelectItem key={hospital.code} value={hospital.code}>
+                                {hospital.name} ({hospital.code})
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   <FormField
                     control={form.control}
                     name="email"
@@ -93,19 +158,21 @@ export function LoginForm1({
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" className="w-full cursor-pointer">
-                    Login
+                  {formError ? <p className="text-sm text-destructive">{formError}</p> : null}
+                  <Button type="submit" className="w-full cursor-pointer" disabled={isSubmitting}>
+                    {isSubmitting ? (
+                      <span className="inline-flex items-center gap-2">
+                        <LoaderCircle className="h-4 w-4 animate-spin" />
+                        Signing in...
+                      </span>
+                    ) : (
+                      "Login"
+                    )}
                   </Button>
 
-                  <Button variant="outline" className="w-full cursor-pointer" type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                      <path
-                        d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                    Login with Google
-                  </Button>
+                  <p className="text-muted-foreground text-xs">
+                    Demo credentials are seeded with password: <span className="font-medium">demo123</span>
+                  </p>
                 </div>
                 <div className="text-center text-sm">
                   Don&apos;t have an account?{" "}

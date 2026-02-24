@@ -5,17 +5,10 @@ import {
   LayoutPanelLeft,
   LayoutDashboard,
   ShieldCheck,
-  Mail,
-  CheckSquare,
-  MessageCircle,
-  Calendar,
-  Shield,
-  AlertTriangle,
-  Settings,
-  HelpCircle,
-  CreditCard,
-  LayoutTemplate,
-  Users,
+  FolderOpen,
+  History,
+  Share2,
+  BadgeCheck,
 } from "lucide-react"
 import Link from "next/link"
 import { Logo } from "@/components/logo"
@@ -34,11 +27,6 @@ import {
 } from "@/components/ui/sidebar"
 
 const data = {
-  user: {
-    name: "D4Gen Operator",
-    email: "ops@d4gen.local",
-    avatar: "",
-  },
   navGroups: [
     {
       label: "Operations",
@@ -58,6 +46,26 @@ const data = {
     {
       label: "Workspaces",
       items: [
+        {
+          title: "Patient Records",
+          url: "/records",
+          icon: FolderOpen,
+        },
+        {
+          title: "Sharing",
+          url: "/sharing",
+          icon: Share2,
+        },
+        {
+          title: "History",
+          url: "/history",
+          icon: History,
+        },
+        {
+          title: "Verification",
+          url: "/verification",
+          icon: BadgeCheck,
+        },
         {
           title: "Proof Jobs",
           url: "/proofs",
@@ -216,6 +224,50 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const [sessionUser, setSessionUser] = React.useState<{
+    name: string
+    email: string
+    hospitalName?: string
+    hospitalCode?: string
+    role?: string
+    avatar: string
+  }>({
+    name: "D4Gen Operator",
+    email: "Loading...",
+    hospitalName: undefined,
+    hospitalCode: undefined,
+    role: undefined,
+    avatar: "",
+  })
+
+  React.useEffect(() => {
+    let mounted = true
+
+    async function loadCurrentUser() {
+      try {
+        const response = await fetch("/api/auth/me", { cache: "no-store" })
+        const data = await response.json()
+        if (!mounted || !response.ok || !data?.ok) return
+        setSessionUser({
+          name: data.data.name ?? data.data.email ?? "D4Gen Operator",
+          email: data.data.email ?? "ops@d4gen.local",
+          hospitalName: data.data.hospitalName,
+          hospitalCode: data.data.hospitalCode,
+          role: data.data.role,
+          avatar: "",
+        })
+      } catch {
+        // keep fallback user
+      }
+    }
+
+    void loadCurrentUser()
+
+    return () => {
+      mounted = false
+    }
+  }, [])
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -242,7 +294,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <SidebarFooter>
         <SidebarNotification />
-        <NavUser user={data.user} />
+        <NavUser user={sessionUser} />
       </SidebarFooter>
     </Sidebar>
   )

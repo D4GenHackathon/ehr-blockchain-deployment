@@ -7,24 +7,24 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 
-const proofData = [
-  { month: "Jan", proofs: 12500, target: 15000 },
-  { month: "Feb", proofs: 18200, target: 15000 },
-  { month: "Mar", proofs: 16800, target: 15000 },
-  { month: "Apr", proofs: 22400, target: 20000 },
-  { month: "May", proofs: 24600, target: 20000 },
-  { month: "Jun", proofs: 28200, target: 25000 },
-  { month: "Jul", proofs: 31500, target: 25000 },
-  { month: "Aug", proofs: 29800, target: 25000 },
-  { month: "Sep", proofs: 33200, target: 30000 },
-  { month: "Oct", proofs: 35100, target: 30000 },
-  { month: "Nov", proofs: 38900, target: 35000 },
-  { month: "Dec", proofs: 42300, target: 35000 },
+const salesData = [
+  { month: "Jan", sales: 12500, target: 15000 },
+  { month: "Feb", sales: 18200, target: 15000 },
+  { month: "Mar", sales: 16800, target: 15000 },
+  { month: "Apr", sales: 22400, target: 20000 },
+  { month: "May", sales: 24600, target: 20000 },
+  { month: "Jun", sales: 28200, target: 25000 },
+  { month: "Jul", sales: 31500, target: 25000 },
+  { month: "Aug", sales: 29800, target: 25000 },
+  { month: "Sep", sales: 33200, target: 30000 },
+  { month: "Oct", sales: 35100, target: 30000 },
+  { month: "Nov", sales: 38900, target: 35000 },
+  { month: "Dec", sales: 42300, target: 35000 },
 ]
 
 const chartConfig = {
-  proofs: {
-    label: "Proofs",
+  sales: {
+    label: "Sales",
     color: "var(--primary)",
   },
   target: {
@@ -40,8 +40,8 @@ export function SalesChart() {
     <Card className="cursor-pointer">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <div>
-          <CardTitle>Proof Throughput</CardTitle>
-          <CardDescription>Monthly proofs processed vs operational targets</CardDescription>
+          <CardTitle>Sales Performance</CardTitle>
+          <CardDescription>Monthly sales vs targets</CardDescription>
         </div>
         <div className="flex items-center space-x-2">
           <Select value={timeRange} onValueChange={setTimeRange}>
@@ -62,11 +62,11 @@ export function SalesChart() {
       <CardContent className="p-0 pt-6">
         <div className="px-6 pb-6">
           <ChartContainer config={chartConfig} className="h-[350px] w-full">
-            <AreaChart data={proofData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+            <AreaChart data={salesData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
               <defs>
-                <linearGradient id="colorProofs" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="var(--color-proofs)" stopOpacity={0.4} />
-                  <stop offset="95%" stopColor="var(--color-proofs)" stopOpacity={0.05} />
+                <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="var(--color-sales)" stopOpacity={0.4} />
+                  <stop offset="95%" stopColor="var(--color-sales)" stopOpacity={0.05} />
                 </linearGradient>
                 <linearGradient id="colorTarget" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="var(--color-target)" stopOpacity={0.2} />
@@ -74,19 +74,19 @@ export function SalesChart() {
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" className="stroke-muted/30" />
-              <XAxis
-                dataKey="month"
+              <XAxis 
+                dataKey="month" 
                 axisLine={false}
                 tickLine={false}
                 className="text-xs"
                 tick={{ fontSize: 12 }}
               />
-              <YAxis
+              <YAxis 
                 axisLine={false}
                 tickLine={false}
                 className="text-xs"
                 tick={{ fontSize: 12 }}
-                tickFormatter={(value) => `${value.toLocaleString()}`}
+                tickFormatter={(value) => `$${value.toLocaleString()}`}
               />
               <ChartTooltip content={<ChartTooltipContent />} />
               <Area
@@ -100,10 +100,10 @@ export function SalesChart() {
               />
               <Area
                 type="monotone"
-                dataKey="proofs"
+                dataKey="sales"
                 stackId="2"
-                stroke="var(--color-proofs)"
-                fill="url(#colorProofs)"
+                stroke="var(--color-sales)"
+                fill="url(#colorSales)"
                 strokeWidth={1}
               />
             </AreaChart>
