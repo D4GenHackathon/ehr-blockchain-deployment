@@ -47,11 +47,11 @@ const data = {
           url: "/dashboard",
           icon: LayoutDashboard,
         },
-        {
-          title: "Analytics Dashboard",
-          url: "/dashboard-2",
-          icon: LayoutPanelLeft,
-        },
+        // {
+        //   title: "Analytics Dashboard",
+        //   url: "/dashboard-2",
+        //   icon: LayoutPanelLeft,
+        // },
       ],
     },
     {

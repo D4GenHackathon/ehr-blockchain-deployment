@@ -11,6 +11,16 @@ function formatDate(timestamp: number) {
   return new Date(timestamp).toLocaleString();
 }
 
+function extractStep(raw: string | null) {
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw) as { step?: string };
+    return parsed.step ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export default async function HistoryPage() {
   const session = await requireAuthSession();
   if (!session) return null;
@@ -54,6 +64,9 @@ export default async function HistoryPage() {
                     <p className="text-xs text-muted-foreground">
                       {item.type.split("_").join(" ")} · {formatDate(item.createdAt)}
                     </p>
+                    {extractStep(item.metadata) ? (
+                      <p className="text-xs text-muted-foreground">Step: {extractStep(item.metadata)}</p>
+                    ) : null}
                   </div>
                   <Badge variant="outline">{item.relatedEntityType}</Badge>
                 </div>

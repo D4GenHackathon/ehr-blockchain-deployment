@@ -52,7 +52,8 @@ const formSchema = z.object({
   status: z.enum(["active", "discharged", "transferred"]),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.input<typeof formSchema>;
+type FormSubmitValues = z.output<typeof formSchema>;
 
 const medicalConditions = [
   "Arthritis",
@@ -77,7 +78,7 @@ export function RecordFormDialog({ onCreated }: { onCreated: () => void }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const form = useForm<FormValues>({
+  const form = useForm<FormValues, unknown, FormSubmitValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       patientCode: "",
@@ -99,7 +100,7 @@ export function RecordFormDialog({ onCreated }: { onCreated: () => void }) {
     },
   });
 
-  async function submit(values: FormValues) {
+  async function submit(values: FormSubmitValues) {
     setIsSubmitting(true);
     setSubmitError(null);
     try {
@@ -176,7 +177,14 @@ export function RecordFormDialog({ onCreated }: { onCreated: () => void }) {
                   <FormItem>
                     <FormLabel>Age</FormLabel>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input
+                        type="number"
+                        name={field.name}
+                        ref={field.ref}
+                        onBlur={field.onBlur}
+                        onChange={field.onChange}
+                        value={field.value == null ? "" : String(field.value)}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -322,7 +330,15 @@ export function RecordFormDialog({ onCreated }: { onCreated: () => void }) {
                   <FormItem>
                     <FormLabel>Billing Amount</FormLabel>
                     <FormControl>
-                      <Input type="number" step="0.01" {...field} />
+                      <Input
+                        type="number"
+                        step="0.01"
+                        name={field.name}
+                        ref={field.ref}
+                        onBlur={field.onBlur}
+                        onChange={field.onChange}
+                        value={field.value == null ? "" : String(field.value)}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

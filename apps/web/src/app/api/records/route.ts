@@ -14,6 +14,13 @@ export async function GET(request: NextRequest) {
       { status: 401 }
     );
   }
+  const hospitalId = session.hospitalId;
+  if (!hospitalId) {
+    return NextResponse.json(
+      { ok: false, error: { code: "FORBIDDEN", message: "Hospital context is required." } },
+      { status: 403 }
+    );
+  }
 
   const parsedQuery = listRecordsQuerySchema.safeParse(
     Object.fromEntries(request.nextUrl.searchParams.entries())
@@ -28,7 +35,7 @@ export async function GET(request: NextRequest) {
   const { page, pageSize, q, medicalCondition, status, admissionType } = parsedQuery.data;
   const offset = (page - 1) * pageSize;
 
-  const filters = [eq(patientRecords.hospitalId, session.hospitalId)];
+  const filters = [eq(patientRecords.hospitalId, hospitalId)];
   if (q) {
     filters.push(
       or(
@@ -78,6 +85,13 @@ export async function POST(request: NextRequest) {
       { status: 401 }
     );
   }
+  const hospitalId = session.hospitalId;
+  if (!hospitalId) {
+    return NextResponse.json(
+      { ok: false, error: { code: "FORBIDDEN", message: "Hospital context is required." } },
+      { status: 403 }
+    );
+  }
 
   const parsedBody = createRecordSchema.safeParse(await request.json());
   if (!parsedBody.success) {
@@ -91,7 +105,7 @@ export async function POST(request: NextRequest) {
   const id = crypto.randomUUID();
   await db.insert(patientRecords).values({
     id,
-    hospitalId: session.hospitalId,
+    hospitalId,
     ...parsedBody.data,
     createdAt: now,
     updatedAt: now,

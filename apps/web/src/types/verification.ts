@@ -3,10 +3,10 @@ import { z } from "zod";
 export const verificationStatusSchema = z.enum([
   "pending",
   "accepted",
-  "proof_generating",
-  "proof_ready",
-  "verified",
-  "verification_failed",
+  "proving",
+  "verify_submitted",
+  "verified_success",
+  "verified_failed",
   "rejected",
 ]);
 
@@ -24,6 +24,7 @@ export const createVerificationSchema = z.object({
 });
 
 export const verificationActionSchema = z.object({
+  vkeyId: z.string().max(255).optional().nullable(),
   message: z.string().max(1000).optional().nullable(),
 });
 

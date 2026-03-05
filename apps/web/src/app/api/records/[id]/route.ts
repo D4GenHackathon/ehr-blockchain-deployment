@@ -16,12 +16,19 @@ export async function GET(_request: NextRequest, { params }: Params) {
       { status: 401 }
     );
   }
+  const hospitalId = session.hospitalId;
+  if (!hospitalId) {
+    return NextResponse.json(
+      { ok: false, error: { code: "FORBIDDEN", message: "Hospital context is required." } },
+      { status: 403 }
+    );
+  }
 
   const { id } = await params;
   const [record] = await db
     .select()
     .from(patientRecords)
-    .where(and(eq(patientRecords.id, id), eq(patientRecords.hospitalId, session.hospitalId)))
+    .where(and(eq(patientRecords.id, id), eq(patientRecords.hospitalId, hospitalId)))
     .limit(1);
 
   if (!record) {
@@ -40,6 +47,13 @@ export async function PUT(request: NextRequest, { params }: Params) {
     return NextResponse.json(
       { ok: false, error: { code: "UNAUTHORIZED", message: "Not authenticated." } },
       { status: 401 }
+    );
+  }
+  const hospitalId = session.hospitalId;
+  if (!hospitalId) {
+    return NextResponse.json(
+      { ok: false, error: { code: "FORBIDDEN", message: "Hospital context is required." } },
+      { status: 403 }
     );
   }
 
@@ -63,7 +77,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
   const updateResult = await db
     .update(patientRecords)
     .set({ ...payload, updatedAt: Date.now() })
-    .where(and(eq(patientRecords.id, id), eq(patientRecords.hospitalId, session.hospitalId)));
+    .where(and(eq(patientRecords.id, id), eq(patientRecords.hospitalId, hospitalId)));
 
   if (updateResult.changes === 0) {
     return NextResponse.json(
@@ -75,7 +89,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
   const [record] = await db
     .select()
     .from(patientRecords)
-    .where(and(eq(patientRecords.id, id), eq(patientRecords.hospitalId, session.hospitalId)))
+    .where(and(eq(patientRecords.id, id), eq(patientRecords.hospitalId, hospitalId)))
     .limit(1);
 
   return NextResponse.json({ ok: true, data: record });
@@ -89,11 +103,18 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
       { status: 401 }
     );
   }
+  const hospitalId = session.hospitalId;
+  if (!hospitalId) {
+    return NextResponse.json(
+      { ok: false, error: { code: "FORBIDDEN", message: "Hospital context is required." } },
+      { status: 403 }
+    );
+  }
 
   const { id } = await params;
   const deleteResult = await db
     .delete(patientRecords)
-    .where(and(eq(patientRecords.id, id), eq(patientRecords.hospitalId, session.hospitalId)));
+    .where(and(eq(patientRecords.id, id), eq(patientRecords.hospitalId, hospitalId)));
 
   if (deleteResult.changes === 0) {
     return NextResponse.json(

@@ -17,13 +17,29 @@ type ShareItem = {
   id: string;
   fromHospitalId: string;
   toHospitalId: string;
-  status: "pending" | "approved" | "rejected" | "shared" | "expired";
+  status:
+    | "pending"
+    | "preparing"
+    | "approved"
+    | "ready_to_decrypt"
+    | "opened"
+    | "confirmed"
+    | "completed"
+    | "rejected"
+    | "expired";
   purpose: string;
   message: string | null;
   createdAt: number;
   respondedAt: number | null;
+  readyAt: number | null;
+  openedAt: number | null;
+  confirmedAt: number | null;
   sharedAt: number | null;
+  requestMailboxId: string | null;
+  requestPublicKey: string | null;
   walrusBlobId: string | null;
+  blobSize: number | null;
+  storageNodes: string[];
   sealPolicyId: string | null;
   suiTxDigest: string | null;
   patientRecordIds: string[];
@@ -45,6 +61,15 @@ type SharingResponse = {
 function formatDate(timestamp: number | null) {
   if (!timestamp) return "-";
   return new Date(timestamp).toLocaleString();
+}
+
+function stepState(status: ShareItem["status"]) {
+  return {
+    requestSent: true,
+    waitingForA: !["ready_to_decrypt", "opened", "confirmed", "completed", "rejected"].includes(status),
+    readyToDecrypt: ["ready_to_decrypt", "opened", "confirmed", "completed"].includes(status),
+    completed: ["completed"].includes(status),
+  };
 }
 
 export function SharingPageClient() {
@@ -88,15 +113,22 @@ export function SharingPageClient() {
     void fetchData();
   }, [fetchData]);
 
-  const pendingIncomingIds = useMemo(
-    () => new Set(incoming.filter((item) => item.status === "pending").map((item) => item.id)),
+  const actionableIncomingIds = useMemo(
+    () => new Set(incoming.filter((item) => ["pending", "preparing"].includes(item.status)).map((item) => item.id)),
     [incoming]
   );
 
   async function runAction(
     id: string,
-    action: "approve" | "reject" | "complete",
-    extra?: { walrusBlobId?: string; sealPolicyId?: string; suiTxDigest?: string }
+    action: "prepare-approve" | "reject" | "open-record" | "confirm-received" | "mark-completed",
+    extra?: {
+      message?: string;
+      walrusBlobId?: string;
+      sealPolicyId?: string;
+      suiTxDigest?: string;
+      blobSize?: number;
+      storageNodes?: string[];
+    }
   ) {
     setActionLoading(`${id}:${action}`);
     setError(null);
@@ -173,39 +205,95 @@ export function SharingPageClient() {
                       </p>
                     ))}
                   </div>
-                  {item.status === "approved" ? (
+                  <div className="rounded-md border p-3 text-xs">
+                    <p className="font-medium mb-2">Request Progress</p>
+                    {(() => {
+                      const state = stepState(item.status);
+                      return (
+                        <div className="grid gap-1">
+                          <p>{state.requestSent ? "✓" : "○"} Request Sent</p>
+                          <p>{state.waitingForA ? "…" : "✓"} Waiting for A</p>
+                          <p>{state.readyToDecrypt ? "✓" : "○"} Ready to Decrypt</p>
+                          <p>{state.completed ? "✓" : "○"} Completed</p>
+                        </div>
+                      );
+                    })()}
+                  </div>
+                  {item.status === "ready_to_decrypt" ? (
                     <div className="space-y-2 rounded-md border p-3">
                       <p className="text-xs text-muted-foreground">
-                        Demo complete action (simulate Walrus + Seal + Sui metadata write)
+                        Open record simulation: Fetch blob {"->"} Collect key shards {"->"} Decrypt.
                       </p>
                       <Button
                         size="sm"
-                        disabled={actionLoading === `${item.id}:complete`}
-                        onClick={() =>
-                          runAction(item.id, "complete", {
-                            walrusBlobId: `walrus_${item.id.slice(0, 8)}`,
-                            sealPolicyId: `seal_${item.id.slice(0, 8)}`,
-                            suiTxDigest: `sui_${Date.now()}`,
-                          })
-                        }
+                        disabled={actionLoading === `${item.id}:open-record`}
+                        onClick={() => runAction(item.id, "open-record", { message: "Opened and decrypted via Seal nodes." })}
                       >
-                        {actionLoading === `${item.id}:complete` ? (
+                        {actionLoading === `${item.id}:open-record` ? (
                           <span className="inline-flex items-center gap-2">
                             <LoaderCircle className="h-4 w-4 animate-spin" />
-                            Completing...
+                            Opening...
                           </span>
                         ) : (
-                          "Mark As Shared"
+                          "Open Record"
                         )}
                       </Button>
                     </div>
                   ) : null}
-                  {item.status === "shared" ? (
+                  {item.status === "opened" ? (
+                    <div className="space-y-2 rounded-md border p-3">
+                      <p className="text-xs text-muted-foreground">Confirm that the decrypted record is valid.</p>
+                      <Button
+                        size="sm"
+                        disabled={actionLoading === `${item.id}:confirm-received`}
+                        onClick={() => runAction(item.id, "confirm-received")}
+                      >
+                        {actionLoading === `${item.id}:confirm-received` ? (
+                          <span className="inline-flex items-center gap-2">
+                            <LoaderCircle className="h-4 w-4 animate-spin" />
+                            Confirming...
+                          </span>
+                        ) : (
+                          "Confirm Received"
+                        )}
+                      </Button>
+                    </div>
+                  ) : null}
+                  {item.status === "confirmed" ? (
+                    <div className="space-y-2 rounded-md border p-3">
+                      <p className="text-xs text-muted-foreground">
+                        Finalize request after requester confirmation.
+                      </p>
+                      <Button
+                        size="sm"
+                        disabled={actionLoading === `${item.id}:mark-completed`}
+                        onClick={() =>
+                          runAction(item.id, "mark-completed", {})
+                        }
+                      >
+                        {actionLoading === `${item.id}:mark-completed` ? (
+                          <span className="inline-flex items-center gap-2">
+                            <LoaderCircle className="h-4 w-4 animate-spin" />
+                            Finalizing...
+                          </span>
+                        ) : (
+                          "Mark Completed"
+                        )}
+                      </Button>
+                    </div>
+                  ) : null}
+                  {item.status === "completed" ? (
                     <div className="rounded-md border bg-muted/30 p-3 text-xs space-y-1">
+                      <p>Mailbox: {item.requestMailboxId ?? "-"}</p>
                       <p>Walrus blob: {item.walrusBlobId ?? "-"}</p>
+                      <p>Blob size: {item.blobSize ? `${(item.blobSize / (1024 * 1024)).toFixed(1)} MB` : "-"}</p>
+                      <p>Storage nodes: {item.storageNodes.join(", ") || "-"}</p>
                       <p>Seal policy: {item.sealPolicyId ?? "-"}</p>
                       <p>Sui tx: {item.suiTxDigest ?? "-"}</p>
-                      <p>Shared at: {formatDate(item.sharedAt)}</p>
+                      <p>Ready at: {formatDate(item.readyAt)}</p>
+                      <p>Opened at: {formatDate(item.openedAt)}</p>
+                      <p>Confirmed at: {formatDate(item.confirmedAt)}</p>
+                      <p>Completed at: {formatDate(item.sharedAt)}</p>
                     </div>
                   ) : null}
                 </CardContent>
@@ -254,14 +342,22 @@ export function SharingPageClient() {
                       placeholder="Add context for approval/rejection..."
                     />
                   </div>
-                  {pendingIncomingIds.has(item.id) ? (
+                  {actionableIncomingIds.has(item.id) ? (
                     <div className="flex items-center gap-2">
                       <Button
                         size="sm"
-                        onClick={() => runAction(item.id, "approve")}
-                        disabled={actionLoading === `${item.id}:approve`}
+                        onClick={() =>
+                          runAction(item.id, "prepare-approve", {
+                            walrusBlobId: `walrus_${item.id.slice(0, 8)}`,
+                            sealPolicyId: `seal_${item.id.slice(0, 8)}`,
+                            suiTxDigest: `sui_${Date.now()}`,
+                            blobSize: 15 * 1024 * 1024,
+                            storageNodes: ["Node_1", "Node_5"],
+                          })
+                        }
+                        disabled={actionLoading === `${item.id}:prepare-approve`}
                       >
-                        Approve
+                        {actionLoading === `${item.id}:prepare-approve` ? "Preparing..." : "Prepare & Approve"}
                       </Button>
                       <Button
                         size="sm"
@@ -274,7 +370,15 @@ export function SharingPageClient() {
                     </div>
                   ) : null}
                   <p className="text-xs text-muted-foreground">
-                    Responded: {formatDate(item.respondedAt)} {item.status === "shared" ? `· Shared ${formatDate(item.sharedAt)}` : ""}
+                    Responded: {formatDate(item.respondedAt)}{" "}
+                    {item.status === "ready_to_decrypt" ? `· Ready ${formatDate(item.readyAt)}` : ""}
+                    {item.status === "opened" || item.status === "confirmed" || item.status === "completed"
+                      ? `· Opened ${formatDate(item.openedAt)}`
+                      : ""}
+                    {item.status === "confirmed" || item.status === "completed"
+                      ? `· Confirmed ${formatDate(item.confirmedAt)}`
+                      : ""}
+                    {item.status === "completed" ? `· Completed ${formatDate(item.sharedAt)}` : ""}
                   </p>
                 </CardContent>
               </Card>

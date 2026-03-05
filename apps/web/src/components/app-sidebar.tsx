@@ -36,11 +36,11 @@ const data = {
           url: "/dashboard",
           icon: LayoutDashboard,
         },
-        {
-          title: "Analytics Dashboard",
-          url: "/dashboard-2",
-          icon: LayoutPanelLeft,
-        },
+        // {
+        //   title: "Analytics Dashboard",
+        //   url: "/dashboard-2",
+        //   icon: LayoutPanelLeft,
+        // },
       ],
     },
     {
@@ -57,14 +57,14 @@ const data = {
           icon: Share2,
         },
         {
-          title: "History",
-          url: "/history",
-          icon: History,
-        },
-        {
           title: "Verification",
           url: "/verification",
           icon: BadgeCheck,
+        },
+        {
+          title: "History",
+          url: "/history",
+          icon: History,
         },
         {
           title: "Proof Jobs",

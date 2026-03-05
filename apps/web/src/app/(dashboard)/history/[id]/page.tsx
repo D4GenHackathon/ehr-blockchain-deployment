@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { and, eq } from "drizzle-orm";
+import { and, asc, eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 
 import { Badge } from "@/components/ui/badge";
@@ -41,6 +41,17 @@ export default async function HistoryDetailPage({ params }: Params) {
   if (!item) notFound();
 
   const metadata = parseMetadata(item.metadata);
+  const timeline = await db
+    .select()
+    .from(activityLogs)
+    .where(
+      and(
+        eq(activityLogs.hospitalId, hospitalId),
+        eq(activityLogs.relatedEntityType, item.relatedEntityType),
+        eq(activityLogs.relatedEntityId, item.relatedEntityId)
+      )
+    )
+    .orderBy(asc(activityLogs.createdAt));
 
   return (
     <div className="px-4 lg:px-6 space-y-6">
@@ -72,6 +83,22 @@ export default async function HistoryDetailPage({ params }: Params) {
               <pre className="overflow-x-auto rounded-md border bg-muted/30 p-3 text-xs">
                 {JSON.stringify(metadata, null, 2)}
               </pre>
+            </div>
+          ) : null}
+          {timeline.length > 1 ? (
+            <div className="space-y-2">
+              <p className="text-muted-foreground">Timeline</p>
+              <div className="rounded-md border p-3 space-y-2">
+                {timeline.map((entry) => (
+                  <div key={entry.id} className="flex items-start justify-between gap-3 text-xs">
+                    <div>
+                      <p className="font-medium text-foreground">{entry.title}</p>
+                      <p className="text-muted-foreground">{entry.type}</p>
+                    </div>
+                    <p className="text-muted-foreground">{formatDate(entry.createdAt)}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           ) : null}
         </CardContent>

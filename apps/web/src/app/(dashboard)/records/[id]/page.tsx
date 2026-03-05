@@ -28,12 +28,16 @@ export default async function RecordDetailPage({ params }: Params) {
   if (!session) {
     notFound();
   }
+  const hospitalId = session.hospitalId;
+  if (!hospitalId) {
+    notFound();
+  }
 
   const { id } = await params;
   const [record] = await db
     .select()
     .from(patientRecords)
-    .where(and(eq(patientRecords.id, id), eq(patientRecords.hospitalId, session.hospitalId)))
+    .where(and(eq(patientRecords.id, id), eq(patientRecords.hospitalId, hospitalId)))
     .limit(1);
 
   if (!record) {

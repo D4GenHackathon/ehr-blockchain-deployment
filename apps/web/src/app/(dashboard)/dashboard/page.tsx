@@ -29,6 +29,7 @@ export default async function DashboardPage() {
   if (!session) return null;
 
   const hospitalId = session.hospitalId;
+  if (!hospitalId) return null;
 
   const [recordTotals] = await db
     .select({
@@ -48,7 +49,7 @@ export default async function DashboardPage() {
   const [verifiedProofsCount] = await db
     .select({ value: sql<number>`count(*)` })
     .from(zkpExchanges)
-    .where(eq(zkpExchanges.status, "verified"));
+    .where(eq(zkpExchanges.status, "verified_success"));
 
   const conditionBreakdown = await db
     .select({

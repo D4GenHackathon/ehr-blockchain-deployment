@@ -59,11 +59,25 @@ export const dataShareRequests = sqliteTable("data_share_requests", {
     .references(() => hospitals.id),
   patientRecordIds: text("patient_record_ids").notNull(),
   status: text("status", {
-    enum: ["pending", "approved", "rejected", "shared", "expired"],
+    enum: [
+      "pending",
+      "preparing",
+      "approved",
+      "ready_to_decrypt",
+      "opened",
+      "confirmed",
+      "completed",
+      "rejected",
+      "expired",
+    ],
   })
     .notNull()
     .default("pending"),
+  requestMailboxId: text("request_mailbox_id"),
+  requestPublicKey: text("request_public_key"),
   walrusBlobId: text("walrus_blob_id"),
+  blobSize: integer("blob_size"),
+  storageNodes: text("storage_nodes"),
   sealPolicyId: text("seal_policy_id"),
   suiTxDigest: text("sui_tx_digest"),
   purpose: text("purpose").notNull(),
@@ -71,6 +85,9 @@ export const dataShareRequests = sqliteTable("data_share_requests", {
   expiresAt: integer("expires_at"),
   createdAt: integer("created_at").notNull(),
   respondedAt: integer("responded_at"),
+  readyAt: integer("ready_at"),
+  openedAt: integer("opened_at"),
+  confirmedAt: integer("confirmed_at"),
   sharedAt: integer("shared_at"),
 });
 
@@ -92,22 +109,28 @@ export const zkpExchanges = sqliteTable("zkp_exchanges", {
     enum: [
       "pending",
       "accepted",
-      "proof_generating",
-      "proof_ready",
-      "verified",
-      "verification_failed",
+      "proving",
+      "verify_submitted",
+      "verified_success",
+      "verified_failed",
       "rejected",
     ],
   })
     .notNull()
     .default("pending"),
+  jobStatus: text("job_status"),
+  resultLabel: text("result_label"),
+  vkeyId: text("vkey_id"),
   proverJobId: text("prover_job_id"),
+  verifyTxDigest: text("verify_tx_digest"),
   proof: text("proof"),
   publicSignals: text("public_signals"),
   verificationResult: integer("verification_result", { mode: "boolean" }),
   message: text("message"),
   createdAt: integer("created_at").notNull(),
   acceptedAt: integer("accepted_at"),
+  verifyingAt: integer("verifying_at"),
+  verifiedAt: integer("verified_at"),
   completedAt: integer("completed_at"),
 });
 

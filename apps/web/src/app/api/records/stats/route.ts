@@ -13,8 +13,15 @@ export async function GET() {
       { status: 401 }
     );
   }
+  const hospitalId = session.hospitalId;
+  if (!hospitalId) {
+    return NextResponse.json(
+      { ok: false, error: { code: "FORBIDDEN", message: "Hospital context is required." } },
+      { status: 403 }
+    );
+  }
 
-  const whereHospital = eq(patientRecords.hospitalId, session.hospitalId);
+  const whereHospital = eq(patientRecords.hospitalId, hospitalId);
 
   const [totals] = await db
     .select({

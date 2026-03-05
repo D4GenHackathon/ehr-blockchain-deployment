@@ -28,6 +28,17 @@ function stringifyRecordIds(recordIds: string[]) {
   return JSON.stringify(recordIds);
 }
 
+function parseStorageNodes(raw: string | null) {
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    if (Array.isArray(parsed)) return parsed.map((node) => String(node));
+    return [];
+  } catch {
+    return [];
+  }
+}
+
 export async function GET(request: NextRequest) {
   const session = await requireAuthSession();
   if (!session) {
@@ -110,6 +121,7 @@ export async function GET(request: NextRequest) {
     return {
       ...requestItem,
       patientRecordIds: parsedIds,
+      storageNodes: parseStorageNodes(requestItem.storageNodes),
       records: parsedIds.map((id) => recordMap[id]).filter(Boolean),
       fromHospital: hospitalMap[requestItem.fromHospitalId] ?? null,
       toHospital: hospitalMap[requestItem.toHospitalId] ?? null,
@@ -154,7 +166,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { toHospitalId, patientRecordIds, purpose, message, expiresAt } = parsedBody.data;
+  const { toHospitalId, patientRecordIds, purpose, requestPublicKey, message, expiresAt } = parsedBody.data;
   if (toHospitalId === hospitalId) {
     return NextResponse.json(
       {
@@ -202,12 +214,15 @@ export async function POST(request: NextRequest) {
 
   const now = Date.now();
   const id = crypto.randomUUID();
+  const requestMailboxId = `REQ_${id.slice(0, 8).toUpperCase()}`;
   await db.insert(dataShareRequests).values({
     id,
     fromHospitalId: hospitalId,
     toHospitalId,
     patientRecordIds: stringifyRecordIds(patientRecordIds),
     purpose,
+    requestMailboxId,
+    requestPublicKey: requestPublicKey ?? `PK_${crypto.randomUUID().slice(0, 12)}`,
     message: message ?? null,
     expiresAt: expiresAt ?? null,
     status: "pending",
@@ -223,7 +238,12 @@ export async function POST(request: NextRequest) {
       title: "Created a data sharing request",
       relatedEntityType: "sharing",
       relatedEntityId: id,
-      metadata: JSON.stringify({ toHospitalId, patientRecordIdsCount: patientRecordIds.length }),
+      metadata: JSON.stringify({
+        toHospitalId,
+        requestMailboxId,
+        patientRecordIdsCount: patientRecordIds.length,
+        step: "request_sent",
+      }),
       createdAt: now,
     },
     {
@@ -234,7 +254,12 @@ export async function POST(request: NextRequest) {
       title: "Received a data sharing request",
       relatedEntityType: "sharing",
       relatedEntityId: id,
-      metadata: JSON.stringify({ fromHospitalId: hospitalId, patientRecordIdsCount: patientRecordIds.length }),
+      metadata: JSON.stringify({
+        fromHospitalId: hospitalId,
+        requestMailboxId,
+        patientRecordIdsCount: patientRecordIds.length,
+        step: "request_received",
+      }),
       createdAt: now,
     },
   ]);

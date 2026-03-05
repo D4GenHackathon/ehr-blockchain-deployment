@@ -3,9 +3,13 @@ import type { ShareStatus } from "@/types/sharing";
 
 const statusStyles: Record<ShareStatus, "outline" | "secondary" | "destructive" | "default"> = {
   pending: "outline",
+  preparing: "secondary",
   approved: "secondary",
+  ready_to_decrypt: "default",
+  opened: "default",
+  confirmed: "default",
+  completed: "default",
   rejected: "destructive",
-  shared: "default",
   expired: "destructive",
 };
 
