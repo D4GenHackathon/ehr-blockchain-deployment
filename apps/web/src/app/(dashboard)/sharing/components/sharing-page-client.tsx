@@ -1,13 +1,19 @@
 "use client";
 
+import { useCurrentAccount } from "@mysten/dapp-kit";
+import { AlertTriangle, ExternalLink, Wallet } from "lucide-react";
 import { LoaderCircle } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { WalletLinkModal } from "@/components/wallet-link-modal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { useWalletStatus } from "@/hooks/use-wallet-status";
 import { NewShareRequestDialog } from "./new-share-request-dialog";
+import { OpenRecordFlow } from "./open-record-flow";
+import { PrepareApproveFlow } from "./prepare-approve-flow";
 import { ShareStatusBadge } from "./share-status-badge";
 
 type HospitalOption = { id: string; name: string; code: string };
@@ -63,6 +69,114 @@ function formatDate(timestamp: number | null) {
   return new Date(timestamp).toLocaleString();
 }
 
+const SUI_NETWORK = process.env.NEXT_PUBLIC_SUI_NETWORK ?? "testnet";
+const WALRUS_NETWORK = "testnet";
+
+function suiTxUrl(digest: string) {
+  return `https://suiscan.xyz/${SUI_NETWORK}/tx/${digest}`;
+}
+function suiObjectUrl(objectId: string) {
+  return `https://suiscan.xyz/${SUI_NETWORK}/object/${objectId}`;
+}
+function walrusBlobUrl(blobId: string) {
+  return `https://walruscan.com/${WALRUS_NETWORK}/blob/${blobId}`;
+}
+
+function ExplorerLink({ href, label }: { href: string; label: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-1 font-mono text-primary hover:underline"
+    >
+      {label.slice(0, 14)}…{label.slice(-6)}
+      <ExternalLink className="h-3 w-3 shrink-0" />
+    </a>
+  );
+}
+
+function ShareMetadata({
+  walrusBlobId,
+  sealPolicyId,
+  suiTxDigest,
+  blobSize,
+  storageNodes,
+  readyAt,
+  openedAt,
+  confirmedAt,
+  sharedAt,
+}: {
+  walrusBlobId: string | null;
+  sealPolicyId: string | null;
+  suiTxDigest: string | null;
+  blobSize: number | null;
+  storageNodes: string[];
+  readyAt: number | null;
+  openedAt: number | null;
+  confirmedAt: number | null;
+  sharedAt: number | null;
+}) {
+  return (
+    <div className="rounded-md border bg-muted/30 p-3 text-xs space-y-1.5">
+      {walrusBlobId && (
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-muted-foreground shrink-0">Walrus blob</span>
+          <ExplorerLink href={walrusBlobUrl(walrusBlobId)} label={walrusBlobId} />
+        </div>
+      )}
+      {blobSize !== null && (
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-muted-foreground">Blob size</span>
+          <span>{(blobSize / 1024).toFixed(1)} KB</span>
+        </div>
+      )}
+      {sealPolicyId && (
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-muted-foreground shrink-0">Seal allowlist</span>
+          <ExplorerLink href={suiObjectUrl(sealPolicyId)} label={sealPolicyId} />
+        </div>
+      )}
+      {suiTxDigest && (
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-muted-foreground shrink-0">Sui tx</span>
+          <ExplorerLink href={suiTxUrl(suiTxDigest)} label={suiTxDigest} />
+        </div>
+      )}
+      {storageNodes.length > 0 && (
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-muted-foreground">Storage</span>
+          <span>{storageNodes.join(", ")}</span>
+        </div>
+      )}
+      {readyAt && (
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-muted-foreground">Ready at</span>
+          <span>{formatDate(readyAt)}</span>
+        </div>
+      )}
+      {openedAt && (
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-muted-foreground">Opened at</span>
+          <span>{formatDate(openedAt)}</span>
+        </div>
+      )}
+      {confirmedAt && (
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-muted-foreground">Confirmed at</span>
+          <span>{formatDate(confirmedAt)}</span>
+        </div>
+      )}
+      {sharedAt && (
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-muted-foreground">Completed at</span>
+          <span>{formatDate(sharedAt)}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function stepState(status: ShareItem["status"]) {
   return {
     requestSent: true,
@@ -81,6 +195,18 @@ export function SharingPageClient() {
   const [myRecords, setMyRecords] = useState<RecordOption[]>([]);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [actionMessage, setActionMessage] = useState<Record<string, string>>({});
+  const [walletModalOpen, setWalletModalOpen] = useState(false);
+  // Real Seal + Walrus flow modals
+  const [prepareFlowItem, setPrepareFlowItem] = useState<ShareItem | null>(null);
+  const [openRecordFlowItem, setOpenRecordFlowItem] = useState<ShareItem | null>(null);
+
+  // Wallet readiness
+  const account = useCurrentAccount();
+  const { data: walletStatus } = useWalletStatus();
+  const connectedAddress = account?.address?.toLowerCase() ?? null;
+  const linkedAddress = walletStatus?.address ?? null;
+  const walletReady = !!linkedAddress && connectedAddress === linkedAddress;
+  const walletIssue = !linkedAddress ? "not_linked" : connectedAddress !== linkedAddress ? "mismatch" : null;
 
   const allShareCount = outgoing.length + incoming.length;
 
@@ -168,6 +294,22 @@ export function SharingPageClient() {
 
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
 
+      {/* Wallet readiness banner */}
+      {walletIssue && (
+        <div className="flex items-center gap-3 rounded-lg border border-yellow-200 bg-yellow-50 dark:bg-yellow-950/20 dark:border-yellow-900 px-4 py-3">
+          <AlertTriangle className="h-4 w-4 text-yellow-600 dark:text-yellow-400 shrink-0" />
+          <p className="text-sm text-yellow-700 dark:text-yellow-300 flex-1">
+            {walletIssue === "not_linked"
+              ? "Link your Sui wallet to perform sharing operations (Prepare & Approve, Open Record)."
+              : "Wrong wallet connected. Connect your linked wallet to perform signing operations."}
+          </p>
+          <Button size="sm" variant="outline" className="shrink-0 border-yellow-300 dark:border-yellow-700" onClick={() => setWalletModalOpen(true)}>
+            <Wallet className="mr-1.5 h-3.5 w-3.5" />
+            {walletIssue === "not_linked" ? "Link Wallet" : "Fix Wallet"}
+          </Button>
+        </div>
+      )}
+
       <Tabs defaultValue="outgoing" className="space-y-4">
         <TabsList>
           <TabsTrigger value="outgoing">Outgoing ({outgoing.length})</TabsTrigger>
@@ -222,22 +364,32 @@ export function SharingPageClient() {
                   {item.status === "ready_to_decrypt" ? (
                     <div className="space-y-2 rounded-md border p-3">
                       <p className="text-xs text-muted-foreground">
-                        Open record simulation: Fetch blob {"->"} Collect key shards {"->"} Decrypt.
+                        Download from Walrus → Decrypt with Seal → View patient data
                       </p>
-                      <Button
-                        size="sm"
-                        disabled={actionLoading === `${item.id}:open-record`}
-                        onClick={() => runAction(item.id, "open-record", { message: "Opened and decrypted via Seal nodes." })}
-                      >
-                        {actionLoading === `${item.id}:open-record` ? (
-                          <span className="inline-flex items-center gap-2">
-                            <LoaderCircle className="h-4 w-4 animate-spin" />
-                            Opening...
-                          </span>
-                        ) : (
-                          "Open Record"
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <Button
+                          size="sm"
+                          disabled={!walletReady || !item.walrusBlobId || !item.sealPolicyId}
+                          title={
+                            !walletReady
+                              ? "Link & connect your Sui wallet first"
+                              : !item.walrusBlobId
+                              ? "No blob ID found — wait for Hospital A to prepare data"
+                              : undefined
+                          }
+                          onClick={() => setOpenRecordFlowItem(item)}
+                        >
+                          Open & Decrypt
+                        </Button>
+                        {!walletReady && (
+                          <button
+                            onClick={() => setWalletModalOpen(true)}
+                            className="text-xs text-yellow-600 dark:text-yellow-400 underline"
+                          >
+                            Wallet required
+                          </button>
                         )}
-                      </Button>
+                      </div>
                     </div>
                   ) : null}
                   {item.status === "opened" ? (
@@ -282,19 +434,18 @@ export function SharingPageClient() {
                       </Button>
                     </div>
                   ) : null}
-                  {item.status === "completed" ? (
-                    <div className="rounded-md border bg-muted/30 p-3 text-xs space-y-1">
-                      <p>Mailbox: {item.requestMailboxId ?? "-"}</p>
-                      <p>Walrus blob: {item.walrusBlobId ?? "-"}</p>
-                      <p>Blob size: {item.blobSize ? `${(item.blobSize / (1024 * 1024)).toFixed(1)} MB` : "-"}</p>
-                      <p>Storage nodes: {item.storageNodes.join(", ") || "-"}</p>
-                      <p>Seal policy: {item.sealPolicyId ?? "-"}</p>
-                      <p>Sui tx: {item.suiTxDigest ?? "-"}</p>
-                      <p>Ready at: {formatDate(item.readyAt)}</p>
-                      <p>Opened at: {formatDate(item.openedAt)}</p>
-                      <p>Confirmed at: {formatDate(item.confirmedAt)}</p>
-                      <p>Completed at: {formatDate(item.sharedAt)}</p>
-                    </div>
+                  {(item.walrusBlobId || item.sealPolicyId || item.suiTxDigest) ? (
+                    <ShareMetadata
+                      walrusBlobId={item.walrusBlobId}
+                      sealPolicyId={item.sealPolicyId}
+                      suiTxDigest={item.suiTxDigest}
+                      blobSize={item.blobSize}
+                      storageNodes={item.storageNodes}
+                      readyAt={item.readyAt}
+                      openedAt={item.openedAt}
+                      confirmedAt={item.confirmedAt}
+                      sharedAt={item.sharedAt}
+                    />
                   ) : null}
                 </CardContent>
               </Card>
@@ -343,21 +494,14 @@ export function SharingPageClient() {
                     />
                   </div>
                   {actionableIncomingIds.has(item.id) ? (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <Button
                         size="sm"
-                        onClick={() =>
-                          runAction(item.id, "prepare-approve", {
-                            walrusBlobId: `walrus_${item.id.slice(0, 8)}`,
-                            sealPolicyId: `seal_${item.id.slice(0, 8)}`,
-                            suiTxDigest: `sui_${Date.now()}`,
-                            blobSize: 15 * 1024 * 1024,
-                            storageNodes: ["Node_1", "Node_5"],
-                          })
-                        }
-                        disabled={actionLoading === `${item.id}:prepare-approve`}
+                        onClick={() => setPrepareFlowItem(item)}
+                        disabled={!walletReady}
+                        title={!walletReady ? "Link & connect your Sui wallet first" : undefined}
                       >
-                        {actionLoading === `${item.id}:prepare-approve` ? "Preparing..." : "Prepare & Approve"}
+                        Prepare & Approve
                       </Button>
                       <Button
                         size="sm"
@@ -365,8 +509,16 @@ export function SharingPageClient() {
                         onClick={() => runAction(item.id, "reject")}
                         disabled={actionLoading === `${item.id}:reject`}
                       >
-                        Reject
+                        {actionLoading === `${item.id}:reject` ? "Rejecting..." : "Reject"}
                       </Button>
+                      {!walletReady && (
+                        <button
+                          onClick={() => setWalletModalOpen(true)}
+                          className="text-xs text-yellow-600 dark:text-yellow-400 underline"
+                        >
+                          Wallet required
+                        </button>
+                      )}
                     </div>
                   ) : null}
                   <p className="text-xs text-muted-foreground">
@@ -380,6 +532,19 @@ export function SharingPageClient() {
                       : ""}
                     {item.status === "completed" ? `· Completed ${formatDate(item.sharedAt)}` : ""}
                   </p>
+                  {(item.walrusBlobId || item.sealPolicyId || item.suiTxDigest) ? (
+                    <ShareMetadata
+                      walrusBlobId={item.walrusBlobId}
+                      sealPolicyId={item.sealPolicyId}
+                      suiTxDigest={item.suiTxDigest}
+                      blobSize={item.blobSize}
+                      storageNodes={item.storageNodes}
+                      readyAt={item.readyAt}
+                      openedAt={item.openedAt}
+                      confirmedAt={item.confirmedAt}
+                      sharedAt={item.sharedAt}
+                    />
+                  ) : null}
                 </CardContent>
               </Card>
             ))
@@ -394,6 +559,30 @@ export function SharingPageClient() {
           </CardContent>
         </Card>
       ) : null}
+
+      <WalletLinkModal open={walletModalOpen} onOpenChange={setWalletModalOpen} />
+
+      {/* Prepare & Approve — real Seal + Walrus flow */}
+      {prepareFlowItem && (
+        <PrepareApproveFlow
+          shareRequestId={prepareFlowItem.id}
+          open={!!prepareFlowItem}
+          onOpenChange={(o) => { if (!o) setPrepareFlowItem(null); }}
+          onSuccess={() => { void fetchData(); setPrepareFlowItem(null); }}
+        />
+      )}
+
+      {/* Open Record — real Walrus download + Seal decrypt */}
+      {openRecordFlowItem && openRecordFlowItem.walrusBlobId && openRecordFlowItem.sealPolicyId && (
+        <OpenRecordFlow
+          shareRequestId={openRecordFlowItem.id}
+          walrusBlobId={openRecordFlowItem.walrusBlobId}
+          sealPolicyId={openRecordFlowItem.sealPolicyId}
+          open={!!openRecordFlowItem}
+          onOpenChange={(o) => { if (!o) setOpenRecordFlowItem(null); }}
+          onSuccess={() => { void fetchData(); }}
+        />
+      )}
     </div>
   );
 }

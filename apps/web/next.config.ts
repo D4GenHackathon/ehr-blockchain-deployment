@@ -4,6 +4,8 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react", "@radix-ui/react-icons"],
   },
+  // Walrus SDK uses WASM; tell Next.js not to bundle these
+  serverExternalPackages: ["@mysten/walrus", "@mysten/walrus-wasm"],
   turbopack: {},
 
   // Image optimization

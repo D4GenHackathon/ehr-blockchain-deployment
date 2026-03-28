@@ -20,6 +20,11 @@ export const users = sqliteTable("users", {
   role: text("role", { enum: ["admin", "doctor", "staff"] }).notNull(),
   passwordHash: text("password_hash").notNull(),
   createdAt: integer("created_at").notNull(),
+  // Sui wallet linking
+  suiAddress: text("sui_address").unique(),
+  walletLinkedAt: integer("wallet_linked_at"),
+  walletNonce: text("wallet_nonce"),
+  walletNonceAt: integer("wallet_nonce_at"),
 });
 
 export const patientRecords = sqliteTable("patient_records", {

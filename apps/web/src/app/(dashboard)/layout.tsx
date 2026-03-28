@@ -8,6 +8,7 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { ThemeCustomizer, ThemeCustomizerTrigger } from "@/components/theme-customizer";
 import { UpgradeToProButton } from "@/components/upgrade-to-pro-button";
 import { useSidebarConfig } from "@/hooks/use-sidebar-config";
+import { SuiProviders } from "@/components/sui-providers";
 
 export default function DashboardLayout({
   children,
@@ -18,6 +19,7 @@ export default function DashboardLayout({
   const { config } = useSidebarConfig();
 
   return (
+    <SuiProviders>
     <SidebarProvider
       style={{
         "--sidebar-width": "16rem",
@@ -74,5 +76,6 @@ export default function DashboardLayout({
       /> */}
       {/* <UpgradeToProButton /> */}
     </SidebarProvider>
+    </SuiProviders>
   );
 }

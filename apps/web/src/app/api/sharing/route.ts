@@ -189,23 +189,25 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const ownedRecords = await db
+  // Records must belong to the TARGET hospital (toHospitalId = Hospital A)
+  // because B is requesting access to A's data, not their own.
+  const targetRecords = await db
     .select({ id: patientRecords.id })
     .from(patientRecords)
     .where(
       and(
-        eq(patientRecords.hospitalId, hospitalId),
+        eq(patientRecords.hospitalId, toHospitalId),
         inArray(patientRecords.id, patientRecordIds)
       )
     );
 
-  if (ownedRecords.length !== patientRecordIds.length) {
+  if (targetRecords.length !== patientRecordIds.length) {
     return NextResponse.json(
       {
         ok: false,
         error: {
           code: "INVALID_RECORD_SCOPE",
-          message: "One or more records do not belong to your hospital.",
+          message: "One or more selected records do not belong to the target hospital.",
         },
       },
       { status: 400 }
