@@ -14,7 +14,8 @@
   - Commercial or biotech institutions: non-EHR records, mainly metadata.
 - Error warnings can be used for wrong roles, wrong access level, or unauthorized actions.
 ### Backend Flow 
-- 
+- Error raises when unathorized access is altered through SCs.
+- Preprocessing module to access ZKP attribute only for specific roles.
 
 ## General Data Protection Regulation (GDPR), National Law 206/2004 data usage regulations 
 ### GDPR SC system design
