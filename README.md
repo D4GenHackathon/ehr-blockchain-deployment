@@ -20,7 +20,7 @@ The architecture combines Sui blockchain, Walrus decentralized storage, Seal acc
 | Version | Type | Features | Video Demo |
 |---|---|---|---|
 | Alpha v1.0.1 | Initial Alpha | Basic Functionality (Login, Signup, Dashboard)| [▶ Basic Function View](docs/demo/alpha101.mov) | 
-| Alpha v1.0.2 | Alpha Update | Email data sharing, ZKP Verification |[▶ Network Function Demo View](docs/demo/alpha102.mov) | 
+| Alpha v1.0.2 | Alpha Update | Email data sharing, ZKP Verification |[▶ ZKP Function Demo View](docs/demo/alpha102.mov) | 
 | Alpha v1.0.3 | Alpha Update | Full web application functionalities | Upcomming (Hackathon Day) | 
 
 ## High-Level Architecture
