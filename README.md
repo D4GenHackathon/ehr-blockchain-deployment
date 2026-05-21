@@ -11,9 +11,17 @@ The system allows hospitals, clinics, research institutions, and patients to:
 - Share sensitive medical information across organizations
 - Prove eligibility or attributes (for example, age or consent) using zero-knowledge proofs without revealing personal data
 
-The architecture combines Sui blockchain, Walrus decentralized storage, Seal access control, and zkSNARKs, with a unified Next.js application serving both frontend and backend logic. More details in [D4Gen Hackathon Presentation](https://docs.google.com/presentation/d/1GiAFoziQa2gabl1P-FO_-KVlu5M8lQ-l/edit?slide=id.g3c215db895e_0_522#slide=id.g3c215db895e_0_522)
+The architecture combines Sui blockchain, Walrus decentralized storage, Seal access control, and zkSNARKs, with a unified Next.js application serving both frontend and backend logic. This repository is responsible to implement privacy-preserving across-institution of EHR data sharing, with the target to build a complete securing biomedical smart system presented in [D4Gen Hackathon Presentation](https://docs.google.com/presentation/d/1GiAFoziQa2gabl1P-FO_-KVlu5M8lQ-l/edit?slide=id.g3c215db895e_0_522#slide=id.g3c215db895e_0_522).
 
 ![Data Secure Tranmission in Blockchain-based Healthcare Systems](docs/general-architecture/architecture.png)
+
+## Product Prototype Version
+
+| Version | Type | Features | Video Demo |
+|---|---|---|---|
+| Alpha v1.0.1 | Initial Alpha | Basic Functionality (Login, Signup, Dashboard)| [▶ Basic Function View](docs/demo/alpha101.mov) | 
+| Alpha v1.0.2 | Alpha Update | Email data sharing, ZKP Verification |[▶ Network Function Demo View](docs/demo/alpha102.mov) | 
+| Alpha v1.0.3 | Alpha Update | Full web application functionalities | Upcomming (Hackathon Day) | 
 
 ## High-Level Architecture
 
