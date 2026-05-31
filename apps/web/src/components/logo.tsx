@@ -1,10 +1,28 @@
+"use client"
+
 import * as React from "react"
 
-interface LogoProps extends React.SVGProps<SVGSVGElement> {
+interface LogoProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, "height" | "src" | "width"> {
   size?: number
 }
 
 export function Logo({ size = 24, className, ...props }: LogoProps) {
+  const [useFallback, setUseFallback] = React.useState(false)
+
+  if (!useFallback) {
+    return (
+      <img
+        src="/icon.png"
+        alt="D4Gen"
+        width={size}
+        height={size}
+        className={`shrink-0 rounded-md object-cover ${className ?? ""}`}
+        onError={() => setUseFallback(true)}
+        {...props}
+      />
+    )
+  }
+
   return (
     <svg
       width={size}
@@ -13,7 +31,6 @@ export function Logo({ size = 24, className, ...props }: LogoProps) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      {...props}
     >
       <path
         d="M16 2.75L24.75 6.35V13.75C24.75 19.33 21.49 24.4 16 27.75C10.51 24.4 7.25 19.33 7.25 13.75V6.35L16 2.75Z"

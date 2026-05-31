@@ -4,7 +4,7 @@ import {
   Database,
   Shield,
   Users,
-  Star
+  Waypoints
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { DotPattern } from '@/components/dot-pattern'
@@ -13,27 +13,27 @@ import { DotPattern } from '@/components/dot-pattern'
 const stats = [
   {
     icon: Database,
-    value: '1.2M+',
-    label: 'Encrypted Records',
-    description: 'Stored off-chain'
+    value: '4',
+    label: 'Data Levels',
+    description: 'Full EHR to non-EHR'
   },
   {
     icon: Shield,
-    value: '250K+',
-    label: 'Policy Events',
-    description: 'Audited on-chain'
+    value: '3',
+    label: 'EHR Circuits',
+    description: 'Groth16 proof workflows'
   },
   {
     icon: Users,
-    value: '120+',
-    label: 'Organizations',
-    description: 'Cross-institution pilots'
+    value: '3',
+    label: 'Organization Types',
+    description: 'Policy-scoped access'
   },
   {
-    icon: Star,
-    value: '99.9%',
-    label: 'Verification Uptime',
-    description: 'Reliable proof checks'
+    icon: Waypoints,
+    value: '2',
+    label: 'Sharing Modes',
+    description: 'Records or private insights'
   }
 ]
 

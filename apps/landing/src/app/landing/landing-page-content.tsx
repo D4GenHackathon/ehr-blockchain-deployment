@@ -16,6 +16,8 @@ import { FaqSection } from './components/faq-section'
 import { LandingFooter } from './components/footer'
 import { LandingThemeCustomizer, LandingThemeCustomizerTrigger } from './components/landing-theme-customizer'
 import { AboutSection } from './components/about-section'
+import { StandardsSection } from './components/standards-section'
+import { UseCasesSection } from './components/use-cases-section'
 
 export function LandingPageContent() {
   const [themeCustomizerOpen, setThemeCustomizerOpen] = React.useState(false)
@@ -31,6 +33,8 @@ export function LandingPageContent() {
         <LogoCarousel />
         <StatsSection />
         <AboutSection />
+        <UseCasesSection />
+        <StandardsSection />
         <FeaturesSection />
         <TeamSection />
         {/* <PricingSection /> */}

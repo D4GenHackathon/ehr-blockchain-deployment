@@ -31,6 +31,8 @@ import { useTheme } from '@/hooks/use-theme'
 
 const navigationItems = [
   { name: 'Home', href: '#hero' },
+  { name: 'Use Cases', href: '#use-cases' },
+  { name: 'Standards', href: '#standards' },
   { name: 'Architecture', href: '#features' },
   { name: 'Platform', href: '#features', hasMegaMenu: true },
   { name: 'Team', href: '#team' },
