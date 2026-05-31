@@ -4,6 +4,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { activityLogs, dataShareRequests } from "@/db/schema";
 import { requireAuthSession } from "@/lib/auth";
+import {
+  assertCanApproveShare,
+  complianceResponse,
+  getComplianceContext,
+} from "@/lib/compliance-policy";
 import { shareActionSchema } from "@/types/sharing";
 
 type Params = { params: Promise<{ id: string; action: string }> };
@@ -14,21 +19,25 @@ function resolveAction(input: string) {
   return input;
 }
 
+function parseRecordIds(raw: string) {
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    return Array.isArray(parsed) ? parsed.map(String) : [];
+  } catch {
+    return raw.split(",").map((item) => item.trim()).filter(Boolean);
+  }
+}
+
 export async function PUT(request: NextRequest, { params }: Params) {
-  const session = await requireAuthSession();
-  if (!session) {
-    return NextResponse.json(
-      { ok: false, error: { code: "UNAUTHORIZED", message: "Not authenticated." } },
-      { status: 401 }
-    );
+  let ctx;
+  try {
+    ctx = await getComplianceContext(await requireAuthSession());
+  } catch (error) {
+    const response = complianceResponse(error);
+    if (response) return response;
+    throw error;
   }
-  const hospitalId = session.hospitalId;
-  if (!hospitalId) {
-    return NextResponse.json(
-      { ok: false, error: { code: "UNAUTHORIZED", message: "Invalid session." } },
-      { status: 401 }
-    );
-  }
+  const hospitalId = ctx.hospitalId;
 
   const parsedBody = shareActionSchema.safeParse(await request.json().catch(() => ({})));
   if (!parsedBody.success) {
@@ -75,6 +84,13 @@ export async function PUT(request: NextRequest, { params }: Params) {
   const now = Date.now();
   const payload = parsedBody.data;
   if (action === "prepare-approve") {
+    try {
+      assertCanApproveShare(ctx, parseRecordIds(existing.patientRecordIds).length);
+    } catch (error) {
+      const response = complianceResponse(error);
+      if (response) return response;
+      throw error;
+    }
     if (!["pending", "preparing"].includes(existing.status)) {
       return NextResponse.json(
         {
@@ -182,8 +198,8 @@ export async function PUT(request: NextRequest, { params }: Params) {
     {
       id: crypto.randomUUID(),
       hospitalId: existing.fromHospitalId,
-      actorUserId: ["open-record", "confirm-received", "mark-completed"].includes(action)
-        ? session.userId
+        actorUserId: ["open-record", "confirm-received", "mark-completed"].includes(action)
+        ? ctx.userId
         : null,
       type: `sharing_request_${action}`,
       title:
@@ -203,6 +219,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
         message: payload.message ?? null,
         blobId: existing.walrusBlobId ?? null,
         sealId: existing.sealPolicyId ?? null,
+        standard: "STANDARD.md",
       }),
       createdAt: now,
     },
@@ -210,7 +227,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
       id: crypto.randomUUID(),
       hospitalId: existing.toHospitalId,
       actorUserId: ["prepare-approve", "reject", "mark-completed"].includes(action)
-        ? session.userId
+        ? ctx.userId
         : null,
       type: `sharing_request_${action}`,
       title:
@@ -230,6 +247,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
         message: payload.message ?? null,
         blobId: existing.walrusBlobId ?? null,
         sealId: existing.sealPolicyId ?? null,
+        standard: "STANDARD.md",
       }),
       createdAt: now,
     },

@@ -6,6 +6,11 @@ export const hospitals = sqliteTable("hospitals", {
   name: text("name").notNull(),
   address: text("address").notNull(),
   suiAddress: text("sui_address").notNull(),
+  organizationType: text("organization_type", {
+    enum: ["healthcare_provider", "clinical_research", "commercial_biotech"],
+  })
+    .notNull()
+    .default("healthcare_provider"),
   logoUrl: text("logo_url"),
   createdAt: integer("created_at").notNull(),
 });
@@ -47,6 +52,18 @@ export const patientRecords = sqliteTable("patient_records", {
   dischargeDate: integer("discharge_date").notNull(),
   medication: text("medication").notNull(),
   testResults: text("test_results").notNull(),
+  dataLevel: text("data_level", {
+    enum: ["full_ehr", "selected_attributes", "metadata_only", "non_ehr"],
+  })
+    .notNull()
+    .default("full_ehr"),
+  sourceType: text("source_type", { enum: ["native", "imported", "synthetic"] })
+    .notNull()
+    .default("native"),
+  isSensitive: integer("is_sensitive", { mode: "boolean" }).notNull().default(true),
+  recordCommitment: text("record_commitment"),
+  demographicHash: text("demographic_hash"),
+  zkProfile: text("zk_profile"),
   status: text("status", { enum: ["active", "discharged", "transferred"] })
     .notNull()
     .default("active"),

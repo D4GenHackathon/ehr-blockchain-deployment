@@ -4,6 +4,10 @@ import { CheckCircle2, Circle, DatabaseZap, LoaderCircle, ShieldCheck, XCircle }
 import { useState } from "react";
 import { toast } from "sonner";
 
+import {
+  StandardInsightHoverCard,
+  type StandardInsight,
+} from "@/components/standard-insight-hover-card";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,11 +21,68 @@ import { useSealDecrypt } from "@/hooks/use-seal-ops";
 import { walrusDownload } from "@/lib/walrus-rest";
 
 const STEPS = [
-  { id: "download", label: "Download encrypted blob from Walrus" },
-  { id: "session", label: "Create decryption session (sign in wallet)" },
-  { id: "decrypt", label: "Decrypt data with Seal" },
-  { id: "save", label: "Confirm receipt on server" },
+  {
+    id: "download",
+    label: "Download encrypted blob from Walrus",
+    insight: {
+      title: "Retrieve protected data",
+      standards: ["HIPAA transmission security", "GDPR security of processing"],
+      method: "Walrus ciphertext download",
+      detail: "The requester downloads encrypted bytes only. The visible blob preview demonstrates that EHR plaintext is not stored in Walrus.",
+    },
+  },
+  {
+    id: "session",
+    label: "Create decryption session (sign in wallet)",
+    insight: {
+      title: "Verify the requester before access",
+      standards: ["HIPAA authentication", "HIPAA access control"],
+      method: "Sui wallet-signed Seal session",
+      detail: "Seal key servers require a signed session from the allowlisted wallet before releasing the capability needed to decrypt.",
+    },
+  },
+  {
+    id: "decrypt",
+    label: "Decrypt data with Seal",
+    insight: {
+      title: "Decrypt for the authorized recipient",
+      standards: ["HIPAA minimum necessary", "GDPR data minimization"],
+      method: "Local Seal decryption",
+      detail: "The browser decrypts only the records selected for the approved request. Plaintext is shown after access checks succeed.",
+    },
+  },
+  {
+    id: "save",
+    label: "Confirm receipt on server",
+    insight: {
+      title: "Record the access event",
+      standards: ["HIPAA audit controls", "GDPR accountability"],
+      method: "Backend workflow status and activity log",
+      detail: "The server records that the authorized requester opened the transfer, creating a reviewable access history.",
+    },
+  },
 ] as const;
+
+const DATA_INSIGHTS = {
+  encryptedBlob: {
+    title: "Ciphertext preview",
+    standards: ["HIPAA transmission security", "GDPR security of processing"],
+    method: "Encrypted Walrus payload",
+    detail: "This preview is the stored and transmitted form of the data. It remains unreadable until the approved wallet completes the Seal session flow.",
+  },
+  decryptedRecords: {
+    title: "Authorized plaintext view",
+    standards: ["HIPAA access control", "HIPAA minimum necessary"],
+    method: "Post-authorization local display",
+    detail: "The application displays the selected EHR records only after the requester wallet is authenticated and authorized by the Seal policy.",
+  },
+  importRecords: {
+    title: "Controlled EHR import",
+    standards: ["GDPR storage limitation", "HIPAA audit controls"],
+    method: "Backend import policy and activity log",
+    detail: "Before import, the backend checks the receiving organization's category and storage limit. Successful imports are written to the activity log.",
+  },
+} satisfies Record<string, StandardInsight>;
 
 type StepId = (typeof STEPS)[number]["id"];
 type StepStatus = "idle" | "running" | "done" | "error";
@@ -56,7 +117,15 @@ interface OpenRecordFlowProps {
   onSuccess: () => void;
 }
 
-function StepRow({ label, status }: { label: string; status: StepStatus }) {
+function StepRow({
+  label,
+  status,
+  insight,
+}: {
+  label: string;
+  status: StepStatus;
+  insight: StandardInsight;
+}) {
   return (
     <div className="flex items-center gap-3 py-2">
       {status === "idle" && <Circle className="h-4 w-4 text-muted-foreground shrink-0" />}
@@ -66,6 +135,7 @@ function StepRow({ label, status }: { label: string; status: StepStatus }) {
       <span className={`text-sm ${status === "running" ? "font-medium" : status === "done" ? "text-muted-foreground line-through" : ""}`}>
         {label}
       </span>
+      <StandardInsightHoverCard {...insight} />
     </div>
   );
 }
@@ -144,8 +214,9 @@ function EncryptedPreview({ bytes }: { bytes: Uint8Array }) {
     .join(" ");
   return (
     <div className="rounded-md border bg-slate-950 dark:bg-black p-3 space-y-1.5">
-      <p className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">
+      <p className="flex items-center gap-1 text-[10px] font-mono text-slate-400 uppercase tracking-widest">
         Encrypted blob — {bytes.byteLength.toLocaleString()} bytes on Walrus
+        <StandardInsightHoverCard {...DATA_INSIGHTS.encryptedBlob} />
       </p>
       <p className="text-[11px] font-mono text-green-400 leading-relaxed break-all">
         {hex}
@@ -281,7 +352,7 @@ export function OpenRecordFlow({
         {!decryptedRecords && (
           <div className="divide-y py-1">
             {STEPS.map((step) => (
-              <StepRow key={step.id} label={step.label} status={stepStatus[step.id]} />
+              <StepRow key={step.id} label={step.label} status={stepStatus[step.id]} insight={step.insight} />
             ))}
           </div>
         )}
@@ -305,6 +376,7 @@ export function OpenRecordFlow({
               <span className="text-sm font-medium text-green-700 dark:text-green-300">
                 Decryption successful — {decryptedRecords.length} patient record(s) retrieved
               </span>
+              <StandardInsightHoverCard {...DATA_INSIGHTS.decryptedRecords} />
             </div>
             <p className="text-xs text-muted-foreground">
               Securely decrypted using your Sui wallet and the Seal key servers.
@@ -318,8 +390,9 @@ export function OpenRecordFlow({
 
             {/* Import button */}
             <div className="rounded-md border bg-muted/30 p-3 space-y-2">
-              <p className="text-xs text-muted-foreground">
+              <p className="flex items-center gap-1 text-xs text-muted-foreground">
                 Save these records directly to your hospital&apos;s database for future reference.
+                <StandardInsightHoverCard {...DATA_INSIGHTS.importRecords} />
               </p>
               <Button
                 size="sm"

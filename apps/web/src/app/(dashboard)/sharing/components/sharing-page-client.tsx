@@ -5,6 +5,11 @@ import { AlertTriangle, ExternalLink, Wallet } from "lucide-react";
 import { LoaderCircle } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { ComplianceStandardsDialog } from "@/components/compliance-standards-dialog";
+import {
+  StandardInsightHoverCard,
+  type StandardInsight,
+} from "@/components/standard-insight-hover-card";
 import { WalletLinkModal } from "@/components/wallet-link-modal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -96,6 +101,42 @@ function ExplorerLink({ href, label }: { href: string; label: string }) {
   );
 }
 
+const SHARE_METADATA_INSIGHTS = {
+  walrusBlob: {
+    title: "Encrypted Walrus blob",
+    standards: ["HIPAA transmission security", "GDPR security of processing"],
+    method: "Ciphertext-only decentralized storage",
+    detail: "The blob ID points to encrypted bytes on Walrus. Plaintext EHR data is not stored in the blob or written on-chain.",
+  },
+  sealAllowlist: {
+    title: "Seal access policy",
+    standards: ["HIPAA access control", "GDPR data minimization"],
+    method: "Sui-backed Seal allowlist",
+    detail: "The policy limits decryption to the wallet explicitly approved for this transfer.",
+  },
+  suiTx: {
+    title: "Auditable Sui transaction",
+    standards: ["HIPAA audit controls", "GDPR accountability"],
+    method: "Signed on-chain policy transaction",
+    detail: "The digest provides inspectable evidence that the holder created the access policy on Sui.",
+  },
+} satisfies Record<string, StandardInsight>;
+
+function MetadataLabel({
+  children,
+  insight,
+}: {
+  children: string;
+  insight?: StandardInsight;
+}) {
+  return (
+    <span className="inline-flex shrink-0 items-center gap-1 text-muted-foreground">
+      {children}
+      {insight ? <StandardInsightHoverCard {...insight} /> : null}
+    </span>
+  );
+}
+
 function ShareMetadata({
   walrusBlobId,
   sealPolicyId,
@@ -121,7 +162,7 @@ function ShareMetadata({
     <div className="rounded-md border bg-muted/30 p-3 text-xs space-y-1.5">
       {walrusBlobId && (
         <div className="flex items-center justify-between gap-2">
-          <span className="text-muted-foreground shrink-0">Walrus blob</span>
+          <MetadataLabel insight={SHARE_METADATA_INSIGHTS.walrusBlob}>Walrus blob</MetadataLabel>
           <ExplorerLink href={walrusBlobUrl(walrusBlobId)} label={walrusBlobId} />
         </div>
       )}
@@ -133,13 +174,13 @@ function ShareMetadata({
       )}
       {sealPolicyId && (
         <div className="flex items-center justify-between gap-2">
-          <span className="text-muted-foreground shrink-0">Seal allowlist</span>
+          <MetadataLabel insight={SHARE_METADATA_INSIGHTS.sealAllowlist}>Seal allowlist</MetadataLabel>
           <ExplorerLink href={suiObjectUrl(sealPolicyId)} label={sealPolicyId} />
         </div>
       )}
       {suiTxDigest && (
         <div className="flex items-center justify-between gap-2">
-          <span className="text-muted-foreground shrink-0">Sui tx</span>
+          <MetadataLabel insight={SHARE_METADATA_INSIGHTS.suiTx}>Sui tx</MetadataLabel>
           <ExplorerLink href={suiTxUrl(suiTxDigest)} label={suiTxDigest} />
         </div>
       )}
@@ -282,14 +323,17 @@ export function SharingPageClient() {
 
   return (
     <div className="px-4 lg:px-6 space-y-6">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Data Sharing Hub</h1>
           <p className="text-muted-foreground">
             Manage outgoing and incoming requests for full record sharing.
           </p>
         </div>
-        <NewShareRequestDialog hospitals={hospitals} records={myRecords} onCreated={fetchData} />
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <ComplianceStandardsDialog useCase="sharing" />
+          <NewShareRequestDialog hospitals={hospitals} records={myRecords} onCreated={fetchData} />
+        </div>
       </div>
 
       {error ? <p className="text-sm text-destructive">{error}</p> : null}

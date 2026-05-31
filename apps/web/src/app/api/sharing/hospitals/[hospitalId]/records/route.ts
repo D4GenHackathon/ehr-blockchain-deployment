@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { hospitals, patientRecords } from "@/db/schema";
 import { requireAuthSession } from "@/lib/auth";
+import { complianceResponse, getComplianceContext } from "@/lib/compliance-policy";
 
 type Params = { params: Promise<{ hospitalId: string }> };
 
@@ -18,22 +19,31 @@ type Params = { params: Promise<{ hospitalId: string }> };
  * the target.
  */
 export async function GET(_request: NextRequest, { params }: Params) {
-  const session = await requireAuthSession();
-  if (!session) {
-    return NextResponse.json({ ok: false, error: "UNAUTHORIZED" }, { status: 401 });
+  try {
+    await getComplianceContext(await requireAuthSession());
+  } catch (error) {
+    const response = complianceResponse(error);
+    if (response) return response;
+    throw error;
   }
 
   const { hospitalId } = await params;
 
   // Verify target hospital exists
   const [targetHospital] = await db
-    .select({ id: hospitals.id, name: hospitals.name })
+    .select({ id: hospitals.id, name: hospitals.name, organizationType: hospitals.organizationType })
     .from(hospitals)
     .where(eq(hospitals.id, hospitalId))
     .limit(1);
 
   if (!targetHospital) {
     return NextResponse.json({ ok: false, error: "Hospital not found." }, { status: 404 });
+  }
+  if (targetHospital.organizationType === "commercial_biotech") {
+    return NextResponse.json(
+      { ok: false, error: "Commercial/biotech organizations do not expose EHR records for sharing." },
+      { status: 403 },
+    );
   }
 
   // Return public-facing record index (no clinical details)

@@ -6,6 +6,12 @@ export type RecordStatus = z.infer<typeof recordStatusSchema>;
 export const recordGenderSchema = z.enum(["male", "female", "other"]);
 export type RecordGender = z.infer<typeof recordGenderSchema>;
 
+export const dataLevelSchema = z.enum(["full_ehr", "selected_attributes", "metadata_only", "non_ehr"]);
+export type DataLevel = z.infer<typeof dataLevelSchema>;
+
+export const sourceTypeSchema = z.enum(["native", "imported", "synthetic"]);
+export type SourceType = z.infer<typeof sourceTypeSchema>;
+
 export const createRecordSchema = z.object({
   patientCode: z.string().min(1),
   fullName: z.string().min(1),
@@ -22,6 +28,12 @@ export const createRecordSchema = z.object({
   dischargeDate: z.number().int().positive(),
   medication: z.string().min(1),
   testResults: z.string().min(1),
+  dataLevel: dataLevelSchema.default("full_ehr"),
+  sourceType: sourceTypeSchema.default("native"),
+  isSensitive: z.boolean().default(true),
+  recordCommitment: z.string().optional().nullable(),
+  demographicHash: z.string().optional().nullable(),
+  zkProfile: z.string().optional().nullable(),
   status: recordStatusSchema.default("active"),
 });
 
@@ -58,6 +70,12 @@ export type PatientRecordDTO = {
   dischargeDate: number;
   medication: string;
   testResults: string;
+  dataLevel: DataLevel;
+  sourceType: SourceType;
+  isSensitive: boolean;
+  recordCommitment: string | null;
+  demographicHash: string | null;
+  zkProfile: string | null;
   status: RecordStatus;
   createdAt: number;
   updatedAt: number;

@@ -9,6 +9,11 @@ import {
   users,
 } from "@/db/schema";
 import { requireAuthSession } from "@/lib/auth";
+import {
+  complianceResponse,
+  getComplianceContext,
+  projectRecordsForAccess,
+} from "@/lib/compliance-policy";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -23,11 +28,15 @@ type Params = { params: Promise<{ id: string }> };
  *    to the Seal allowlist
  */
 export async function GET(_request: NextRequest, { params }: Params) {
-  const session = await requireAuthSession();
-  if (!session) {
-    return NextResponse.json({ ok: false, error: "UNAUTHORIZED" }, { status: 401 });
+  let ctx;
+  try {
+    ctx = await getComplianceContext(await requireAuthSession());
+  } catch (error) {
+    const response = complianceResponse(error);
+    if (response) return response;
+    throw error;
   }
-  const hospitalId = session.hospitalId!;
+  const hospitalId = ctx.hospitalId;
   const { id } = await params;
 
   // Load share request visible to the current hospital (either side)
@@ -69,7 +78,7 @@ export async function GET(_request: NextRequest, { params }: Params) {
   const recordIds: string[] = (() => {
     try { return JSON.parse(req.patientRecordIds) as string[]; } catch { return []; }
   })();
-  const records = recordIds.length
+  const rawRecords = recordIds.length
     ? await db
         .select({
           id: patientRecords.id,
@@ -99,6 +108,18 @@ export async function GET(_request: NextRequest, { params }: Params) {
           )
         )
     : [];
+
+  const records =
+    hospitalId === req.toHospitalId
+      ? rawRecords
+      : ["opened", "confirmed", "completed"].includes(req.status)
+        ? projectRecordsForAccess(rawRecords, ctx)
+        : rawRecords.map((record) => ({
+            id: record.id,
+            patientCode: record.patientCode,
+            fullName: "Encrypted until approved",
+            medicalCondition: record.medicalCondition,
+          }));
 
   // Find the linked Sui address of an admin at the *requesting* hospital (Hospital B = fromHospitalId)
   // This is needed by Hospital A (toHospitalId) to add B to the Seal allowlist

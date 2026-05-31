@@ -2,24 +2,25 @@ import { and, asc, count, desc, eq, like, or } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 import { db } from "@/db";
-import { patientRecords } from "@/db/schema";
+import { activityLogs, patientRecords } from "@/db/schema";
 import { requireAuthSession } from "@/lib/auth";
+import {
+  assertCanCreateRecord,
+  complianceResponse,
+  countRecordsForHospital,
+  getComplianceContext,
+  projectRecordsForAccess,
+} from "@/lib/compliance-policy";
 import { createRecordSchema, listRecordsQuerySchema } from "@/types/records";
 
 export async function GET(request: NextRequest) {
-  const session = await requireAuthSession();
-  if (!session) {
-    return NextResponse.json(
-      { ok: false, error: { code: "UNAUTHORIZED", message: "Not authenticated." } },
-      { status: 401 }
-    );
-  }
-  const hospitalId = session.hospitalId;
-  if (!hospitalId) {
-    return NextResponse.json(
-      { ok: false, error: { code: "FORBIDDEN", message: "Hospital context is required." } },
-      { status: 403 }
-    );
+  let ctx;
+  try {
+    ctx = await getComplianceContext(await requireAuthSession());
+  } catch (error) {
+    const response = complianceResponse(error);
+    if (response) return response;
+    throw error;
   }
 
   const parsedQuery = listRecordsQuerySchema.safeParse(
@@ -35,7 +36,7 @@ export async function GET(request: NextRequest) {
   const { page, pageSize, q, medicalCondition, status, admissionType } = parsedQuery.data;
   const offset = (page - 1) * pageSize;
 
-  const filters = [eq(patientRecords.hospitalId, hospitalId)];
+  const filters = [eq(patientRecords.hospitalId, ctx.hospitalId)];
   if (q) {
     filters.push(
       or(
@@ -66,7 +67,7 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({
     ok: true,
     data: {
-      items: records,
+      items: projectRecordsForAccess(records, ctx),
       pagination: {
         page,
         pageSize,
@@ -78,19 +79,13 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const session = await requireAuthSession();
-  if (!session) {
-    return NextResponse.json(
-      { ok: false, error: { code: "UNAUTHORIZED", message: "Not authenticated." } },
-      { status: 401 }
-    );
-  }
-  const hospitalId = session.hospitalId;
-  if (!hospitalId) {
-    return NextResponse.json(
-      { ok: false, error: { code: "FORBIDDEN", message: "Hospital context is required." } },
-      { status: 403 }
-    );
+  let ctx;
+  try {
+    ctx = await getComplianceContext(await requireAuthSession());
+  } catch (error) {
+    const response = complianceResponse(error);
+    if (response) return response;
+    throw error;
   }
 
   const parsedBody = createRecordSchema.safeParse(await request.json());
@@ -103,14 +98,43 @@ export async function POST(request: NextRequest) {
 
   const now = Date.now();
   const id = crypto.randomUUID();
-  await db.insert(patientRecords).values({
-    id,
-    hospitalId,
-    ...parsedBody.data,
-    createdAt: now,
-    updatedAt: now,
-  });
+  try {
+    const recordInput = {
+      ...parsedBody.data,
+      dataLevel:
+        ctx.organizationType === "commercial_biotech"
+          ? "non_ehr"
+          : ctx.organizationType === "clinical_research" && parsedBody.data.dataLevel === "full_ehr"
+            ? "selected_attributes"
+            : parsedBody.data.dataLevel,
+      isSensitive: ctx.organizationType === "commercial_biotech" ? false : parsedBody.data.isSensitive,
+    };
+    const existingCount = await countRecordsForHospital(ctx.hospitalId);
+    assertCanCreateRecord(ctx, existingCount, recordInput.dataLevel);
+    await db.insert(patientRecords).values({
+      id,
+      hospitalId: ctx.hospitalId,
+      ...recordInput,
+      createdAt: now,
+      updatedAt: now,
+    });
+    await db.insert(activityLogs).values({
+      id: crypto.randomUUID(),
+      hospitalId: ctx.hospitalId,
+      actorUserId: ctx.userId,
+      type: "record_created",
+      title: "Created a patient record",
+      relatedEntityType: "patient_record",
+      relatedEntityId: id,
+      metadata: JSON.stringify({ dataLevel: recordInput.dataLevel, standard: "STANDARD.md" }),
+      createdAt: now,
+    });
+  } catch (error) {
+    const response = complianceResponse(error);
+    if (response) return response;
+    throw error;
+  }
 
   const [record] = await db.select().from(patientRecords).where(eq(patientRecords.id, id)).limit(1);
-  return NextResponse.json({ ok: true, data: record }, { status: 201 });
+  return NextResponse.json({ ok: true, data: record ? projectRecordsForAccess([record], ctx)[0] : null }, { status: 201 });
 }

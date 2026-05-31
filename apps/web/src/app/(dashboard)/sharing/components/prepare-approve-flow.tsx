@@ -4,6 +4,10 @@ import { CheckCircle2, Circle, LoaderCircle, ShieldCheck, XCircle } from "lucide
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+import {
+  StandardInsightHoverCard,
+  type StandardInsight,
+} from "@/components/standard-insight-hover-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,12 +23,66 @@ import { useSealEncrypt } from "@/hooks/use-seal-ops";
 import { walrusUpload } from "@/lib/walrus-rest";
 
 const STEPS = [
-  { id: "fetch", label: "Fetch recipient wallet address" },
-  { id: "allowlist", label: "Create access policy on Sui (sign tx)" },
-  { id: "add", label: "Grant recipient access (sign tx)" },
-  { id: "encrypt", label: "Encrypt patient data with Seal" },
-  { id: "upload", label: "Upload to Walrus storage" },
-  { id: "save", label: "Save metadata to server" },
+  {
+    id: "fetch",
+    label: "Fetch recipient wallet address",
+    insight: {
+      title: "Authenticate the recipient",
+      standards: ["HIPAA access control", "GDPR purpose limitation"],
+      method: "Linked Sui wallet lookup",
+      detail: "The holder resolves the approved requester's wallet before granting access. An unlinked recipient cannot continue.",
+    },
+  },
+  {
+    id: "allowlist",
+    label: "Create access policy on Sui (sign tx)",
+    insight: {
+      title: "Create an auditable access policy",
+      standards: ["HIPAA access control", "GDPR accountability"],
+      method: "Signed Sui Seal allowlist transaction",
+      detail: "The holder creates a dedicated on-chain policy object for this transfer. The transaction can be inspected in the Sui Explorer.",
+    },
+  },
+  {
+    id: "add",
+    label: "Grant recipient access (sign tx)",
+    insight: {
+      title: "Grant least-privilege access",
+      standards: ["HIPAA minimum necessary", "GDPR data minimization"],
+      method: "Seal allowlist membership",
+      detail: "Only the intended recipient wallet is added to the policy used for this encrypted blob.",
+    },
+  },
+  {
+    id: "encrypt",
+    label: "Encrypt patient data with Seal",
+    insight: {
+      title: "Protect EHR data before transmission",
+      standards: ["HIPAA transmission security", "GDPR security of processing"],
+      method: "Client-side Seal encryption",
+      detail: "Plaintext EHR data is encrypted in the holder's browser before it leaves the trusted application boundary.",
+    },
+  },
+  {
+    id: "upload",
+    label: "Upload to Walrus storage",
+    insight: {
+      title: "Store ciphertext only",
+      standards: ["HIPAA transmission security", "GDPR data protection"],
+      method: "Walrus encrypted blob storage",
+      detail: "Walrus receives encrypted bytes. The blob cannot be read as EHR plaintext without an authorized Seal session.",
+    },
+  },
+  {
+    id: "save",
+    label: "Save metadata to server",
+    insight: {
+      title: "Retain an operational audit trail",
+      standards: ["HIPAA audit controls", "GDPR accountability"],
+      method: "Backend activity log and transfer metadata",
+      detail: "The server stores the Walrus blob ID, Seal policy ID, Sui digest, and workflow timestamps without persisting the transferred plaintext.",
+    },
+  },
 ] as const;
 
 type StepId = (typeof STEPS)[number]["id"];
@@ -54,7 +112,15 @@ interface PrepareApproveFlowProps {
   onSuccess: () => void;
 }
 
-function StepRow({ label, status }: { label: string; status: StepStatus }) {
+function StepRow({
+  label,
+  status,
+  insight,
+}: {
+  label: string;
+  status: StepStatus;
+  insight: StandardInsight;
+}) {
   return (
     <div className="flex items-center gap-3 py-2">
       {status === "idle" && <Circle className="h-4 w-4 text-muted-foreground shrink-0" />}
@@ -64,6 +130,7 @@ function StepRow({ label, status }: { label: string; status: StepStatus }) {
       <span className={`text-sm ${status === "running" ? "font-medium" : status === "done" ? "text-muted-foreground line-through" : ""}`}>
         {label}
       </span>
+      <StandardInsightHoverCard {...insight} />
     </div>
   );
 }
@@ -253,7 +320,7 @@ export function PrepareApproveFlow({
 
         <div className="divide-y py-1">
           {STEPS.map((step) => (
-            <StepRow key={step.id} label={step.label} status={stepStatus[step.id]} />
+            <StepRow key={step.id} label={step.label} status={stepStatus[step.id]} insight={step.insight} />
           ))}
         </div>
 

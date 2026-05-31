@@ -5,6 +5,12 @@ import { z } from "zod";
 import { db } from "@/db";
 import { activityLogs, dataShareRequests, patientRecords } from "@/db/schema";
 import { requireAuthSession } from "@/lib/auth";
+import {
+  assertCanImportRecords,
+  complianceResponse,
+  countRecordsForHospital,
+  getComplianceContext,
+} from "@/lib/compliance-policy";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -42,11 +48,15 @@ const importBodySchema = z.object({
  * The share request must belong to the calling hospital (fromHospitalId).
  */
 export async function POST(request: NextRequest, { params }: Params) {
-  const session = await requireAuthSession();
-  if (!session) {
-    return NextResponse.json({ ok: false, error: "UNAUTHORIZED" }, { status: 401 });
+  let ctx;
+  try {
+    ctx = await getComplianceContext(await requireAuthSession());
+  } catch (error) {
+    const response = complianceResponse(error);
+    if (response) return response;
+    throw error;
   }
-  const hospitalId = session.hospitalId!;
+  const hospitalId = ctx.hospitalId;
   const { id } = await params;
 
   // Verify the share request belongs to this hospital as the requester
@@ -94,6 +104,13 @@ export async function POST(request: NextRequest, { params }: Params) {
 
   const now = Date.now();
   const inserted: string[] = [];
+  try {
+    assertCanImportRecords(ctx, parsed.data.records.length, await countRecordsForHospital(hospitalId));
+  } catch (error) {
+    const response = complianceResponse(error);
+    if (response) return response;
+    throw error;
+  }
 
   for (const rec of parsed.data.records) {
     const newId = crypto.randomUUID();
@@ -117,6 +134,12 @@ export async function POST(request: NextRequest, { params }: Params) {
       dischargeDate: rec.dischargeDate || now,
       medication: rec.medication,
       testResults: rec.testResults,
+      dataLevel: ctx.organizationType === "clinical_research" ? "selected_attributes" : "full_ehr",
+      sourceType: "imported",
+      isSensitive: true,
+      recordCommitment: `imported:${id}:${newId}`,
+      demographicHash: null,
+      zkProfile: null,
       status: rec.status,
       createdAt: now,
       updatedAt: now,
@@ -128,7 +151,7 @@ export async function POST(request: NextRequest, { params }: Params) {
   await db.insert(activityLogs).values({
     id: crypto.randomUUID(),
     hospitalId,
-    actorUserId: session.userId,
+    actorUserId: ctx.userId,
     type: "record_imported",
     title: `Imported ${inserted.length} record(s) from shared data`,
     relatedEntityType: "data_share_request",

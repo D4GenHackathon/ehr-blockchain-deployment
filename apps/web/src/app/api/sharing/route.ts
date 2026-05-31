@@ -4,6 +4,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { activityLogs, dataShareRequests, hospitals, patientRecords } from "@/db/schema";
 import { requireAuthSession } from "@/lib/auth";
+import {
+  assertCanShareRecords,
+  complianceResponse,
+  getComplianceContext,
+  projectRecordsForAccess,
+} from "@/lib/compliance-policy";
 import { createShareRequestSchema, listSharingQuerySchema } from "@/types/sharing";
 
 function parseRecordIds(raw: string) {
@@ -40,20 +46,15 @@ function parseStorageNodes(raw: string | null) {
 }
 
 export async function GET(request: NextRequest) {
-  const session = await requireAuthSession();
-  if (!session) {
-    return NextResponse.json(
-      { ok: false, error: { code: "UNAUTHORIZED", message: "Not authenticated." } },
-      { status: 401 }
-    );
+  let ctx;
+  try {
+    ctx = await getComplianceContext(await requireAuthSession());
+  } catch (error) {
+    const response = complianceResponse(error);
+    if (response) return response;
+    throw error;
   }
-  const hospitalId = session.hospitalId;
-  if (!hospitalId) {
-    return NextResponse.json(
-      { ok: false, error: { code: "UNAUTHORIZED", message: "Invalid session." } },
-      { status: 401 }
-    );
-  }
+  const hospitalId = ctx.hospitalId;
 
   const parsedQuery = listSharingQuerySchema.safeParse(
     Object.fromEntries(request.nextUrl.searchParams.entries())
@@ -136,27 +137,22 @@ export async function GET(request: NextRequest) {
       incoming: normalized.filter((item) => item.direction === "incoming"),
       options: {
         hospitals: hospitalRows.filter((item) => item.id !== hospitalId),
-        myRecords,
+      myRecords: projectRecordsForAccess(myRecords, ctx),
       },
     },
   });
 }
 
 export async function POST(request: NextRequest) {
-  const session = await requireAuthSession();
-  if (!session) {
-    return NextResponse.json(
-      { ok: false, error: { code: "UNAUTHORIZED", message: "Not authenticated." } },
-      { status: 401 }
-    );
+  let ctx;
+  try {
+    ctx = await getComplianceContext(await requireAuthSession());
+  } catch (error) {
+    const response = complianceResponse(error);
+    if (response) return response;
+    throw error;
   }
-  const hospitalId = session.hospitalId;
-  if (!hospitalId) {
-    return NextResponse.json(
-      { ok: false, error: { code: "UNAUTHORIZED", message: "Invalid session." } },
-      { status: 401 }
-    );
-  }
+  const hospitalId = ctx.hospitalId;
 
   const parsedBody = createShareRequestSchema.safeParse(await request.json());
   if (!parsedBody.success) {
@@ -178,7 +174,7 @@ export async function POST(request: NextRequest) {
   }
 
   const targetHospital = await db
-    .select({ id: hospitals.id })
+    .select({ id: hospitals.id, organizationType: hospitals.organizationType })
     .from(hospitals)
     .where(eq(hospitals.id, toHospitalId))
     .limit(1);
@@ -187,6 +183,13 @@ export async function POST(request: NextRequest) {
       { ok: false, error: { code: "NOT_FOUND", message: "Target hospital not found." } },
       { status: 404 }
     );
+  }
+  try {
+    assertCanShareRecords(ctx, targetHospital[0].organizationType, patientRecordIds.length);
+  } catch (error) {
+    const response = complianceResponse(error);
+    if (response) return response;
+    throw error;
   }
 
   // Records must belong to the TARGET hospital (toHospitalId = Hospital A)
@@ -235,7 +238,7 @@ export async function POST(request: NextRequest) {
     {
       id: crypto.randomUUID(),
       hospitalId,
-      actorUserId: session.userId,
+      actorUserId: ctx.userId,
       type: "sharing_request_created",
       title: "Created a data sharing request",
       relatedEntityType: "sharing",
@@ -245,6 +248,7 @@ export async function POST(request: NextRequest) {
         requestMailboxId,
         patientRecordIdsCount: patientRecordIds.length,
         step: "request_sent",
+        standard: "STANDARD.md",
       }),
       createdAt: now,
     },
@@ -261,6 +265,7 @@ export async function POST(request: NextRequest) {
         requestMailboxId,
         patientRecordIdsCount: patientRecordIds.length,
         step: "request_received",
+        standard: "STANDARD.md",
       }),
       createdAt: now,
     },
