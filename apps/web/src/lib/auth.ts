@@ -17,11 +17,16 @@ export interface AuthSessionData {
 const sessionPassword =
   process.env.AUTH_SESSION_SECRET ?? "dev_only_change_this_session_secret_32_chars_min";
 
+const secureCookie =
+  process.env.AUTH_COOKIE_SECURE === "false"
+    ? false
+    : process.env.NODE_ENV === "production";
+
 export const authSessionOptions: SessionOptions = {
   cookieName: "d4gen_session",
   password: sessionPassword,
   cookieOptions: {
-    secure: process.env.NODE_ENV === "production",
+    secure: secureCookie,
     sameSite: "lax",
     httpOnly: true,
     path: "/",
