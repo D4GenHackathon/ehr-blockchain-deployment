@@ -36,7 +36,8 @@ For demonstration purposes, two test accounts are provided representing differen
 - **LLC (Limited Liability Company) - Provider Role**: `admin.ls-427@demo.local` (Password: `demo123`)
   - Represents a healthcare provider or data custodian managing patient records
   - Can grant, audit, and revoke access permissions while maintaining privacy
-> [!TIPS]
+
+> [!TIP]
 > Users can log in with these credentials to explore the complete functionality including encrypted data uploads, access request management, zero-knowledge proof verification, and comprehensive audit trails. For a detailed walkthrough of the platform's capabilities and architectural design, refer to the [D4Gen Hackathon Final Pitch Presentation](https://docs.google.com/presentation/d/17n0wptI4n4wjyPATJ44HPGJ8dE6MdHPh/edit?slide=id.g3cb0a89473b_1_572#slide=id.g3cb0a89473b_1_572).
 
 ## High-Level Architecture
@@ -111,9 +112,10 @@ This is the main application entry point.
 
 #### Key Principles
 
-- No plaintext medical data is persisted on-chain
-- Backend logic relies exclusively on shared SDKs
-- All cryptographic operations are delegated to dedicated packages
+> [!IMPORTANT]
+> - No plaintext medical data is persisted on-chain
+> - Backend logic relies exclusively on shared SDKs
+> - All cryptographic operations are delegated to dedicated packages
 
 ## Packages
 
@@ -134,13 +136,14 @@ This package contains all on-chain logic deployed to the Sui network.
 
 #### Design Goals
 
-- Minimal, auditable, and deterministic logic
-- No storage of PII or PHI on-chain
-- On-chain data acts only as:
-  - Pointers
-  - Commitments
-  - Policies
-  - Immutable audit trails
+> [!NOTE]
+> - Minimal, auditable, and deterministic logic
+> - No storage of PII or PHI on-chain
+> - On-chain data acts only as:
+>   - Pointers
+>   - Commitments
+>   - Policies
+>   - Immutable audit trails
 
 ### packages/zk-circuits - Zero-Knowledge Circuits
 
@@ -321,32 +324,23 @@ See `apps/prover/README.md` for complete end-to-end steps (health checks and sta
 
 ## Core Design Principles
 
-### Privacy by design
-
-No personally identifiable or medical data is stored on-chain.
-
-### Decentralized storage, centralized UX
-
-Data is decentralized and encrypted, while the application provides a coherent user experience.
-
-### Explicit access control
-
-All data access is gated by on-chain policies and auditable events.
-
-### Verifiable compliance
-
-Zero-knowledge proofs allow compliance checks without disclosure.
-
-### Pragmatic architecture
-
-Designed to be implemented end-to-end within a short development cycle while remaining extensible.
+> [!IMPORTANT]
+> **Privacy by Design** — No personally identifiable or medical data is stored on-chain.
+>
+> **Decentralized Storage, Centralized UX** — Data is decentralized and encrypted, while the application provides a coherent user experience.
+>
+> **Explicit Access Control** — All data access is gated by on-chain policies and auditable events.
+>
+> **Verifiable Compliance** — Zero-knowledge proofs allow compliance checks without disclosure.
+>
+> **Pragmatic Architecture** — Designed to be implemented end-to-end within a short development cycle while remaining extensible.
 
 ## Intended Scope
 
-This repository is designed as:
-
-- A functional end-to-end prototype
-- A foundation for a consortium-based medical data sharing system
-- A reference architecture for privacy-preserving data sharing on Sui
-
-It intentionally avoids over-engineering while preserving correctness and extensibility.
+> [!IMPORTANT]
+> This repository is designed as:
+> - A functional end-to-end prototype
+> - A foundation for a consortium-based medical data sharing system
+> - A reference architecture for privacy-preserving data sharing on Sui
+>
+> It intentionally avoids over-engineering while preserving correctness and extensibility.
