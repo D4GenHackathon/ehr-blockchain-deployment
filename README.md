@@ -20,8 +20,24 @@ The architecture combines Sui blockchain, Walrus decentralized storage, Seal acc
 | Version | Type | Features | Video Demo |
 |---|---|---|---|
 | Alpha v1.0.1 | Initial Alpha | Basic Functionality (Login, Signup, Dashboard)| [▶ Basic Function View](docs/demo/alpha101.mov) | 
-| Alpha v1.0.2 | Alpha Update | Email data sharing, ZKP Verification |[▶ ZKP Function Demo View](docs/demo/alpha102.mov) | 
-| Alpha v1.0.3 | Alpha Update | Full web application functionalities | Upcomming (Hackathon Day) | 
+| Alpha v1.0.2 | Alpha Update | Email data sharing, ZKP Verification |[▶ ZKP Function View](docs/demo/alpha102.mov) | 
+| Alpha v1.0.3 | Alpha Update | Full web application functionalities | [▶ Full Functionality View](https://www.youtube.com/watch?v=25nDVT_wcZk) | 
+
+## Demo Application Access
+
+The D4Gen platform provides both a landing page and a fully functional web application for demonstration purposes. The **landing page** showcases the project overview and key features at [https://zksnark-ehr-blockchain-landing.vercel.app](https://zksnark-ehr-blockchain-landing.vercel.app). The **official full functionality web application** deployed at [https://d4gen.vuonghuuhung.com/sign-in](https://d4gen.vuonghuuhung.com/sign-in) enables users to experience the complete privacy-preserving EHR sharing workflow across different organizational roles.
+
+For demonstration purposes, two test accounts are provided representing different entities in the healthcare ecosystem:
+
+- **LTD (Limited Company) - Requester Role**: `admin.ls-400@demo.local` (Password: `demo123`)
+  - Represents a healthcare institution requesting access to patient medical records
+  - Can initiate data sharing requests and verify patient attributes using zero-knowledge proofs
+  
+- **LLC (Limited Liability Company) - Provider Role**: `admin.ls-427@demo.local` (Password: `demo123`)
+  - Represents a healthcare provider or data custodian managing patient records
+  - Can grant, audit, and revoke access permissions while maintaining privacy
+> [!TIPS]
+> Users can log in with these credentials to explore the complete functionality including encrypted data uploads, access request management, zero-knowledge proof verification, and comprehensive audit trails. For a detailed walkthrough of the platform's capabilities and architectural design, refer to the [D4Gen Hackathon Final Pitch Presentation](https://docs.google.com/presentation/d/17n0wptI4n4wjyPATJ44HPGJ8dE6MdHPh/edit?slide=id.g3cb0a89473b_1_572#slide=id.g3cb0a89473b_1_572).
 
 ## High-Level Architecture
 
