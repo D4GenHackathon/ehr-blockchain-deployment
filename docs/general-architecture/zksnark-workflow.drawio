@@ -1,0 +1,299 @@
+<mxfile host="app.diagrams.net" agent="d4gen" version="24.7.17">
+  <diagram name="ZK-SNARK EHR Workflow (v2)" id="d4gen-zk-workflow-v2">
+    <mxGraphModel dx="1600" dy="900" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="2100" math="0" shadow="0" background="#E9F0F7">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ===================== TITLE ===================== -->
+        <mxCell id="title" value="ZK-SNARK EHR WORKFLOW — GENERAL DIAGRAM (v2)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE082;strokeColor=#C8A415;fontSize=13;fontStyle=1;fontColor=#3E2C00;" vertex="1" parent="1">
+          <mxGeometry x="24" y="18" width="470" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="Phase 1 / Phase 2 Groth16 ceremony · Marlin Oyster CVM (TEE) witness + proving · attested on-chain verification · Seal + Walrus storage" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#33475B;" vertex="1" parent="1">
+          <mxGeometry x="510" y="18" width="960" height="36" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== PHASE BANDS (background) ===================== -->
+        <mxCell id="bandA" value="PHASE 1 · UNIVERSAL SETUP  (circuit-independent — no per-circuit toxic waste)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF3FB;strokeColor=#9CB8D1;dashed=1;verticalAlign=top;align=left;spacingLeft=12;spacingTop=6;fontSize=11;fontStyle=1;fontColor=#1F4E79;" vertex="1" parent="1">
+          <mxGeometry x="24" y="150" width="1552" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="bandB" value="PHASE 2 · CIRCUIT-SPECIFIC CEREMONY, RUN INSIDE THE TEE  (ceremony.move · setup-tee.sh)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3ECFB;strokeColor=#B39DDB;dashed=1;verticalAlign=top;align=left;spacingLeft=12;spacingTop=6;fontSize=11;fontStyle=1;fontColor=#4A2E7A;" vertex="1" parent="1">
+          <mxGeometry x="24" y="342" width="1552" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="bandC" value="PHASE 3 · KEY PUBLICATION, RECORD ONBOARDING, CONSENT &amp; DATASET SNAPSHOT" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EAF7EE;strokeColor=#8FC7A4;dashed=1;verticalAlign=top;align=left;spacingLeft=12;spacingTop=6;fontSize=11;fontStyle=1;fontColor=#1B5E33;" vertex="1" parent="1">
+          <mxGeometry x="24" y="774" width="1552" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="bandD" value="PHASE 4 · ATTESTED WITNESS + PROOF GENERATION INSIDE THE MARLIN OYSTER CVM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF4E5;strokeColor=#E0B679;dashed=1;verticalAlign=top;align=left;spacingLeft=12;spacingTop=6;fontSize=11;fontStyle=1;fontColor=#7A4B00;" vertex="1" parent="1">
+          <mxGeometry x="24" y="1106" width="1552" height="390" as="geometry" />
+        </mxCell>
+        <mxCell id="bandE" value="PHASE 5 · ON-CHAIN VERIFICATION, CONSENT ENFORCEMENT &amp; ANONYMITY-SET BATCHING" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FDEBEC;strokeColor=#E0A0A4;dashed=1;verticalAlign=top;align=left;spacingLeft=12;spacingTop=6;fontSize=11;fontStyle=1;fontColor=#7A1F26;" vertex="1" parent="1">
+          <mxGeometry x="24" y="1508" width="1552" height="410" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== LIFELINE HEADERS ===================== -->
+        <mxCell id="h1" value="Health Patient&lt;br&gt;(Alice)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#9DBEB9;strokeColor=#5F7C77;fontSize=11;fontStyle=1;fontColor=#0B2E2A;" vertex="1" parent="1">
+          <mxGeometry x="40" y="74" width="160" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="h2" value="Prover client&lt;br&gt;(Health Data Collector — dApp / SDK)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#9DBEB9;strokeColor=#5F7C77;fontSize=11;fontStyle=1;fontColor=#0B2E2A;" vertex="1" parent="1">
+          <mxGeometry x="230" y="74" width="160" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="h3" value="Marlin Oyster CVM&lt;br&gt;(TEE prover — AWS Nitro Enclave)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#C5B3E6;strokeColor=#7E63B8;fontSize=11;fontStyle=1;fontColor=#2E1A55;" vertex="1" parent="1">
+          <mxGeometry x="420" y="74" width="160" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="h4" value="Seal + Walrus&lt;br&gt;(RBAC allowlist + off-chain blobs)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#A8CBA0;strokeColor=#6E9366;fontSize=11;fontStyle=1;fontColor=#173311;" vertex="1" parent="1">
+          <mxGeometry x="610" y="74" width="160" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="h5" value="Verifier&lt;br&gt;(Health Data Consumer)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#9DBEB9;strokeColor=#5F7C77;fontSize=11;fontStyle=1;fontColor=#0B2E2A;" vertex="1" parent="1">
+          <mxGeometry x="800" y="74" width="160" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="h6" value="Sui Blockchain&lt;br&gt;(objects + events)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#9DBEB9;strokeColor=#5F7C77;fontSize=11;fontStyle=1;fontColor=#0B2E2A;" vertex="1" parent="1">
+          <mxGeometry x="990" y="74" width="160" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="h7" value="Move contracts&lt;br&gt;d4gen::enclave / ceremony / zk_verifier / dataset / ehr" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#9DBEB9;strokeColor=#5F7C77;fontSize=10;fontStyle=1;fontColor=#0B2E2A;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="74" width="160" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="h8" value="ZK-SNARK engine&lt;br&gt;(circom · snarkjs · rapidsnark · Groth16/BN254)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#9DBEB9;strokeColor=#5F7C77;fontSize=10;fontStyle=1;fontColor=#0B2E2A;" vertex="1" parent="1">
+          <mxGeometry x="1370" y="74" width="160" height="56" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== LIFELINES ===================== -->
+        <mxCell id="ll1" style="endArrow=none;dashed=1;html=1;strokeColor=#7A8B99;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="120" y="130" as="sourcePoint" /><mxPoint x="120" y="1930" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="ll2" style="endArrow=none;dashed=1;html=1;strokeColor=#7A8B99;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="310" y="130" as="sourcePoint" /><mxPoint x="310" y="1930" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="ll3" style="endArrow=none;dashed=1;html=1;strokeColor=#7E63B8;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="500" y="130" as="sourcePoint" /><mxPoint x="500" y="1930" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="ll4" style="endArrow=none;dashed=1;html=1;strokeColor=#6E9366;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="690" y="130" as="sourcePoint" /><mxPoint x="690" y="1930" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="ll5" style="endArrow=none;dashed=1;html=1;strokeColor=#7A8B99;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="880" y="130" as="sourcePoint" /><mxPoint x="880" y="1930" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="ll6" style="endArrow=none;dashed=1;html=1;strokeColor=#7A8B99;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1070" y="130" as="sourcePoint" /><mxPoint x="1070" y="1930" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="ll7" style="endArrow=none;dashed=1;html=1;strokeColor=#7A8B99;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1260" y="130" as="sourcePoint" /><mxPoint x="1260" y="1930" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="ll8" style="endArrow=none;dashed=1;html=1;strokeColor=#7A8B99;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1450" y="130" as="sourcePoint" /><mxPoint x="1450" y="1930" as="targetPoint" /></mxGeometry>
+        </mxCell>
+
+        <!-- ===================== ACTIVATION BARS ===================== -->
+        <mxCell id="actA2" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="305" y="196" width="10" height="110" as="geometry" /></mxCell>
+        <mxCell id="actA8" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="1445" y="196" width="10" height="110" as="geometry" /></mxCell>
+
+        <mxCell id="actB3" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="495" y="392" width="10" height="300" as="geometry" /></mxCell>
+        <mxCell id="actB7" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="1255" y="392" width="10" height="360" as="geometry" /></mxCell>
+        <mxCell id="actB8" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="1445" y="508" width="10" height="94" as="geometry" /></mxCell>
+        <mxCell id="actB2" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="305" y="474" width="10" height="18" as="geometry" /></mxCell>
+
+        <mxCell id="actC2" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="305" y="814" width="10" height="190" as="geometry" /></mxCell>
+        <mxCell id="actC1" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="115" y="852" width="10" height="20" as="geometry" /></mxCell>
+        <mxCell id="actC4" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="685" y="932" width="10" height="42" as="geometry" /></mxCell>
+        <mxCell id="actC5" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="875" y="1022" width="10" height="20" as="geometry" /></mxCell>
+        <mxCell id="actC7" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="1255" y="814" width="10" height="256" as="geometry" /></mxCell>
+
+        <mxCell id="actD2" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="305" y="1148" width="10" height="322" as="geometry" /></mxCell>
+        <mxCell id="actD3" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="495" y="1178" width="10" height="212" as="geometry" /></mxCell>
+        <mxCell id="actD4" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="685" y="1208" width="10" height="42" as="geometry" /></mxCell>
+        <mxCell id="actD5" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="875" y="1148" width="10" height="322" as="geometry" /></mxCell>
+
+        <mxCell id="actE5" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="875" y="1548" width="10" height="352" as="geometry" /></mxCell>
+        <mxCell id="actE7" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="1255" y="1548" width="10" height="352" as="geometry" /></mxCell>
+        <mxCell id="actE6" value="" style="rounded=0;html=1;fillColor=#C0504D;strokeColor=#8C3936;" vertex="1" parent="1"><mxGeometry x="1065" y="1706" width="10" height="194" as="geometry" /></mxCell>
+
+        <!-- ===================== PHASE 1 MESSAGES ===================== -->
+        <mxCell id="mA1" value="compile: circom 2.1.8 → R1CS + witness wasm (7 circuits)" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="315" y="200" as="sourcePoint" /><mxPoint x="1445" y="200" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mA2" value="PHASE 1 (universal): Hermez Powers of Tau, bn128 2^k —&lt;br&gt;curve-only, reused as-is across every circuit" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1455" y="230" as="sourcePoint" /><mxPoint x="1455" y="256" as="targetPoint" />
+            <Array as="points"><mxPoint x="1515" y="230" /><mxPoint x="1515" y="256" /></Array>
+            <mxPoint x="-190" y="0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mA3" value="powersOfTau28_hez_final_{POT_POWER}.ptau" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1445" y="296" as="sourcePoint" /><mxPoint x="315" y="296" as="targetPoint" /></mxGeometry>
+        </mxCell>
+
+        <!-- ===================== PHASE 2 MESSAGES ===================== -->
+        <mxCell id="mB1" value="enclave::register_enclave(Nitro attestation document)" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="505" y="400" as="sourcePoint" /><mxPoint x="1255" y="400" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mB2" value="verify COSE_Sign1 + AWS cert chain; PCR0/1/2 must match EnclaveConfig&lt;br&gt;⇒ Enclave{ pk, module_id, config_version }" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1265" y="425" as="sourcePoint" /><mxPoint x="1265" y="451" as="targetPoint" />
+            <Array as="points"><mxPoint x="1325" y="425" /><mxPoint x="1325" y="451" /></Array>
+            <mxPoint x="-230" y="0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mB3" value="ceremony::create_log(circuit_id) → shared CeremonyLog (genesis hash)" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="315" y="482" as="sourcePoint" /><mxPoint x="1255" y="482" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mB4" value="setup-tee.sh: groth16 setup(R1CS, ptau) + contribute round r" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="505" y="515" as="sourcePoint" /><mxPoint x="1445" y="515" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mB5" value="PHASE 2 (circuit-specific): entropy drawn from the CVM RNG,&lt;br&gt;used once, never written out. transcript_hash = sha256(final zkey)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1455" y="540" as="sourcePoint" /><mxPoint x="1455" y="566" as="targetPoint" />
+            <Array as="points"><mxPoint x="1515" y="540" /><mxPoint x="1515" y="566" /></Array>
+            <mxPoint x="-230" y="0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mB6" value="{circuit}_final.zkey · verification_key.json · transcript_hash" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1445" y="597" as="sourcePoint" /><mxPoint x="505" y="597" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mB7" value="Ed25519-sign ContributionClaim{ circuit_id, round,&lt;br&gt;prev_transcript_hash, transcript_hash }  intent = CEREMONY_CONTRIBUTION" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="505" y="622" as="sourcePoint" /><mxPoint x="505" y="648" as="targetPoint" />
+            <Array as="points"><mxPoint x="565" y="622" /><mxPoint x="565" y="648" /></Array>
+            <mxPoint x="240" y="0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mB8" value="ceremony::attest_contribution_tee(round, prev_hash, hash, sig, clock)" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="505" y="679" as="sourcePoint" /><mxPoint x="1255" y="679" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mB9" value="assert_signed + chain checks (EBrokenChain / EWrongRoundNumber /&lt;br&gt;EBadTranscriptHash) → push round → emit TeeContributionAttested" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1265" y="698" as="sourcePoint" /><mxPoint x="1265" y="724" as="targetPoint" />
+            <Array as="points"><mxPoint x="1325" y="698" /><mxPoint x="1325" y="724" /></Array>
+            <mxPoint x="-230" y="0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mB10" value="append-only, per-circuit ceremony transcript (rounds chain on prev hash)" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1255" y="748" as="sourcePoint" /><mxPoint x="1075" y="748" as="targetPoint" /></mxGeometry>
+        </mxCell>
+
+        <!-- ===================== PHASE 3 MESSAGES ===================== -->
+        <mxCell id="mC1" value="zk_verifier::store_vk(circuit_id, vk_bytes) → PreparedVerifyingKey + vk_digest = sha256(vk_bytes)" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="315" y="822" as="sourcePoint" /><mxPoint x="1255" y="822" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mC2" value="fill form: witness w = { DoB, age, insurance provider, condition, treatment }" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="125" y="862" as="sourcePoint" /><mxPoint x="305" y="862" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mC3" value="u = Poseidon(w, salt) — salted commitment, computationally hiding&lt;br&gt;(replaces the unsalted u = H(w) of v1)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="315" y="885" as="sourcePoint" /><mxPoint x="315" y="911" as="targetPoint" />
+            <Array as="points"><mxPoint x="375" y="885" /><mxPoint x="375" y="911" /></Array>
+            <mxPoint x="215" y="0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mC4" value="Seal encrypt (allowlist RBAC) → Walrus blob (RedStuff erasure coding)" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="315" y="940" as="sourcePoint" /><mxPoint x="685" y="940" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mC5" value="blob_id" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="685" y="970" as="sourcePoint" /><mxPoint x="315" y="970" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mC6" value="ehr::create_record(blob_id, u)  ·  zk_verifier::create_consent(circuit_id, valid_until)" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="315" y="1000" as="sourcePoint" /><mxPoint x="1255" y="1000" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mC7" value="[UC2]  dataset::publish_snapshot(records_root)  ·  draw_sample_index()" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="885" y="1032" as="sourcePoint" /><mxPoint x="1255" y="1032" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mC8" value="emit RecordCreated · ConsentCreated · SnapshotPublished · SampleIndexDrawn" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1255" y="1064" as="sourcePoint" /><mxPoint x="1075" y="1064" as="targetPoint" /></mxGeometry>
+        </mxCell>
+
+        <!-- ===================== PHASE 4 MESSAGES ===================== -->
+        <mxCell id="mD1" value="query: is age ∈ [min, max]?  are condition + treatment in the whitelists?" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="875" y="1155" as="sourcePoint" /><mxPoint x="315" y="1155" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mD2" value="POST /v1/proofs { circuit_id, public inputs, blob refs }" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="315" y="1185" as="sourcePoint" /><mxPoint x="495" y="1185" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mD3" value="fetch blob + Seal key shares; decrypt inside the enclave" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="505" y="1215" as="sourcePoint" /><mxPoint x="685" y="1215" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mD4" value="encrypted EHR payload" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="685" y="1245" as="sourcePoint" /><mxPoint x="505" y="1245" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mD5" value="witness generation (wasm) on tmpfs + rapidsnark Groth16 prove: R(u, w) = 1&lt;br&gt;the witness never leaves the CVM — no host-side plaintext, no proof non-leakage assumption" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="505" y="1268" as="sourcePoint" /><mxPoint x="505" y="1294" as="targetPoint" />
+            <Array as="points"><mxPoint x="565" y="1268" /><mxPoint x="565" y="1294" /></Array>
+            <mxPoint x="290" y="0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mD6" value="Ed25519-sign WitnessProofClaim{ circuit_id, vk_digest,&lt;br&gt;sha256(proof_bytes), sha256(public_inputs_bytes) }  intent = WITNESS_PROOF" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="505" y="1325" as="sourcePoint" /><mxPoint x="505" y="1351" as="targetPoint" />
+            <Array as="points"><mxPoint x="565" y="1325" /><mxPoint x="565" y="1351" /></Array>
+            <mxPoint x="250" y="0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mD7" value="π · public signals · attestation{ sig, signed_timestamp_ms, enclave pk }" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="495" y="1382" as="sourcePoint" /><mxPoint x="315" y="1382" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mD8" value="[UC2] roots_commitment = H(m_root, t_root, records_root, sample_index)&lt;br&gt;4 roots folded into 1 signal — Sui caps public inputs at 8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="315" y="1405" as="sourcePoint" /><mxPoint x="315" y="1431" as="targetPoint" />
+            <Array as="points"><mxPoint x="375" y="1405" /><mxPoint x="375" y="1431" /></Array>
+            <mxPoint x="235" y="0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mD9" value="send (π, u, attestation) to the data consumer" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="315" y="1462" as="sourcePoint" /><mxPoint x="875" y="1462" as="targetPoint" /></mxGeometry>
+        </mxCell>
+
+        <!-- ===================== PHASE 5 MESSAGES ===================== -->
+        <mxCell id="mE1" value="zk_verifier::verify_proof_attested(vk, consent, enclave, enclave_config,&lt;br&gt;proof_bytes, public_inputs_bytes, sig, max_age_ms, clock)" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="885" y="1560" as="sourcePoint" /><mxPoint x="1255" y="1560" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mE2" value="1. assert_signed: intent scope, freshness (max_age_ms), config_version&lt;br&gt;checked BEFORE the pairing — an unattested proof never costs a groth16 verify" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1265" y="1600" as="sourcePoint" /><mxPoint x="1265" y="1626" as="targetPoint" />
+            <Array as="points"><mxPoint x="1325" y="1600" /><mxPoint x="1325" y="1626" /></Array>
+            <mxPoint x="-250" y="0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mE3" value="2. consent expiry vs Clock (EConsentExpired / ENotConsentOwner)&lt;br&gt;3. sui::groth16::verify_groth16_proof over BN254" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1265" y="1657" as="sourcePoint" /><mxPoint x="1265" y="1683" as="targetPoint" />
+            <Array as="points"><mxPoint x="1325" y="1657" /><mxPoint x="1325" y="1683" /></Array>
+            <mxPoint x="-230" y="0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mE4" value="emit AttestedProofVerified{ circuit_id, result, enclave_pk, config_version, ts }" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1255" y="1714" as="sourcePoint" /><mxPoint x="1075" y="1714" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mE5" value="alt: verify_proof_batched_attested(...) → PendingBatch  (+ verify_proof_batched_decoy padding)" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="885" y="1748" as="sourcePoint" /><mxPoint x="1255" y="1748" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mE6" value="flush_batch: shuffle queued outcomes, MIN_BATCH_SIZE = 8&lt;br&gt;anonymity set — a single outcome cannot be linked back to one request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1265" y="1772" as="sourcePoint" /><mxPoint x="1265" y="1798" as="targetPoint" />
+            <Array as="points"><mxPoint x="1325" y="1772" /><mxPoint x="1325" y="1798" /></Array>
+            <mxPoint x="-240" y="0" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mE7" value="emit BatchFlushed  ·  compliance::PolicyDecision" style="html=1;endArrow=block;endFill=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1255" y="1836" as="sourcePoint" /><mxPoint x="1075" y="1836" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="mE8" value="tx digest + events → consumer and auditors read the result and the enclave identity" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#33475B;fontSize=10;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1065" y="1888" as="sourcePoint" /><mxPoint x="885" y="1888" as="targetPoint" /></mxGeometry>
+        </mxCell>
+
+        <!-- ===================== NOTES ===================== -->
+        <mxCell id="note1" value="&lt;b&gt;Circuits&lt;/b&gt; (packages/zk-circuits/circuits)&lt;br&gt;&lt;br&gt;UC1 — attribute proofs: age_attribute, dob_attribute, insurance_attribute.&lt;br&gt;Salted Poseidon binding H(x, salt) === x_hash, plus a range check or a Merkle inclusion proof over the coverage tree.&lt;br&gt;&lt;br&gt;UC2 — analysis proofs: age_analysis, dob_analysis, time_effectiveness_analysis. Add condition/treatment whitelist Merkle proofs, a dataset snapshot root and a drawn sample index, folded into one roots_commitment signal." style="shape=note;whiteSpace=wrap;html=1;size=14;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=10;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;" vertex="1" parent="1">
+          <mxGeometry x="24" y="1950" width="500" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="note2" value="&lt;b&gt;Move modules&lt;/b&gt; (packages/contracts/sources)&lt;br&gt;&lt;br&gt;enclave.move — Nitro attestation registry, PCR0/1/2 pinning, versioned EnclaveConfig, domain-separated intent scopes.&lt;br&gt;ceremony.move — chained Phase-2 transcript (CeremonyLog), attest_contribution_tee, self-reported attest_contribution retained.&lt;br&gt;zk_verifier.move — store_vk + vk_digest, consent objects, attested / batched verification, roots_commitment.&lt;br&gt;dataset.move · compliance.move · ehr.move — snapshots, policy decisions, record lifecycle." style="shape=note;whiteSpace=wrap;html=1;size=14;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=10;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;" vertex="1" parent="1">
+          <mxGeometry x="550" y="1950" width="500" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="note3" value="&lt;b&gt;Two different &quot;Marlin&quot;&lt;/b&gt;&lt;br&gt;&lt;br&gt;Marlin Oyster (lifeline 3) is the TEE platform — an AWS Nitro Enclave CVM that runs witness generation, proving and the Phase-2 contribution.&lt;br&gt;&lt;br&gt;Marlin the proof system appears only in the benchmarks: Groth16 (192 B proof, circuit-specific Phase 2) vs PLONK and Marlin (universal, updatable setup — 672 B / 880 B). Groth16 is what is deployed; PLONK and Marlin are the universal-setup alternatives evaluated in the paper." style="shape=note;whiteSpace=wrap;html=1;size=14;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=10;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;" vertex="1" parent="1">
+          <mxGeometry x="1076" y="1950" width="500" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- ===================== LEGEND ===================== -->
+        <mxCell id="legend" value="&lt;b&gt;Legend&lt;/b&gt;   —— solid arrow: call / transaction    - - - dashed arrow: return or optional path    ▮ red bar: activation    coloured band: protocol phase" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#9CB8D1;fontSize=10;align=left;spacingLeft=10;fontColor=#33475B;" vertex="1" parent="1">
+          <mxGeometry x="24" y="1926" width="1552" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
