@@ -36,3 +36,12 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+# Enclave deploy scratch (ephemeral IP of the last oyster-cvm deploy; pcrs.json is NOT ignored, commit that one)
+apps/prover/enclave/.last-enclave-ip
+
+# Benchmark run scratch (per-worker witness/proof/public files from run-benchmark.mjs's
+# parallel-scalability phase; regenerated every run and only left behind if a run is
+# interrupted before its own cleanup step)
+packages/zk-circuits/benchmark/.work/worker_*/
+packages/zk-circuits/benchmark/.work/seq/
