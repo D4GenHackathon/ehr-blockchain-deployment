@@ -57,8 +57,8 @@ const sharingSteps = [
 const verificationSteps = [
   "The backend allows only admins and doctors from eligible organizations to create or operate sensitive ZKP requests.",
   "The requester sends public conditions only, such as a date range or medication identifier.",
-  "The holder builds the private witness from its local EHR profile and sends it to the dedicated prover service.",
-  "The requester receives the proof result and submits it to Sui native Groth16 verification through zk_verifier::verify_oneshot.",
+  "The holder builds the private witness from its local EHR profile and encrypts it to the prover enclave's attested key before sending it, so only the enclave can read it.",
+  "The requester receives the proof result and submits it to Sui native Groth16 verification through zk_verifier::verify_proof_attested, which checks consent and the enclave attestation before the proof.",
   "The UI records the Sui transaction digest and matched result without disclosing the holder's private witness to the requester.",
 ];
 

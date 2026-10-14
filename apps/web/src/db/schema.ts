@@ -143,6 +143,8 @@ export const zkpExchanges = sqliteTable("zkp_exchanges", {
   jobStatus: text("job_status"),
   resultLabel: text("result_label"),
   vkeyId: text("vkey_id"),
+  /** On-chain `zk_verifier::ConsentObject` created when the holder accepts. */
+  consentObjectId: text("consent_object_id"),
   proverJobId: text("prover_job_id"),
   verifyTxDigest: text("verify_tx_digest"),
   proof: text("proof"),
