@@ -283,23 +283,16 @@ Required environment variables:
 On-chain verification (`apps/web`). Every verification goes through `zk_verifier::verify_proof_attested`; there is no unattested entry point, so these are needed for the accept and verify steps:
 
 - `D4GEN_ZK_PACKAGE_ID`: the published `d4gen` package
-- `D4GEN_ENCLAVE_ID` / `D4GEN_ENCLAVE_CONFIG_ID`: the registered `Enclave` and its
-  `EnclaveConfig` (see `apps/prover/enclave/register.sh`). With `D4GEN_ENCLAVE_ID`
-  set, witnesses are encrypted to the enclave's on-chain `enc_pk` before they
-  are sent to the prover.
-- `D4GEN_VK_OBJECT_IDS`: JSON map from circuit id to its shared
-  `VerificationKey` object, e.g. `{"age_attribute":"0x..."}`
+- `D4GEN_ENCLAVE_ID` / `D4GEN_ENCLAVE_CONFIG_ID`: the registered `Enclave` and its `EnclaveConfig` (see `apps/prover/enclave/register.sh`). With `D4GEN_ENCLAVE_ID` set, witnesses are encrypted to the enclave's on-chain `enc_pk` before they are sent to the prover.
+- `D4GEN_VK_OBJECT_IDS`: JSON map from circuit id to its shared `VerificationKey` object, e.g. `{"age_attribute":"0x..."}`
 - `SUI_PRIVATE_KEY`: signer for consent and verification transactions
-- `D4GEN_CONSENT_TTL_MS` (optional, default 24 h): how long an accepted
-  request's on-chain consent stays live
+- `D4GEN_CONSENT_TTL_MS` (optional, default 24 h): how long an accepted request's on-chain consent stays live
 
-After pulling this change, run `pnpm --filter @d4gen/web db:migrate` to add the
-`consent_object_id` column.
+After pulling this change, run `pnpm --filter @d4gen/web db:migrate` to add the `consent_object_id` column.
 
 Optional security:
 
-- set `PROVER_INTERNAL_AUTH_TOKEN` in both `apps/prover` and `apps/web`
-  (`apps/web` sends it via `x-prover-token`)
+- set `PROVER_INTERNAL_AUTH_TOKEN` in both `apps/prover` and `apps/web` (`apps/web` sends it via `x-prover-token`)
 
 Install and build `rapidsnark` standalone prover (example for macOS arm64):
 
