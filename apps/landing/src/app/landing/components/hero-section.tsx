@@ -45,7 +45,7 @@ export function HeroSection() {
           {/* CTA Buttons */}
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
             <Button size="lg" className="text-base cursor-pointer" asChild>
-              <Link href="/dashboard">
+              <Link href="https://d4gen-ehr.vercel.app/dashboard">
                 Open Dashboard
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>

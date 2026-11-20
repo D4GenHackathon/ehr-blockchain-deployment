@@ -112,7 +112,7 @@ export function FeaturesSection() {
 
             <div className="flex flex-col sm:flex-row gap-4 pe-4 pt-2">
               <Button size="lg" className="cursor-pointer" asChild>
-                <a href="/dashboard" className='flex items-center'>
+                <a href="https://d4gen-ehr.vercel.app/dashboard" className='flex items-center'>
                   Open Dashboard
                   <ArrowRight className="ms-2 size-4" aria-hidden="true" />
                 </a>
@@ -161,7 +161,7 @@ export function FeaturesSection() {
                 </a>
               </Button>
               <Button size="lg" variant="outline" className="cursor-pointer" asChild>
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                <a href="https://github.com/D4GenHackathon/d4gen-deployment" target="_blank" rel="noopener noreferrer">
                   View Repository
                 </a>
               </Button>

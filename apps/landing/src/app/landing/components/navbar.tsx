@@ -129,21 +129,21 @@ export function LandingNavbar() {
         <div className="hidden xl:flex items-center space-x-2">
           <ModeToggle variant="ghost" />
           <Button variant="ghost" size="icon" asChild className="cursor-pointer">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+            <a href="https://github.com/D4GenHackathon/d4gen-deployment" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
               <Github className="h-5 w-5" />
             </a>
           </Button>
           <Button variant="outline" asChild className="cursor-pointer">
-            <Link href="/dashboard" target="_blank" rel="noopener noreferrer">
+            <Link href="https://d4gen-ehr.vercel.app/dashboard" target="_blank" rel="noopener noreferrer">
               <LayoutDashboard className="h-4 w-4 mr-2" />
               Dashboard
             </Link>
           </Button>
           <Button variant="ghost" asChild className="cursor-pointer">
-            <Link href="/sign-in">Sign In</Link>
+            <a href="https://d4gen-ehr.vercel.app/sign-in">Sign In</a>
           </Button>
           <Button asChild className="cursor-pointer">
-            <Link href="/sign-up">Request Access</Link>
+            <Link href="https://d4gen-ehr.vercel.app/sign-up">Request Access</Link>
           </Button>
         </div>
 
@@ -175,7 +175,7 @@ export function LandingNavbar() {
                       <Sun className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                     </Button>
                     <Button variant="ghost" size="icon" asChild className="cursor-pointer h-8 w-8">
-                      <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+                      <a href="https://github.com/D4GenHackathon/d4gen-deployment" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
                         <Github className="h-4 w-4" />
                       </a>
                     </Button>
@@ -251,7 +251,7 @@ export function LandingNavbar() {
                 {/* Primary Actions */}
                 <div className="space-y-3">
                   <Button variant="outline" size="lg" asChild className="w-full cursor-pointer">
-                    <Link href="/dashboard">
+                    <Link href="https://d4gen-ehr.vercel.app/dashboard">
                       <LayoutDashboard className="size-4" />
                       Dashboard
                     </Link>
@@ -259,10 +259,10 @@ export function LandingNavbar() {
 
                   <div className="grid grid-cols-2 gap-3">
                     <Button variant="outline" size="lg" asChild className="cursor-pointer">
-                      <Link href="/sign-in">Sign In</Link>
+                      <a href="https://d4gen-ehr.vercel.app/sign-in">Sign In</a>
                     </Button>
                     <Button asChild size="lg" className="cursor-pointer" >
-                      <Link href="/sign-up">Request Access</Link>
+                      <Link href="https://d4gen-ehr.vercel.app/sign-up">Request Access</Link>
                     </Button>
                   </div>
                 </div>

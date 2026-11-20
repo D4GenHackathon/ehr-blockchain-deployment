@@ -56,7 +56,7 @@ export function SiteHeader() {
             </Button> */}
             <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
               <a
-                href="https://github.com"
+                href="https://github.com/D4GenHackathon/d4gen-deployment"
                 rel="noopener noreferrer"
                 target="_blank"
                 className="dark:text-foreground"

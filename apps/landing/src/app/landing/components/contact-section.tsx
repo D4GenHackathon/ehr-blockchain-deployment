@@ -102,7 +102,7 @@ export function ContactSection() {
                   Track scaffolding progress, open issues, and follow package-level implementation updates.
                 </p>
                 <Button variant="outline" size="sm" className="cursor-pointer" asChild>
-                  <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                  <a href="https://github.com/D4GenHackathon/d4gen-deployment" target="_blank" rel="noopener noreferrer">
                     View on GitHub
                   </a>
                 </Button>
