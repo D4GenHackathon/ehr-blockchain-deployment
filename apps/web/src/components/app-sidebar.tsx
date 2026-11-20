@@ -4,11 +4,9 @@ import * as React from "react"
 import {
   LayoutPanelLeft,
   LayoutDashboard,
-  ShieldCheck,
   FolderOpen,
   History,
   Share2,
-  BadgeCheck,
 } from "lucide-react"
 import Link from "next/link"
 import { Logo } from "@/components/logo"
@@ -57,19 +55,9 @@ const data = {
           icon: Share2,
         },
         {
-          title: "Verification",
-          url: "/verification",
-          icon: BadgeCheck,
-        },
-        {
           title: "History",
           url: "/history",
           icon: History,
-        },
-        {
-          title: "Proof Jobs",
-          url: "/proofs",
-          icon: ShieldCheck,
         },
         // {
         //   title: "Mail",
