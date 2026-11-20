@@ -23,7 +23,7 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for deployment procedures, configuration, and
 
 ## Demo Application
 
-The D4Gen platform is available at [d4gen.vuonghuuhung.com](https://d4gen.vuonghuuhung.com/sign-in).
+The D4Gen platform is live at [d4gen-ehr.vercel.app](https://d4gen-ehr.vercel.app/sign-in), running on Sui testnet.
 
 ## Project Documentation
 
